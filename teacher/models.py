@@ -70,7 +70,7 @@ class PersonalInfo(models.Model):
     date_of_birth = models.DateField()
     place_of_birth = models.CharField(max_length=45)
     nationality_choice = (
-        ('Bangladeshi', 'Bangladeshi'),
+        ('South African', 'South African'),
         ('Others', 'Others')
     )
     nationality = models.CharField(max_length=45, choices=nationality_choice)

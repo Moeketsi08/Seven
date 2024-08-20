@@ -5,7 +5,6 @@ class AdminLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
-
 class AddDepartmentForm(forms.ModelForm):
     class Meta:
         model = models.Department
@@ -13,10 +12,16 @@ class AddDepartmentForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 class AddDesignationForm(forms.ModelForm):
     class Meta:
         model = models.Designation
-        fields = '__all__'
+        fields = ['designation_type', 'name_surname', 'contact_number', 'email_address', 'physical_address', 'documents']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'designation_type': forms.Select(attrs={'class': 'form-control'}),
+            'name_surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'contact_number': forms.TextInput(attrs={'class': 'form-control', 'maxlength': '10'}),
+            'email_address': forms.EmailInput(attrs={'class': 'form-control'}),
+            'physical_address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'documents': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }

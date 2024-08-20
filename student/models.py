@@ -37,8 +37,8 @@ class PersonalInfo(models.Model):
     )
     religion = models.CharField(choices=religion_choice, max_length=45)
     nationality_choice = (
-        ('Bangladeshi', 'Bangladeshi'),
-        ('Others', 'Others')
+        ('South African', 'South African'),
+        ('Brithish Emprire', 'British Empire')
     )
     nationality = models.CharField(choices=nationality_choice, max_length=45)
 
