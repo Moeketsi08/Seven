@@ -530,4 +530,82 @@ $(function(){
   //  options: options
   //});
 
+  // Total Students Donut Chart
+  var ctx = document.getElementById('donutChartTotalStudents').getContext('2d');
+  var donutChartTotalStudents = new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+          labels: ['Male', 'Female'],
+          datasets: [{
+              data: [70, 30],  // Example data
+              backgroundColor: ['#007bff', '#ffc107'],  // Customize these colors to match the theme
+              borderColor: '#ffffff',
+              borderWidth: 0,
+          }]
+      },
+      options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          cutout: '70%',  // Adjust thickness here (default is 50%, 70% makes it thinner)
+          plugins: {
+              legend: {
+                  display: false,  // Hide default legend
+              },
+              tooltip: {
+                  callbacks: {
+                      label: function(tooltipItem) {
+                          let dataset = tooltipItem.dataset;
+                          let total = dataset.data.reduce((acc, val) => acc + val, 0);
+                          let value = dataset.data[tooltipItem.dataIndex];
+                          let percentage = Math.round((value / total) * 100) + '%';
+                          return tooltipItem.label + ': ' + percentage;
+                      }
+                  }
+              },
+              datalabels: {
+                  color: '#fff',
+                  display: true,
+                  formatter: function(value, context) {
+                      let total = context.dataset.data.reduce((acc, val) => acc + val, 0);
+                      let percentage = Math.round((value / total) * 100) + '%';
+                      return percentage;
+                  },
+                  anchor: 'center',
+                  align: 'center',
+                  font: {
+                      weight: 'bold',
+                      size: 14
+                  }
+              }
+          }
+      }
+  });
+  
+
+// Learner Attendance Donut Chart
+var ctx = document.getElementById('donutChartTotalStudents').getContext('2d');
+var donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Label 1', 'Label 2', 'Label 3'],
+        datasets: [{
+            data: [30, 50, 20],
+            backgroundColor: ['#007bff', '#17a2b8', '#ffc107'],  // Customize these colors to match the theme
+            borderColor: '#ffffff',
+            borderWidth: 2
+        }]
+    },
+    options: {
+        maintainAspectRatio: false,
+        cutoutPercentage: 70,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+
+
 });

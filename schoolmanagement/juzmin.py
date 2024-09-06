@@ -1,18 +1,18 @@
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
-    "site_title": "School Management System Admin",
+    "site_title": "Kutlwanong School Management System Admin",
 
     # Title on the login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    "site_header": "School Management System",
+    "site_header": "Kutlwanong School Management System",
 
     # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
     "site_brand": "School Management System",
 
     # Logo to use for your site, must be present in static files, used for brand on top left
-    "site_logo": "/src/img/sms.png",
+    "site_logo": None,
 
     # CSS classes that are applied to the logo above
-    "site_logo_classes": "img-circle",
+    "site_logo_classes": None,
 
     # Relative path to a favicon for your site, will default to site_logo if absent (ideally 32x32 px)
     "site_icon": None,
@@ -21,7 +21,7 @@ JAZZMIN_SETTINGS = {
     "welcome_sign": "Welcome to the School Management System",
 
     # Copyright on the footer
-    "copyright": "School Management System",
+    "copyright": "Kutlwanong School Management System",
 
     # The model admin to search from the search bar, search bar omitted if excluded
     "search_model": "auth.User",

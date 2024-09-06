@@ -27,7 +27,7 @@ class PersonalInfo(models.Model):
     gender = models.CharField(choices=gender_choice, max_length=10)
     phone_no = models.CharField(max_length=11)
     email = models.EmailField(blank=True, null=True)
-    birth_certificate_no = models.IntegerField()
+    birth_certificate_no = models.CharField(max_length=50)  # Changed to CharField to accommodate alphanumeric certificates
     religion_choice = (
         ('Islam', 'Islam'),
         ('Hinduism', 'Hinduism'),
@@ -38,7 +38,7 @@ class PersonalInfo(models.Model):
     religion = models.CharField(choices=religion_choice, max_length=45)
     nationality_choice = (
         ('South African', 'South African'),
-        ('Brithish Emprire', 'British Empire')
+        ('British Empire', 'British Empire')
     )
     nationality = models.CharField(choices=nationality_choice, max_length=45)
 
@@ -53,6 +53,7 @@ class StudentAddressInfo(models.Model):
 
     def __str__(self):
         return self.village
+
 
 class GuardianInfo(models.Model):
     father_name = models.CharField(max_length=100)
@@ -122,12 +123,13 @@ class EmergencyContactDetails(models.Model):
     def __str__(self):
         return self.emergency_guardian_name
 
+
 class PreviousAcademicInfo(models.Model):
     institute_name = models.CharField(max_length=100)
     name_of_exam = models.CharField(max_length=100)
     group = models.CharField(max_length=45)
     gpa = models.CharField(max_length=10)
-    board_roll = models.IntegerField()
+    board_roll = models.CharField(max_length=50)  # Changed to CharField for flexibility
     passing_year = models.IntegerField()
 
     def __str__(self):
@@ -141,17 +143,18 @@ class PreviousAcademicCertificate(models.Model):
     stipen_certificate = models.FileField(upload_to='documents/', blank=True)
     other_certificate = models.FileField(upload_to='documents/', blank=True)
 
+
 class AcademicInfo(models.Model):
     class_info = models.ForeignKey(ClassInfo, on_delete=models.CASCADE)
-    registration_no = models.IntegerField(unique=True, default=random.randint(000000, 999999))
+    registration_no = models.IntegerField(unique=True, default=random.randint(100000, 999999))
     status_select = (
-        ('not enroll', 'Not Enroll'),
+        ('not enrolled', 'Not Enrolled'),
         ('enrolled', 'Enrolled'),
         ('regular', 'Regular'),
         ('irregular', 'Irregular'),
         ('passed', 'Passed'),
     )
-    status = models.CharField(choices=status_select, default='not enroll', max_length=15)
+    status = models.CharField(choices=status_select, default='not enrolled', max_length=15)
     personal_info = models.ForeignKey(PersonalInfo, on_delete=models.CASCADE, null=True)
     address_info = models.ForeignKey(StudentAddressInfo, on_delete=models.CASCADE, null=True)
     guardian_info = models.ForeignKey(GuardianInfo, on_delete=models.CASCADE, null=True)
@@ -175,4 +178,5 @@ class EnrolledStudent(models.Model):
     
     def __str__(self):
         return str(self.roll)
+
 

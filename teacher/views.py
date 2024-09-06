@@ -1,7 +1,15 @@
 from django.shortcuts import render, redirect
-
+from django.views.generic import FormView
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 from . import forms
 from .models import District, Upazilla, Union, PersonalInfo
+from .forms import TimesheetForm  # Import the TimesheetForm
+from .models import Timesheet
+from django.utils import timezone
+
+
+
 
 # Create your views here.
 
@@ -63,6 +71,7 @@ def teacher_list(request):
     context = {'teacher': teacher}
     return render(request, 'teacher/teacher-list.html', context)
 
+
 def teacher_profile(request, teacher_id):
     teacher = PersonalInfo.objects.get(id=teacher_id)
     context = {
@@ -70,11 +79,13 @@ def teacher_profile(request, teacher_id):
     }
     return render(request, 'teacher/teacher-profile.html', context)
 
+
 def teacher_delete(request, teacher_id):
     teacher = PersonalInfo.objects.get(id=teacher_id)
     teacher.is_delete = True
     teacher.save()
     return redirect('teacher-list')
+
 
 def teacher_edit(request, teacher_id):
     teacher = PersonalInfo.objects.get(id=teacher_id)
@@ -105,6 +116,7 @@ def teacher_edit(request, teacher_id):
             personal_info.experience = experience_info
             personal_info.save()
             return redirect('teacher-list')
+
     context = {
         'form': form,
         'address_form': address_forms,
@@ -114,3 +126,53 @@ def teacher_edit(request, teacher_id):
         'experience_form': experience_form
     }
     return render(request, 'teacher/teacher-edit.html', context)
+
+
+class TeacherLoginView(FormView):
+    template_name = 'teacher/teacher_login.html'  # Update the path
+    form_class = AuthenticationForm
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return '/teacher/dashboard/'  # Redirect to the teacher's dashboard
+
+
+def teacher_dashboard(request):
+    # Logic for the teacher's dashboard
+    return render(request, 'teacher/teacher-dashboard.html')
+
+def teacher_dashboard(request):
+    if request.method == 'POST':
+        form = TimesheetForm(request.POST)
+        if form.is_valid():
+            # Calculate total hours
+            start_time = form.cleaned_data['start_time']
+            end_time = form.cleaned_data['end_time']
+            total_hours = (end_time - start_time).seconds / 3600  # Convert seconds to hours
+
+            # Create and save the new Timesheet record
+            Timesheet.objects.create(
+                user=request.user,
+                date=form.cleaned_data['date'],
+                start_time=start_time,
+                end_time=end_time,
+                total_hours=total_hours,
+            )
+            return redirect('teacher_dashboard')  # Redirect to the same page to avoid resubmission
+
+    else:
+        form = TimesheetForm()
+
+    # Fetch existing timesheets for the logged-in user
+    timesheets = Timesheet.objects.filter(user=request.user).order_by('-date')
+
+    context = {
+        'timesheet_form': form,
+        'timesheets': timesheets
+    }
+
+    return render(request, 'teacher/teacher-dashboard.html', context)

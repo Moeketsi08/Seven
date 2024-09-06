@@ -1,15 +1,13 @@
 @charset "UTF-8";
 /*!
- * CoreUI - Open Source Bootstrap Admin Template
- * @version v1.0.6
- * @link http://coreui.io
- * Copyright (c) 2017 creativeLabs Łukasz Holeczek
+ * Copyright (c) 2024 Lwazi Mazibuko
+  * @version v1.0.6
  * @license MIT
  */
 /*!
  * Bootstrap v4.0.0-beta.2 (https://getbootstrap.com)
- * Copyright 2011-2017 The Bootstrap Authors
- * Copyright 2011-2017 Twitter, Inc.
+ * Copyright 2011-2024 The Bootstrap Authors
+ * Copyright 2011-2024 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
@@ -7846,7 +7844,7 @@ base-chart.chart {
     padding: 0.5rem 1rem;
     margin-right: 0;
     background-color: #fff;
-    background-image: url("../img/logo.png");
+    background-image: url("../assets/Kutlwanong-logo.png' %");
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 70px auto;
@@ -7938,7 +7936,6 @@ base-chart.chart {
   .brand-minimized .app-header.navbar .navbar-brand {
     width: 50px;
     background-color: #fff;
-    background-image: url("../img/logo-symbol.png");
     background-size: 24px;
     border-bottom: 1px solid #c2cfd6; } }
 
@@ -9458,3 +9455,61 @@ hr.transparent {
       float: left; }
   *[dir="rtl"] .callout-default {
     border-right-color: #536c79; }
+    <!-- Add this in your CSS file or <style> block -->
+    <style>
+        .border-gray {
+            border: 1px solid gray;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .tile_inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .tile_inner .count_top,
+        .tile_inner .count,
+        .tile_inner .count_bottom {
+            margin-bottom: 5px;
+        }
+        .tile_inner .count {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .tile_inner .count_bottom {
+            font-size: 14px;
+        }
+    </style>
+
+    <!-- Add this in your CSS file or <style> block -->
+<style>
+    .border-gray {
+        border: 1px solid gray;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+    .tile_inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .tile_inner .count_top,
+    .tile_inner .count,
+    .tile_inner .count_bottom {
+        margin-bottom: 5px;
+    }
+    .tile_inner .count {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    .tile_inner .count_bottom {
+        font-size: 14px;
+    }
+    .card-body .text-value {
+        margin-bottom: 15px;
+    }
+</style>

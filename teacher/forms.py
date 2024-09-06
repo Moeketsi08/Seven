@@ -1,6 +1,8 @@
 from django import forms
 from . import models
 from academic.models import Department
+from .models import Timesheet
+
 
 class PersonalInfoForm(forms.ModelForm):
     class Meta:
@@ -25,6 +27,7 @@ class PersonalInfoForm(forms.ModelForm):
             'marital_status': forms.Select(attrs={'class': 'form-control'}),
 
         }
+
 
 class AddressInfoForm(forms.ModelForm):
     class Meta:
@@ -123,3 +126,17 @@ class AddDesignationForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
+class TimesheetForm(forms.Form):
+    date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    start_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'Start Time'}))
+    end_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'End Time'}))
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+        
+        if start_time and end_time:
+            if end_time <= start_time:
+                self.add_error('end_time', 'End time must be after start time.')

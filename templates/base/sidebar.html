@@ -15,17 +15,17 @@
                          <i class="fa fa-plus-circle"></i>Add Designation</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="{% url 'district' %}">
-                         <i class="fa fa-plus-circle"></i>Add Centre</a>
-                 </li>
+                    <a class="nav-link" href="{% url 'district' %}">
+                        <i class="fa fa-plus-circle"></i>Add District</a>
+                </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="{% url 'upazilla' %}">
-                         <i class="fa fa-plus-circle"></i>Add Something  </a>
-                 </li>
-                 <li class="nav-item">
-                     <a class="nav-link" href="{% url 'union' %}">
-                         <i class="fa fa-plus-circle"></i>Add Something</a>
-                 </li>
+                    <a class="nav-link" href="{% url 'upazilla' %}">
+                        <i class="fa fa-plus-circle"></i>Add Upazilla</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'union' %}">
+                        <i class="fa fa-plus-circle"></i>Add Union</a>
+                </li>
              </ul>
            </li>
            <!-- Administration Section END -->
@@ -35,10 +35,6 @@
             <a class="nav-link nav-dropdown-toggle" href="#">
                 <i class="nav-icon icon-puzzle"></i>Academic</a>
             <ul class="nav-dropdown-items">
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'add-department' %}">
-                      <i class="fa fa-plus-circle"></i>Add Department</a>
-              </li>
               <li class="nav-item">
                   <a class="nav-link" href="{% url 'create-class' %}">
                       <i class="fa fa-plus-circle"></i>Create Class</a>
@@ -51,14 +47,7 @@
                   <a class="nav-link" href="{% url 'create-session' %}">
                       <i class="fa fa-plus-circle"></i>Create Session</a>
               </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'create-shift' %}">
-                      <i class="fa fa-plus-circle"></i>Create Shift</a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'guide-teacher' %}">
-                      <i class="fa fa-plus-circle"></i>Guide Teacher</a>
-              </li>
+
             </ul>
           </li>
           <!-- Academic Section END -->
@@ -128,27 +117,11 @@
                         <i class="fa fa-plus-circle"></i>Student Enrolled</a>
                     <a class="nav-link" href="{% url 'enrolled-student-list' %}">
                         <i class="fa fa-list"></i>Enrolled Student List</a>
+                    
                 </li>
             </ul>
           </li>
           <!-- Enroll Student Section END -->
-
-           <!-- Employee Section START -->
-           <li class="nav-item nav-dropdown">
-            <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="nav-icon icon-puzzle"></i>Employee</a>
-            <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'employee-registration' %}">
-                        <i class="fa fa-plus-circle"></i>Add Employee</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'employee-list' %}">
-                        <i class="fa fa-list"></i>Employee List</a>
-                </li>
-            </ul>
-          </li>
-          <!-- Employee Section END -->
 
           <!-- Result Section START -->
           <li class="nav-item nav-dropdown">
@@ -167,6 +140,10 @@
                    <a class="nav-link" href="{% url 'mark-entry' %}">
                        <i class="fa fa-plus-circle"></i>Mark Entry</a>
                </li>
+               <li class="nav-item">
+                <a class="nav-link" href="{% url 'upazilla' %}">
+                    <i class="fa fa-plus-circle"></i>Add Upazilla</a>
+            </li>
            </ul>
          </li>
          <!-- Result Section END -->
@@ -183,32 +160,6 @@
           </ul>
         </li>
         <!-- Attendence Report Section END -->
-
-       <!-- Holiday Section START -->
-       <li class="nav-item nav-dropdown">
-        <a class="nav-link nav-dropdown-toggle" href="#">
-            <i class="nav-icon icon-puzzle"></i>Holiday</a>
-        <ul class="nav-dropdown-items">
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="nav-icon icon-puzzle"></i>Student List</a>
-            </li>
-        </ul>
-      </li>
-      <!-- Holiday Section END -->
-
-        <!-- Event Section START -->
-        <li class="nav-item nav-dropdown">
-         <a class="nav-link nav-dropdown-toggle" href="#">
-             <i class="nav-icon icon-puzzle"></i>Event</a>
-         <ul class="nav-dropdown-items">
-             <li class="nav-item">
-                 <a class="nav-link" href="#">
-                     <i class="nav-icon icon-puzzle"></i>Student List</a>
-             </li>
-         </ul>
-       </li>
-       <!-- Event Section END -->
 
         <!-- User-Manual Section START -->
         <li class="nav-item nav-dropdown">

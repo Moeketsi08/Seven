@@ -1,54 +1,11 @@
 {% extends 'base/base.html' %}
 {% block content %}
   <div class="card">
-    <div class="card-Body">Designation Register Form</div>
-    <div class="card-header">Register User: Admin, Center Manager, Finance Manager, and Teacher</div>
-
+    <div class="card-header">Designation Register Form</div>
     <div class="card-body">
-      <form class="" action="" method="post" enctype="multipart/form-data">
+      <form class="" action="" method="post">
         {% csrf_token %}
-        
-        <!-- Designation Type Dropdown -->
-        <div class="form-group">
-          <label for="designation_type">Designation Type</label>
-          <select class="form-control" id="designation_type" name="designation_type" required>
-            <option value="" disabled selected>Select Designation Type</option>
-            <option value="Finance Manager">Finance Manager</option>
-            <option value="Centre Manager">Centre Manager</option>
-            <option value="Teacher">Teacher</option>
-          </select>
-        </div>
-
-        <!-- Name and Surname Field -->
-        <div class="form-group">
-          <label for="name_surname">Name and Surname</label>
-          <input type="text" class="form-control" id="name_surname" name="name_surname" required>
-        </div>
-
-        <!-- Contact Number Field -->
-        <div class="form-group">
-          <label for="contact_number">Contact Number</label>
-          <input type="text" class="form-control" id="contact_number" name="contact_number" maxlength="10" required>
-        </div>
-
-        <!-- Email Address Field -->
-        <div class="form-group">
-          <label for="email_address">Email Address</label>
-          <input type="email" class="form-control" id="email_address" name="email_address" required>
-        </div>
-
-        <!-- Physical Address Field -->
-        <div class="form-group">
-          <label for="physical_address">Physical Address</label>
-          <textarea class="form-control" id="physical_address" name="physical_address" rows="3" required></textarea>
-        </div>
-
-        <!-- Attach Documents Field -->
-        <div class="form-group">
-          <label for="documents">Attach Documents</label>
-          <input type="file" class="form-control-file" id="documents" name="documents">
-        </div>
-
+        {{ forms.as_p }}
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
     </div>
@@ -56,31 +13,21 @@
 
   <div class="card">
       <div class="card-header">
-          <i class="fa fa-align-justify"></i> Designation List</div>
+          <i class="fa fa-align-justify"></i>Designation List</div>
       <div class="card-body">
           <table class="table table-responsive-sm">
               <thead>
                   <tr>
                       <th>Id</th>
                       <th>Designation Name</th>
-                      <th>Name and Surname</th>
-                      <th>Contact Number</th>
-                      <th>Email Address</th>
-                      <th>Physical Address</th>
-                      <th>Documents</th>
                       <th>Register Date</th>
                   </tr>
               </thead>
               <tbody>
-                  {% for designation in designations %}
+                  {% for designation in designation %}
                     <tr>
                         <td>{{ designation.id }}</td>
-                        <td>{{ designation.designation_type }}</td>
-                        <td>{{ designation.name_surname }}</td>
-                        <td>{{ designation.contact_number }}</td>
-                        <td>{{ designation.email_address }}</td>
-                        <td>{{ designation.physical_address }}</td>
-                        <td><a href="{{ designation.documents.url }}" target="_blank">View Document</a></td>
+                        <td>{{ designation.name }}</td>
                         <td>{{ designation.date }}</td>
                     </tr>
                   {% endfor %}
@@ -89,4 +36,5 @@
       </div>
   </div>
 {% endblock %}
+
 

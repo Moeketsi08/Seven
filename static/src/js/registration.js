@@ -4,7 +4,7 @@ $('#academic_info_btn').on('click', function(){
   $('.personal_info').show();
 });
 
-// Presonal Information
+// Personal Information
 $('#personal_info_btn').on('click', function(){
   $('.personal_info').hide();
   $('.address_info').show();

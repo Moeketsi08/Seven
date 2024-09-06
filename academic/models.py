@@ -50,7 +50,10 @@ class ClassRegistration(models.Model):
         ('general', 'General'),
         ('science', 'Science'),
         ('business', 'Business'),
-        ('humanities', 'Humanities')
+        ('humanities', 'Humanities'),
+        ('Maths', 'Maths'),
+        ('English', 'English'),
+        ('Physics', 'Physics')
     )
     department = models.CharField(choices=department_select, max_length=15)
     class_name = models.ForeignKey(ClassInfo, on_delete=models.CASCADE, null=True)

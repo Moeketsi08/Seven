@@ -2,155 +2,497 @@
 {% load static %}
 {% block title %} Data Management System {% endblock %}
 {% block content %}
-<marquee behavior="" direction="">Welcome To the Kutwamong Data Management System</marquee>
+<marquee behavior="" direction="">Welcome To School Management System</marquee>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Add your custom styles here */
+        .container {
+            padding: 2rem;
+        }
+        .text-blue-500 {
+            color: #3B82F6;
+        }
+        .text-slate-600 {
+            color: #64748B;
+        }
+        .bg-white { 
+            background-color: white;
+        }
+        .shadow {
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .rounded {
+            border-radius: 0.25rem;
+        }
+        .font-bold {
+            font-weight: bold;
+        }
+        .font-semibold {
+            font-weight: 600;
+        }
+        .grid {
+            display: grid;
+        }
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+        .grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .grid-cols-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .gap-1 {
+            gap: 0.25rem;
+        }
+        .gap-4 {
+            gap: 1rem;
+        }
+        .my-2 {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .p-1 {
+            padding: 0.25rem;
+        }
+        .p-2 {
+            padding: 0.5rem;
+        }
+        .p-4 {
+            padding: 1rem;
+        }
+        .py-1 {
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+        }
+        .py-4 {
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .px-2 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+        }
+        .mt-6 {
+            margin-top: 1.5rem;
+        }
+        .text-right {
+            text-align: right;
+        }
+        .float-right {
+            float: right;
+        }
+        .w-full {
+            width: 100%;
+        }
+        .sticky {
+            position: sticky;
+            top: 1rem;
+        }
+        .border-b {
+            border-bottom: 1px solid #E5E7EB;
+        }
+        .border-t {
+            border-top: 1px solid #E5E7EB;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="text-xl text-blue-500">Hi Admin</h2>
+        <p class="text-slate-600 font-light">Welcome to your Admin Dashboard</p>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-1 py-1">
+            <!-- Main Content -->
+            <div class="col-span-1 lg:col-span-2">
+<!-- Cards Section -->
 <div class="animated fadeIn">
     <div class="row">
+        <!-- Card: Total Students -->
         <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-primary">
-
+            <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
-                    <div class="btn-group float-right">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-settings"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="{% url 'student-list' %}">Student List</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="d-flex justify-content-between">
+                        <div class="card-title">Total Students</div>
+                        <div class="btn-group">
+                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'student-list' %}">Center 1</a>
+                                <a class="dropdown-item" href="#">All</a>
+                                <a class="dropdown-item" href="#">Center 2</a>
+                                <a class="dropdown-item" href="#">Center 3</a>
+                                <a class="dropdown-item" href="#">Center 4</a>
+                                <a class="dropdown-item" href="#">Center 5</a>
+                                <a class="dropdown-item" href="#">Center 6</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-value"><a href="{% url 'student-list' %}" class="btn btn-primary">{{ student }}</a></div>
-                    <div>Total Student</div>
-                </div>
-
-                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                        <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                        </div>
-                    </div>
-                    <canvas class="chart chartjs-render-monitor" id="card-chart1" height="70" width="319" style="display: block; width: 319px; height: 70px;"></canvas>
-                    <div id="card-chart1-tooltip" class="chartjs-tooltip top" style="opacity: 0; left: 278.558px; top: 123.889px;">
-                        <div class="tooltip-header">
-                            <div class="tooltip-header-item">June</div>
-                        </div>
-                        <div class="tooltip-body">
-                            <div class="tooltip-body-item"><span class="tooltip-body-item-color" style="background-color: rgb(0, 165, 224);"></span><span class="tooltip-body-item-label">My First dataset</span><span class="tooltip-body-item-value">55</span></div>
+                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                        <canvas id="donutChartTotalStudents" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                            Total Students 100
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Card: Student Active Status -->
         <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-danger">
+            <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
-                    <div class="btn-group float-right">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-settings"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="d-flex justify-content-between">
+                        <div class="card-title">Student Active Status</div>
+                        <div class="btn-group">
+                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="{% url 'student-list' %}">All Centers</a>
+                                <a class="dropdown-item" href="#">Center 1</a>
+                                <a class="dropdown-item" href="#">Center 2</a>
+                                <a class="dropdown-item" href="#">Center 3</a>
+                                <a class="dropdown-item" href="#">Center 4</a>
+                                <a class="dropdown-item" href="#">Center 5</a>
+                                <a class="dropdown-item" href="#">Center 6</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-value"><a href="{% url 'teacher-list' %}" class="btn btn-transparent">{{ teacher }}</a></div>
-                    <div>Total Teacher</div>
-                </div>
-                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                        <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                        </div>
-                    </div>
-                    <canvas class="chart chartjs-render-monitor" id="card-chart4" height="70" width="319" style="display: block; width: 319px; height: 70px;"></canvas>
-                    <div id="card-chart4-tooltip" class="chartjs-tooltip top bottom" style="opacity: 0; left: 265px; top: 134.2px;">
-                        <div class="tooltip-header">
-                            <div class="tooltip-header-item">January</div>
-                        </div>
-                        <div class="tooltip-body">
-                            <div class="tooltip-body-item"><span class="tooltip-body-item-color" style="background-color: rgba(230, 230, 230, 0.2);"></span><span class="tooltip-body-item-label">My First dataset</span><span class="tooltip-body-item-value">34</span></div>
+                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                        <canvas id="donutChartActiveStatus" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                            Active 81%
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Card: Total Centers -->
         <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-warning">
+            <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
-                    <div class="btn-group float-right">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-settings"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="d-flex justify-content-between">
+                        <div class="card-title">Total Centers</div>
+                        <div class="btn-group">
+                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Gauteng</a>
+                                <a class="dropdown-item" href="#">Mpumalanga</a>
+                                <a class="dropdown-item" href="#">KwaZulu Natal</a>
+                                <a class="dropdown-item" href="#">Western Cape</a>
+                                <a class="dropdown-item" href="#">Eastern Cape</a>
+                                <a class="dropdown-item" href="#">Limpopo</a>
+                                <a class="dropdown-item" href="#">North West</a>
+                                <a class="dropdown-item" href="#">Northern Cape</a>
+                                <a class="dropdown-item" href="#">Free State</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="text-value"><a href="{% url 'employee-list' %}" class="btn btn-transparent">{{ employee }}</a></div>
-                    <div>Total Employee</div>
-                </div>
-                <div class="chart-wrapper mt-3" style="height:70px;">
-                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                        <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                        </div>
-                    </div>
-                    <canvas class="chart chartjs-render-monitor" id="card-chart3" height="70" width="351" style="display: block; width: 351px; height: 70px;"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-lg-3">
-            <div class="card text-white bg-danger">
-                <div class="card-body pb-0">
-                    <div class="btn-group float-right">
-                        <button class="btn btn-transparent dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-settings"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </div>
-                    <div class="text-value"><a href="{% url 'class-list' %}" class="btn btn-transparent">{{ total_class }}</a></div>
-                    <div>Total Class</div>
-                </div>
-                <div class="chart-wrapper mt-3 mx-3" style="height:70px;">
-                    <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;">
-                        <div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div>
-                        </div>
-                        <div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;">
-                            <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
-                        </div>
-                    </div>
-                    <canvas class="chart chartjs-render-monitor" id="card-chart4" height="70" width="319" style="display: block; width: 319px; height: 70px;"></canvas>
-                    <div id="card-chart4-tooltip" class="chartjs-tooltip top bottom" style="opacity: 0; left: 265px; top: 134.2px;">
-                        <div class="tooltip-header">
-                            <div class="tooltip-header-item">January</div>
-                        </div>
-                        <div class="tooltip-body">
-                            <div class="tooltip-body-item"><span class="tooltip-body-item-color" style="background-color: rgba(230, 230, 230, 0.2);"></span><span class="tooltip-body-item-label">My First dataset</span><span class="tooltip-body-item-value">34</span></div>
+                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                        <canvas id="donutChartTotalCenters" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                            Centers 25
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Card: Learner Attendance -->
+        <div class="col-sm-6 col-lg-3">
+            <div class="card bg-white text-primary">
+                <div class="card-body pb-0">
+                    <div class="d-flex justify-content-between">
+                        <div class="card-title">Learner Attendance</div>
+                        <div class="btn-group">
+                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="icon-settings"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" href="#">Center 1</a>
+                                <a class="dropdown-item" href="#">Center 2</a>
+                                <a class="dropdown-item" href="#">Center 3</a>
+                                <a class="dropdown-item" href="#">Center 4</a>
+                                <a class="dropdown-item" href="#">Center 5</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                        <canvas id="donutChartLearnerAttendance" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                            Present 85%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-{% endblock %}
+
+
+        <!-- Learner Enrollment Section -->
+        <div class="mt-3">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-2">
+                <!-- Bar Chart Section -->
+                <div class="col-span-1 lg:col-span-3 bg-white p-4 h-80 rounded-lg shadow">
+                    <h3 class="text-base text-slate-600 mt-4">Learner Enrollment</h3>
+                    <p> </p>
+                    <div class="min-h-full w-full mt-5">
+                                  <!-- Progress Circles Section -->
+                <div class="grid grid-cols-3 gap-2 mt-4">
+                                    <!-- Mathematics Progress Circle -->
+                    <div class="m-2 text-center bg-white rounded-lg shadow">
+                        <div style="width: 100%; padding: 1rem;">
+                            <svg width="80" height="80" viewBox="0 0 36 36" class="circular-chart blue">
+                                <path class="circle-bg"
+                                      d="M18 2.0845
+                                         a 15.9155 15.9155 0 0 1 0 31.831
+                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="circle"
+                                      stroke-dasharray="90, 100"
+                                      d="M18 2.0845
+                                         a 15.9155 15.9155 0 0 1 0 31.831
+                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <text x="18" y="20.35" class="percentage">90%</text>
+                            </svg>
+                            <p style="font-size: 12px; margin-top: 4px;">Mathematics</p>
+                        </div>
+                    </div>
+
+                    <!-- Physics Progress Circle -->
+                    <div class="m-2 text-center bg-white rounded-lg shadow">
+                        <div style="width: 100%; padding: 1rem;">
+                            <svg width="80" height="80" viewBox="0 0 36 36" class="circular-chart blue">
+                                <path class="circle-bg"
+                                      d="M18 2.0845
+                                         a 15.9155 15.9155 0 0 1 0 31.831
+                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="circle"
+                                      stroke-dasharray="90, 100"
+                                      d="M18 2.0845
+                                         a 15.9155 15.9155 0 0 1 0 31.831
+                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <text x="18" y="20.35" class="percentage">90%</text>
+                            </svg>
+                            <p style="font-size: 12px; margin-top: 4px;">Physics</p>
+                        </div>
+                    </div>
+
+                    <!-- English Progress Circle -->
+                    <div class="m-2 text-center bg-white rounded-lg shadow">
+                        <div style="width: 100%; padding: 1rem;">
+                            <svg width="80" height="80" viewBox="0 0 36 36" class="circular-chart blue">
+                                <path class="circle-bg"
+                                      d="M18 2.0845
+                                         a 15.9155 15.9155 0 0 1 0 31.831
+                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="circle"
+                                      stroke-dasharray="80, 100"
+                                      d="M18 2.0845
+                                         a 15.9155 15.9155 0 0 1 0 31.831
+                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <text x="18" y="20.35" class="percentage">80%</text>
+                            </svg>
+                            <p style="font-size: 12px; margin-top: 4px;">English</p>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+            </div>
+                        <!-- Sidebar Section -->
+                        <div class="col-span-1">
+                            <div class="sticky top-0">
+                                <!-- Sidebar Content -->
+                                <div class="bg-white p-4 rounded-lg shadow">
+                                    <div class="border-b py-2">
+                                        <p class="text-slate-600 font-bold">Reports</p>
+                                    </div>
+                                    <ul class="mt-2">
+                                        <li class="py-1 px-2">
+                                            <a href="#" class="text-blue-500">Student Reports</a>
+                                        </li>
+                                        <li class="py-1 px-2">
+                                            <a href="#" class="text-blue-500">Teacher Reports</a>
+                                        </li>
+                                        <li class="py-1 px-2">
+                                            <a href="#" class="text-blue-500">Center Performance</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    
+    <style>
+        /* Additional styles for circular progress bars */
+        .circular-chart {
+            display: block;
+            margin: 10px auto;
+            max-width: 80%;
+            max-height: 250px;
+        }
+        .circle-bg {
+            fill: none;
+            stroke: #eee;
+            stroke-width: 3.8;
+        }
+        .circle {
+            fill: none;
+            stroke-width: 2.8;
+            stroke-linecap: round;
+            animation: progress 1s ease-out forwards;
+        }
+        .percentage {
+            fill: #0891B2;
+            font-family: sans-serif;
+            font-size: 0.5em;
+            text-anchor: middle;
+        }
+        @keyframes progress {
+            0% {
+                stroke-dasharray: 0 100;
+            }
+        }
+        .blue .circle {
+            stroke: #0891B2;
+        }
+        
+    </style>
+<!-- Additional Chart.js Code -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Common Chart Options
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',  // Adjusts the donut thickness
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'bottom',
+                    labels: {
+                        font: {
+                            size: 12
+                        },
+                        boxWidth: 10,
+                        padding: 15
+                    }
+                },
+                datalabels: {
+                    display: false  // Disable default datalabels to avoid overlapping
+                }
+            },
+            tooltips: { enabled: false }  // Disable tooltips
+        };
+
+        // Donut Chart: Total Students
+        var ctxTotalStudents = document.getElementById('donutChartTotalStudents').getContext('2d');
+        var totalStudents = 100; // Replace with dynamic value for total students
+        new Chart(ctxTotalStudents, {
+            type: 'doughnut',
+            data: {
+                labels: ['Male', 'Female'],
+                datasets: [{
+                    data: [60, 40],  // Example data, replace with dynamic values
+                    backgroundColor: ['#4CAF50', '#FF5722'],
+                    hoverBackgroundColor: ['#66BB6A', '#FF7043']
+                }]
+            },
+            options: {
+                ...commonOptions,
+                plugins: {
+                    ...commonOptions.plugins,
+                    datalabels: {
+                        display: true,
+                        color: 'white',
+                        formatter: function() {
+                            return totalStudents + ' Students';
+                        },
+                        font: {
+                            weight: 'bold',
+                            size: '16'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Donut Chart: Student Active Status
+        var ctxActiveStatus = document.getElementById('donutChartActiveStatus').getContext('2d');
+        new Chart(ctxActiveStatus, {
+            type: 'doughnut',
+            data: {
+                labels: ['Active', 'Inactive'],
+                datasets: [{
+                    data: [81, 19],  // 81% Active, 19% Inactive
+                    backgroundColor: ['#4CAF50', '#FFC107'],
+                    hoverBackgroundColor: ['#66BB6A', '#FFD54F']
+                }]
+            },
+            options: commonOptions
+        });
+
+        // Donut Chart: Learner Attendance
+        var ctxLearnerAttendance = document.getElementById('donutChartLearnerAttendance').getContext('2d');
+        new Chart(ctxLearnerAttendance, {
+            type: 'doughnut',
+            data: {
+                labels: ['Present', 'Absent'],
+                datasets: [{
+                    data: [85, 15],  // 85% Present, 15% Absent
+                    backgroundColor: ['#4CAF50', '#E91E63'],
+                    hoverBackgroundColor: ['#66BB6A', '#F06292']
+                }]
+            },
+            options: commonOptions
+        });
+
+        // Donut Chart: Total Centers
+        var ctxTotalCenters = document.getElementById('donutChartTotalCenters').getContext('2d');
+        new Chart(ctxTotalCenters, {
+            type: 'doughnut',
+            data: {
+                labels: ['GP', 'MP', 'KZN'],
+                datasets: [{
+                    data: [10, 8, 12, 15, 9, 7, 6, 5, 8],  // Example data, replace with dynamic values
+                    backgroundColor: ['#4CAF50', '#FF5722', '#2196F3', '#673AB7', '#E91E63', '#FFC107', '#00BCD4', '#FF9800', '#9C27B0'],
+                    hoverBackgroundColor: ['#66BB6A', '#FF7043', '#42A5F5', '#9575CD', '#F06292', '#FFD54F', '#4DD0E1', '#FFB74D', '#BA68C8']
+                }]
+            },
+            options: commonOptions
+        });
+    });
+</script>
+
+</body>
+</html>
+
+
+{% endblock content %}
+
+
+
+
