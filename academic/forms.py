@@ -1,6 +1,8 @@
 from django import forms
 from . import models
 from academic.models import ClassRegistration
+from .models import ClassRegistration, District, Upazilla, Union
+
 
 
 class DepartmentForm(forms.ModelForm):
@@ -56,6 +58,9 @@ class ClassRegistrationForm(forms.ModelForm):
             'session': forms.Select(attrs={'class': 'form-control'}),
             'shift': forms.Select(attrs={'class': 'form-control'}),
             'guide_teacher': forms.Select(attrs={'class': 'form-control'}),
+            'Province': forms.Select(attrs={'class': 'form-control'}),
+            'Region': forms.Select(attrs={'class': 'form-control'}),
+            'Center': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class GuideTeacherForm(forms.ModelForm):

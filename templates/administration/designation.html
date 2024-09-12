@@ -19,7 +19,8 @@
               <thead>
                   <tr>
                       <th>Id</th>
-                      <th>Designation Name</th>
+                      <th>Designation Type</th>
+                      <th>User Name</th>
                       <th>Register Date</th>
                   </tr>
               </thead>
@@ -27,7 +28,8 @@
                   {% for designation in designation %}
                     <tr>
                         <td>{{ designation.id }}</td>
-                        <td>{{ designation.name }}</td>
+                        <td>{{ designation.designation_type }}</td> <!-- Displaying the designation type -->
+                        <td>{{ designation.name_surname }}</td>
                         <td>{{ designation.date }}</td>
                     </tr>
                   {% endfor %}

@@ -33,9 +33,9 @@ class StudentAddressInfoForm(forms.ModelForm):
         model = StudentAddressInfo
         fields = '__all__'
         widgets = {
-            'district': forms.Select(attrs={'class': 'form-control'}),
-            'upazilla': forms.Select(attrs={'class': 'form-control'}),
-            'union': forms.Select(attrs={'class': 'form-control'}),
+            'Province': forms.Select(attrs={'class': 'form-control'}),
+            'Region': forms.Select(attrs={'class': 'form-control'}),
+            'Center': forms.Select(attrs={'class': 'form-control'}),
             'village': forms.TextInput(attrs={'class': 'form-control'})
         }
 

@@ -77,9 +77,6 @@ class PersonalInfo(models.Model):
     )
     nationality = models.CharField(max_length=45, choices=nationality_choice)
     religion_choice = (
-        ('Islam', 'Islam'),
-        ('Hinduism', 'Hinduism'),
-        ('Buddhism', 'Buddhism'),
         ('Christianity', 'Christianity'),
         ('Others', 'Others')
     )

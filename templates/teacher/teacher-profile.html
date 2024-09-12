@@ -22,7 +22,6 @@
             <pre>Nationality             : {{ teacher.nationality }}</pre>
             <pre>Religion                : {{ teacher.religion }}</pre>
             <pre>Gender                  : {{ teacher.gender }}</pre>
-            <pre>Blood Group             : {{ teacher.blood_group }}</pre>
             <pre>E-TIN                   : {{ teacher.e_tin }}</pre>
             <pre>National Id no          : {{ teacher.nid }}</pre>
             <pre>Driving License/Passport: {{ teacher.driving_license_passport }}</pre>
@@ -47,10 +46,9 @@
         <hr>
         <div class="row">
           <div style="font-size:24px; margin-left: 30px">
-            <pre>District: {{ teacher.address.district }}</pre>
-            <pre>Upazilla: {{ teacher.address.upazilla }}</pre>
-            <pre>Union   : {{ teacher.address.union }}</pre>
-            <pre>Village : {{ teacher.address.village }}</pre>
+            <pre>Province: {{ teacher.address.district }}</pre>
+            <pre>Region: {{ teacher.address.upazilla }}</pre>
+            <pre>Center: {{ teacher.address.union }}</pre>
           </div>
         </div>
       </div>
@@ -65,7 +63,7 @@
             <pre>Name of Exam: {{ teacher.education.name_of_exam }}</pre>
             <pre>Institute   : {{ teacher.education.institute }}</pre>
             <pre>Group       : {{ teacher.education.group }}</pre>
-            <pre>Grade/GPA   : {{ teacher.education.grade }}</pre>
+            <pre>Grade Average   : {{ teacher.education.grade }}</pre>
             <pre>Board       : {{ teacher.education.board }}</pre>
             <pre>Passing Year: {{ teacher.education.passing_year }}</pre>
           </div>

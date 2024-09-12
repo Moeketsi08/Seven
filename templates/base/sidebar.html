@@ -5,6 +5,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'home' %}"><i class="icon-speedometer"></i> Dashboard</a>
             </li>
+
             <!-- Administration Section Start -->
             <li class="nav-item nav-dropdown">
              <a class="nav-link nav-dropdown-toggle" href="#">
@@ -16,15 +17,15 @@
                  </li>
                  <li class="nav-item">
                     <a class="nav-link" href="{% url 'district' %}">
-                        <i class="fa fa-plus-circle"></i>Add District</a>
+                        <i class="fa fa-plus-circle"></i> Provinces</a>
                 </li>
                  <li class="nav-item">
                     <a class="nav-link" href="{% url 'upazilla' %}">
-                        <i class="fa fa-plus-circle"></i>Add Upazilla</a>
+                        <i class="fa fa-plus-circle"></i>Add Region</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'union' %}">
-                        <i class="fa fa-plus-circle"></i>Add Union</a>
+                        <i class="fa fa-plus-circle"></i>Add Center</a>
                 </li>
              </ul>
            </li>
@@ -43,13 +44,10 @@
                   <a class="nav-link" href="{% url 'create-section' %}">
                       <i class="fa fa-plus-circle"></i>Create Section</a>
               </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="{% url 'create-session' %}">
-                      <i class="fa fa-plus-circle"></i>Create Session</a>
-              </li>
 
             </ul>
           </li>
+
           <!-- Academic Section END -->
 
            <!-- Teacher Section START -->
@@ -57,10 +55,7 @@
             <a class="nav-link nav-dropdown-toggle" href="#">
                 <i class="nav-icon icon-puzzle"></i>Teacher</a>
             <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'teacher-registration' %}">
-                        <i class="fa fa-plus-circle"></i>Teacher Registration</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'teacher-list' %}">
                         <i class="fa fa-list"></i>Teacher List</a>
@@ -89,19 +84,19 @@
             <!-- Student Section START -->
             <li class="nav-item nav-dropdown">
              <a class="nav-link nav-dropdown-toggle" href="#">
-                 <i class="nav-icon icon-puzzle"></i>Student</a>
+                 <i class="nav-icon icon-puzzle"></i>Learner</a>
              <ul class="nav-dropdown-items">
                  <li class="nav-item">
                      <a class="nav-link" href="{% url 'student-registration' %}">
-                         <i class="fa fa-plus-circle"></i>Student Registration</a>
+                         <i class="fa fa-plus-circle"></i>Learner Registration</a>
                  </li>
                  <li class="nav-item">
                      <a class="nav-link" href="{% url 'student-list' %}">
-                         <i class="fa fa-list"></i>Student List</a>
+                         <i class="fa fa-list"></i>Learner List</a>
                  </li>
                  <li class="nav-item">
                      <a class="nav-link" href="{% url 'student-search' %}">
-                         <i class="fa fa-search-plus"></i>Student Search</a>
+                         <i class="fa fa-search-plus"></i>Learner Search</a>
                  </li>
              </ul>
            </li>
@@ -110,42 +105,43 @@
            <!-- Enroll Student Section START -->
         <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
-                <i class="nav-icon icon-puzzle"></i>Enroll Student</a>
+                <i class="nav-icon icon-puzzle"></i>Enroll Learner</a>
             <ul class="nav-dropdown-items">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'enrolled-student' %}">
-                        <i class="fa fa-plus-circle"></i>Student Enrolled</a>
+                        <i class="fa fa-plus-circle"></i>Learner Enrolled</a>
                     <a class="nav-link" href="{% url 'enrolled-student-list' %}">
-                        <i class="fa fa-list"></i>Enrolled Student List</a>
+                        <i class="fa fa-list"></i>Enrolled Learner List</a>
                     
                 </li>
             </ul>
           </li>
           <!-- Enroll Student Section END -->
 
-          <!-- Result Section START -->
-          <li class="nav-item nav-dropdown">
-           <a class="nav-link nav-dropdown-toggle" href="#">
-               <i class="nav-icon icon-puzzle"></i>Result</a>
-           <ul class="nav-dropdown-items">
-               <li class="nav-item">
-                   <a class="nav-link" href="{% url 'add-subject' %}">
-                       <i class="fa fa-plus-circle"></i>Add Subject</a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link" href="{% url 'subject-list' %}">
-                       <i class="fa fa-list"></i>Subject List</a>
-               </li>
-               <li class="nav-item">
-                   <a class="nav-link" href="{% url 'mark-entry' %}">
-                       <i class="fa fa-plus-circle"></i>Mark Entry</a>
-               </li>
-               <li class="nav-item">
-                <a class="nav-link" href="{% url 'upazilla' %}">
-                    <i class="fa fa-plus-circle"></i>Add Upazilla</a>
-            </li>
-           </ul>
-         </li>
+<!-- Result Section START -->
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#">
+        <i class="nav-icon icon-puzzle"></i>Result</a>
+    <ul class="nav-dropdown-items">
+        <!--<li class="nav-item">
+            <a class="nav-link" href="{% url 'add-subject' %}">
+                <i class="fa fa-plus-circle"></i>Add Subject</a>
+        </li>-->
+        <li class="nav-item">
+            <a class="nav-link" href="https://app.powerbi.com/groups/me/reports/349f3273-cbe9-44f6-9cc2-88ce267338bc/ReportSection?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi" target="_blank">
+                <i class="fa fa-list"></i>Learner Performance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="https://app.powerbi.com/groups/me/reports/324e2d34-28e0-4829-8145-f18a13edc2d0/ReportSection4e89fb92da0b95c18a76?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi&bookmarkGuid=ca3a9920-d06b-44df-9af0-d0e2396e11c9" target="_blank">
+                <i class="fa fa-plus-circle"></i>Center Performance</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="https://app.powerbi.com/groups/me/reports/9a2fb30d-44ea-4d4e-a352-f487e14632a1/ReportSection?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi&bookmarkGuid=84f39475-049d-4fb9-8c83-2bd82c9399a7" target="_blank">
+                <i class="fa fa-plus-circle"></i>Teacher Timesheet</a>
+        </li>
+    </ul>
+ </li>
+ 
          <!-- Result Section END -->
 
          <!-- Attendence Report Section START -->

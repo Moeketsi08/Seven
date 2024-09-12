@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='personalinfo',
             name='nationality',
-            field=models.CharField(choices=[('South African', 'South African'), ('British Empire', 'British Empire')], max_length=45),
+            field=models.CharField(choices=[('South African', 'South African'), ('Zimbabwe', 'Zimbabwe')], max_length=45),
         ),
         migrations.AlterField(
             model_name='previousacademicinfo',

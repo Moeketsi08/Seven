@@ -3,6 +3,10 @@ from django.contrib.auth.decorators import login_required
 from .forms import *
 from .models import *
 from academic.models import ClassRegistration
+from .forms import ClassRegistrationForm
+from .models import District, Upazilla, Union
+
+
 
 
 @login_required(login_url='login')
@@ -28,6 +32,20 @@ def add_class(request):
     context = {
         'forms': forms,
         'class_obj': class_obj
+    }
+    return render(request, 'academic/create-class.html', context)
+
+def create_class(request):
+    form = ClassRegistrationForm()
+    districts = District.objects.all()  # Add this line to get the districts
+    if request.method == 'POST':
+        form = ClassRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('class-list')
+    context = {
+        'form': form,
+        'districts': districts  # Pass the districts to the template
     }
     return render(request, 'academic/create-class.html', context)
 
@@ -101,3 +119,17 @@ def create_guide_teacher(request):
         'guide_teacher': guide_teacher
     }
     return render(request, 'academic/create-guide-teacher.html', context)
+
+# AJAX view for loading Upazillas based on District
+def load_upazilla(request):
+    district_id = request.GET.get('district')
+    upazillas = Upazilla.objects.filter(district_id=district_id).order_by('name')
+    return render(request, 'academic/upazilla_dropdown_list_options.html', {'upazillas': upazillas})
+
+# AJAX view for loading Unions based on Upazilla
+def load_union(request):
+    upazilla_id = request.GET.get('upazilla')
+    unions = Union.objects.filter(upazilla_id=upazilla_id).order_by('name')
+    return render(request, 'academic/union_dropdown_list_options.html', {'unions': unions})
+
+

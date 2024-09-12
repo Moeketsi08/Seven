@@ -1,7 +1,6 @@
 /* 
  * DateJS Culture String File
  * Country Code: ur-PK
- * Name: Urdu (Islamic Republic of Pakistan)
  * Format: "key" : "value"
  * Key is the en-US term, Value is the Key in the current language.
  */

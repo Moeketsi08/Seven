@@ -1,20 +1,8 @@
 {% load static %}
 <!DOCTYPE html>
-<!--
-* Copyright (c) 2024 Lwazi Mazibuko 
-* Licensed under MIT ( Lwazi Mazibuko)
--->
-
 <html lang="en">
   <head>
-    <link href="node_modules/@coreui/icons/css/coreui-icons.min.css" rel="stylesheet">
-    <link href="node_modules/flag-icon-css/css/flag-icon.min.css" rel="stylesheet">
-    <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="node_modules/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
-    <!-- Main styles for this application-->
-    <link href="css/style.css" rel="stylesheet">
-    <link href="vendors/pace-progress/css/pace.min.css" rel="stylesheet">
-
+    <!-- Metadata and Stylesheets -->
     {% include 'base/header.html' %}
     <style>
       body {
@@ -24,122 +12,132 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #f8f9fa;
+        background: linear-gradient(to bottom right, #e6f1fd, #d5e4f7);
         font-family: 'Arial', sans-serif;
       }
       .container {
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 0 20px;
-        width: 100%;
-        max-width: 1400px;
+        height: 100%;
       }
-      .card-group {
-        display: flex;
+      .background-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
-        max-width: 1200px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
+        height: 100%;
+        z-index: -1;
+        background: url("{% static 'assets/background-pattern.png' %}") no-repeat bottom right;
+        background-size: cover;
       }
       .card {
-        flex: 1;
+        width: 400px;
         padding: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
         background-color: white;
-      }
-      .login-card {
-        background-color: #ffffff;
-      }
-      .admin-card {
-        background-color: #6287a8; /* Complementary color to gray */
-        color: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
       }
       .logo {
-        display: block;
-        margin: 0 auto 20px;
-        max-width: 300px; /* Double the size of the logo */
-      }
+  display: block;
+  max-width: 150px;
+  margin: 0 auto 30px auto; /* Center the image horizontally and add bottom margin */
+}
+
       h1 {
-        font-size: 2.5rem;
+        font-size: 1.5rem;
+        color: #333;
         margin-bottom: 20px;
       }
-      p.text-muted {
-        color: #6c757d;
-        margin-bottom: 30px;
+      .form-group {
+        margin-bottom: 15px;
+        text-align: left;
       }
-      .input-group-text {
-        background-color: #f1f1f1;
-        border: none;
+      .form-group label {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 5px;
       }
-      .input-group-text i {
-        color: #007bff;
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 0.9rem;
       }
-      .btn-primary {
+      .checkbox-group {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 10px 0;
+      }
+      .btn-login {
+        width: 100%;
+        padding: 12px;
         background-color: #007bff;
-        border-color: #007bff;
-      }
-      .btn-link {
-        color: #007bff;
-      }
-      .btn-link:hover {
-        text-decoration: underline;
-      }
-      .btn-light {
-        background-color: #e7ecf0; /* Darker background color for the button */
-        color: white; /* White text for contrast */
-        border-color: #343a40;
-      }
-      .btn-light:hover {
-        background-color: #212529; /* Slightly darker on hover */
+        border: none;
         color: white;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-top: 20px;
       }
-      .card-body {
-        padding: 40px;
+      .btn-login:hover {
+        background-color: #0056b3;
+      }
+      .link-section {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .link-section a {
+        text-decoration: none;
+        color: #007bff;
+        font-size: 0.9rem;
+      }
+      .link-section a:hover {
+        color: #0056b3;
       }
     </style>
   </head>
-  <body class="app flex-row align-items-center">
+  <body>
+    <div class="background-wrapper"></div>
     <div class="container">
-      <div class="card-group">
-        <div class="card login-card">
-          <div class="card-body"> 
-            <img src="{% static 'assets/Kutlwanong-logo.png' %}" alt="Kutlwanong Logo" class="logo">
-            <h1>Login</h1>
-            <p class="text-muted">Sign In to your account</p>
-            <form action="" method="post">
-              {% csrf_token %}
-              {% for fields in forms %}
-                <div class="input-group mb-3">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">
-                      <i class="icon-user"></i>
-                    </span>
-                  </div>
-                  {{ fields }}
-                </div>
-              {% endfor %}
-              <div class="row">
-                <div class="col-6">
-                  <input type="submit" value="Login" class="btn btn-primary px-4" />
-                </div>
-                <div class="col-6 text-right">
-                  <button class="btn btn-link px-0" type="button">Forgot password?</button>
-                </div>
-              </div>
-            </form>
+      
+      <div class="card">
+        <img src="{% static 'assets/Kutlwanong-logo.png' %}" alt="Kutlwanong Logo" class="logo">
+        <h1>Login to Kutlwanong Data Management System</h1>
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Your username" name="username" />
           </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Your password" name="password" />
+          </div>
+          <div class="checkbox-group">
+            <div>
+              <input type="checkbox" id="remember-me">
+              <label for="remember-me">Remember me</label>
+            </div>
+            <a href="#">Forgot password?</a>
+          </div>
+          <input type="submit" value="Login" class="btn-login" />
+        </form>
+        <div class="link-section">
+          <a href="/teachers">Teacher Login</a>
+          <a href="/students">Student Login</a>
         </div>
       </div>
     </div>
-    <!-- CoreUI and necessary plugins-->
   </body>
 </html>
+
+
+
 
 
 

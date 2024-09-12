@@ -3,7 +3,7 @@
 
 {% block content %}
   <div class="card">
-    <div class="card-header">Union Register Form</div>
+    <div class="card-header">Center Register Form</div>
     <div class="card-body">
       <form class="" action="" method="post" id="StudentRegistrationForm" data-upazilla-url={% url 'load-upazilla' %}>
         {% csrf_token %}
@@ -15,16 +15,31 @@
       <script src="{% static 'src/js/address.js' %}"></script>
     </div>
   </div>
+  
+  <div class="card">
+    <div class="card-header">Class Register Form</div>
+    <div class="card-body">
+        <form action="" method="post" id="ClassRegistrationForm" data-upazilla-url="{% url 'load-upazilla' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="class_name">Class Name:</label>
+                <input type="text" name="class_name" class="form-control" id="class_name" placeholder="Enter Class Name">
+            </div>
+            {{ forms.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
 
   <div class="card">
       <div class="card-header">
-          <i class="fa fa-align-justify"></i>Union List</div>
+          <i class="fa fa-align-justify"></i>Center List</div>
       <div class="card-body">
           <table class="table table-responsive-sm">
               <thead>
                   <tr>
                       <th>Id</th>
-                      <th>Union Name</th>
+                      <th>Region Name</th>
                       <th>Register Date</th>
                   </tr>
               </thead>

@@ -27,7 +27,7 @@ def admin_logout(request):
 def add_designation(request):
     forms = AddDesignationForm()
     if request.method == 'POST':
-        forms = AddDesignationForm(request.POST)
+        forms = AddDesignationForm(request.POST, request.FILES)
         if forms.is_valid():
             forms.save()
             return redirect('designation')

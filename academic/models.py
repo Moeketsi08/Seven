@@ -43,7 +43,32 @@ class GuideTeacher(models.Model):
 
     def __str__(self):
         return str(self.name)
+    
+    
+class District(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    date = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
+
+class Upazilla(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Union(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
 class ClassRegistration(models.Model):
     name = models.CharField(max_length=10, unique=True)
     department_select = (
@@ -61,6 +86,9 @@ class ClassRegistration(models.Model):
     session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True)
     shift = models.ForeignKey(Shift, on_delete=models.CASCADE, null=True)
     guide_teacher = models.OneToOneField(GuideTeacher, on_delete=models.CASCADE, null=True)
+    district = models.ForeignKey(District, on_delete=models.CASCADE, null=True)
+    upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE, null=True)
+    union = models.ForeignKey(Union, on_delete=models.CASCADE, null=True)
     date = models.DateField(auto_now_add=True)
 
     class Meta:

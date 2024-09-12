@@ -1,21 +1,30 @@
 $(document).ready(function(){
-    $('.attendance').on('click', function(){
-        var btn_property = $(this);
-        var row = $(this).closest('tr');
-        var class_name = row.find('.cls_name').text();
-        var roll = row.find('.std_roll').text();
-        
-        var api_url = 'http://127.0.0.1:8000/attendance/set-attendance/' + class_name + '/' + roll
-        
+    $('#id_district').change(function(){
+        var url = $('#ClassRegistrationForm').attr("data-upazilla-url");
+        var districtId = $(this).val();
         $.ajax({
-            url: api_url,
-            method: 'get',
-            success: function(data){
-                btn_property.addClass('btn btn-secondary');
+            url: url,
+            data: {
+                'district_id': districtId
             },
-            error: function(err){
-                alert('Already Present');
+            success: function(data) {
+                $("#id_upazilla").html(data);
+            }
+        });
+    });
+
+    $('#id_upazilla').change(function(){
+        var url = $('#ClassRegistrationForm').attr("data-union-url");
+        var upazillaId = $(this).val();
+        $.ajax({
+            url: url,
+            data: {
+                'upazilla_id': upazillaId
+            },
+            success: function(data) {
+                $("#id_union").html(data);
             }
         });
     });
 });
+
