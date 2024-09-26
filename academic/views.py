@@ -106,6 +106,7 @@ def class_list(request):
     context = {'register_class': register_class}
     return render(request, 'academic/class-list.html', context)
 
+<<<<<<< Updated upstream
 def create_guide_teacher(request):
     forms = GuideTeacherForm()
     if request.method == 'POST':
@@ -133,3 +134,18 @@ def load_union(request):
     return render(request, 'academic/union_dropdown_list_options.html', {'unions': unions})
 
 
+=======
+#def create_guide_teacher(request):
+    #forms = GuideTeacherForm()
+    #if request.method == 'POST':
+        #forms = GuideTeacherForm(request.POST)
+        #if forms.is_valid():
+            #forms.save()
+            #return redirect('guide-teacher')
+    #guide_teacher = GuideTeacher.objects.all()
+    #context = {
+        #'forms': forms,
+        #'guide_teacher': guide_teacher
+    #}
+    #return render(request, 'academic/create-guide-teacher.html', context)
+>>>>>>> Stashed changes

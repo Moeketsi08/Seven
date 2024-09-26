@@ -46,10 +46,10 @@ INSTALLED_APPS = [
 
     'administration',
     'teacher',
-    'student',
+    #'student',
     'academic',
-    'employee',
-    'result',
+    #'employee',
+    #'result',
     'address',
     'account',
     'attendance',
@@ -142,3 +142,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 JAZZMIN_SETTINGS = JAZZMIN_SETTINGS
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

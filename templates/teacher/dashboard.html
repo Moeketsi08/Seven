@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+</head>
+<body>
+    <h1>Welcome, {{ request.user.teacher.name }}</h1>
+
+    <h2>Timesheets</h2>
+    <ul>
+        {% for timesheet in timesheets %}
+            <li>{{ timesheet.teacher.name }} - {{ timesheet.session.class_info.subject }} - {{ timesheet.session.class_info.grade }} - {{ timesheet.session.day }} ({{ timesheet.session.start_time }} - {{ timesheet.session.end_time }}) - {{ timesheet.date }} - ATP Hours: {{ timesheet.atp_hours }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Attendance</h2>
+    <ul>
+        {% for attendance in attendances %}
+            <li>{{ attendance.student.first_name }} {{ attendance.student.last_name }} - {{ attendance.class_name.session.class_info.subject }} - {{ attendance.status }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Students</h2>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.first_name }} {{ student.last_name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Sessions</h2>
+    <ul>
+        {% for session in sessions %}
+            <li>{{ session.class_info.subject }} - {{ session.class_info.grade }} - {{ session.day }} ({{ session.start_time }} - {{ session.end_time }})</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -5,15 +5,15 @@
   <div class="card">
     <div class="card-header">Teacher Registration Form</div>
     <div class="card-body">
-      <form action="" method="post" enctype="multipart/form-data" id="TeacherRegistrationForm" data-upazilla-url={% url 'load-upazilla' %}>
-
+      <form action="" method="post" enctype="multipart/form-data" id="TeacherRegistrationForm">
         <div class="card">
-          <div class="card-header">Personal Information</div>
+          <div class="card-header">Teacher Information</div>
           <div class="card-body">
             {% csrf_token %}
             {{ form.as_p }}
           </div>
         </div>
+<<<<<<< Updated upstream
 
         <div class="card">
           <div class="card-header">Address Information</div>
@@ -54,41 +54,10 @@
             {{ experience_form.as_p }}
           </div>
         </div>
+=======
+>>>>>>> Stashed changes
         <button type="submit" class="btn btn-primary">Submit</button>
       </form>
-      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-      <script>
-        $("#id_district").change(function () {
-          var url = $("#TeacherRegistrationForm").attr("data-upazilla-url");
-          var districtId = $(this).val();
-
-          $.ajax({
-            url: url,
-            data: {
-              'district': districtId
-            },
-            success: function (data) {
-              $("#id_upazilla").html(data);
-            }
-          });
-
-        });
-        $("#id_upazilla").change(function () {
-          var url = $("#TeacherRegistrationForm").attr("data-upazilla-url");
-          var upazillaId = $(this).val();
-
-          $.ajax({
-            url: url,
-            data: {
-              'upazilla': upazillaId
-            },
-            success: function (data) {
-              $("#id_union").html(data);
-            }
-          });
-
-        });
-      </script>
     </div>
   </div>
 {% endblock %}

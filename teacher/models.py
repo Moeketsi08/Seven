@@ -1,71 +1,79 @@
 from django.db import models
+<<<<<<< Updated upstream
 from academic.models import Department
 from administration.models import Designation
 from address.models import District, Upazilla, Union
 from django.contrib.auth.models import User
 
+=======
+from django.contrib.auth.models import User
+from academic.models import Department, Center, Session, ClassInfo
+from administration.models import Designation  # Add this line
+>>>>>>> Stashed changes
 
-
-class AddressInfo(models.Model):
-    district = models.ForeignKey(District, on_delete=models.CASCADE, null=True)
-    upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE, null=True)
-    union = models.ForeignKey(Union, on_delete=models.CASCADE, null=True)
-    village = models.TextField()
-
-    def __str__(self):
-        return self.village
-
-class EducationInfo(models.Model):
-    name_of_exam = models.CharField(max_length=100)
-    institute = models.CharField(max_length=255)
-    group = models.CharField(max_length=100)
-    grade = models.CharField(max_length=45)
-    board = models.CharField(max_length=45)
-    passing_year = models.IntegerField()
-
-    def __str__(self):
-        return self.name_of_exam
-
-class TrainingInfo(models.Model):
-    training_name = models.CharField(max_length=100)
-    year = models.IntegerField()
-    duration = models.IntegerField()
-    place = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.training_name
-
-class JobInfo(models.Model):
-    category_choice = (
-        ('bcs', 'BCS'),
-        ('nationalized', 'Nationalized'),
-        ('10% quota', '10% quota'),
-        ('non govt.', 'Non Govt.')
+class Teacher(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher', default=2)
+    name = models.CharField(max_length=100)
+    photo = models.ImageField(upload_to='teacher_photos/', blank=True, null=True)
+    date_of_birth = models.DateField()
+    gender_choice = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+        ('other', 'Other')
     )
-    category = models.CharField(choices=category_choice, max_length=45)
-    joning_date = models.DateField()
-    institute_name = models.CharField(max_length=100)
-    job_designation = models.ForeignKey(Designation, on_delete=models.CASCADE)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    scale = models.IntegerField()
-    grade_of_post = models.CharField(max_length=45)
-    first_time_scale_due_year = models.IntegerField()
-    second_time_scale_due_year = models.IntegerField()
-    promotion_due_year = models.IntegerField()
-    recreation_leave_due_year = models.IntegerField()
-    expected_retirement_year = models.IntegerField()
+    gender = models.CharField(choices=gender_choice, max_length=10)
+    phone_no = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True)
+    address = models.TextField()
+    
+    # Educational background
+    highest_degree = models.CharField(max_length=100)
+    institution = models.CharField(max_length=200)
+    specialization = models.CharField(max_length=100)
+    
+    # Kutlwanong specific fields
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
+    centers = models.ManyToManyField(Center, through='TeacherCenterAssignment')
+    subjects_taught = models.ManyToManyField(ClassInfo)
+    
+    date_joined = models.DateField()
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.institute_name
+        return self.name
 
-class ExperienceInfo(models.Model):
-    institute_name = models.CharField(max_length=100)
-    designation = models.CharField(max_length=45)
-    trainer = models.CharField(max_length=45)
+class TeacherCenterAssignment(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    center = models.ForeignKey(Center, on_delete=models.CASCADE)
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    is_current = models.BooleanField(default=True)
+
+    class Meta:
+        unique_together = ['teacher', 'center', 'start_date']
 
     def __str__(self):
-        return self.institute_name
+        return f"{self.teacher.name} at {self.center.name}"
 
+class TeacherQualification(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='qualifications')
+    qualification_name = models.CharField(max_length=200)
+    institution = models.CharField(max_length=200)
+    year_obtained = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.teacher.name} - {self.qualification_name}"
+
+class TeacherPerformance(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='performances')
+    evaluation_date = models.DateField()
+    rating = models.DecimalField(max_digits=3, decimal_places=2)
+    comments = models.TextField()
+
+    def __str__(self):
+        return f"{self.teacher.name} - {self.evaluation_date}"
+
+<<<<<<< Updated upstream
 class PersonalInfo(models.Model):
     name = models.CharField(max_length=45)
     photo = models.ImageField()
@@ -135,3 +143,15 @@ class Timesheet(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.date} - {self.start_time} to {self.end_time} ({self.total_hours} hours)'
+=======
+class Timesheet(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    session = models.ForeignKey('academic.Session', on_delete=models.CASCADE)
+    date = models.DateField()  # Add this line
+    atp_hours = models.DecimalField(max_digits=4, decimal_places=2)
+    date_submitted = models.DateTimeField(auto_now_add=True)
+    attendance_marked = models.BooleanField(default=False)  # Add this line
+
+    def __str__(self):
+        return f"{self.teacher.name} - {self.session} - {self.date}"
+>>>>>>> Stashed changes

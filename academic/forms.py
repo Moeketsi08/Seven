@@ -63,10 +63,10 @@ class ClassRegistrationForm(forms.ModelForm):
             'Center': forms.Select(attrs={'class': 'form-control'}),
         }
 
-class GuideTeacherForm(forms.ModelForm):
-    class Meta:
-        model = models.GuideTeacher
-        fields = '__all__'
-        widgets = {
-            'name': forms.Select(attrs={'class': 'form-control'}),
-        }
+#class GuideTeacherForm(forms.ModelForm):
+    #class Meta:
+        #model = models.GuideTeacher
+        #fields = '__all__'
+        #widgets = {
+            #'name': forms.Select(attrs={'class': 'form-control'}),
+        #}

@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 from django.shortcuts import render, redirect
 from django.views.generic import FormView
 from django.contrib.auth.forms import AuthenticationForm
@@ -12,68 +13,57 @@ from django.utils import timezone
 
 
 # Create your views here.
+=======
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from . import forms
+from .models import Teacher, TeacherCenterAssignment, TeacherQualification, TeacherPerformance, Timesheet
+from academic.models import Center, ClassInfo, Session, ClassRegistration, Student
+from administration.models import Designation
+from attendance.models import StudentAttendance
+from django.utils import timezone
+>>>>>>> Stashed changes
 
-def load_upazilla(request):
-    district_id = request.GET.get('district')
-    upazilla = Upazilla.objects.filter(district_id=district_id).order_by('name')
+# Remove the import for District, Upazilla, Union as they're not relevant for Kutlwanong
 
-    upazilla_id = request.GET.get('upazilla')
-    union = Union.objects.filter(upazilla_id=upazilla_id).order_by('name')
-    context = {
-        'upazilla': upazilla,
-        'union': union
-    }
-    return render(request, 'others/upazilla_dropdown_list_options.html', context)
+# Create your views here.
 
+def teacher_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('teacher_dashboard')
+        else:
+            return render(request, 'teacher/login.html', {'error': 'Invalid username or password'})
+    else:
+        return render(request, 'teacher/login.html')
 
 def teacher_registration(request):
-    form = forms.PersonalInfoForm()
-    address_forms = forms.AddressInfoForm()
-    education_form = forms.EducationInfoForm()
-    training_form = forms.TrainingInfoForm()
-    job_form = forms.JobInfoForm()
-    experience_form = forms.ExperienceInfoForm()
     if request.method == 'POST':
-        form = forms.PersonalInfoForm(request.POST, request.FILES)
-        address_form = forms.AddressInfoForm(request.POST)
-        education_form = forms.EducationInfoForm(request.POST)
-        training_form = forms.TrainingInfoForm(request.POST)
-        job_form = forms.JobInfoForm(request.POST)
-        experience_form = forms.ExperienceInfoForm(request.POST)
-        if form.is_valid() and address_form.is_valid() and education_form.is_valid() and training_form.is_valid() and job_form.is_valid() and experience_form.is_valid():
-            address_info = address_form.save()
-            education_info = education_form.save()
-            training_info = training_form.save()
-            job_info = job_form.save()
-            experience_info = experience_form.save()
-            personal_info = form.save(commit=False)
-            personal_info.address = address_info
-            personal_info.education = education_info
-            personal_info.training = training_info
-            personal_info.job = job_info
-            personal_info.experience = experience_info
-            personal_info.save()
+        form = forms.TeacherForm(request.POST, request.FILES)
+        if form.is_valid():
+            teacher = form.save()
             return redirect('teacher-list')
-
+    else:
+        form = forms.TeacherForm()
+    
     context = {
         'form': form,
-        'address_forms': address_forms,
-        'education_form': education_form,
-        'training_form': training_form,
-        'job_form': job_form,
-        'experience_form': experience_form
     }
     return render(request, 'teacher/teacher-registration.html', context)
 
-
 def teacher_list(request):
-    teacher = PersonalInfo.objects.filter(is_delete=False)
-    context = {'teacher': teacher}
+    teachers = Teacher.objects.filter(is_active=True)
+    context = {'teachers': teachers}
     return render(request, 'teacher/teacher-list.html', context)
 
 
 def teacher_profile(request, teacher_id):
-    teacher = PersonalInfo.objects.get(id=teacher_id)
+    teacher = Teacher.objects.get(id=teacher_id)
     context = {
         'teacher': teacher
     }
@@ -81,52 +71,32 @@ def teacher_profile(request, teacher_id):
 
 
 def teacher_delete(request, teacher_id):
-    teacher = PersonalInfo.objects.get(id=teacher_id)
-    teacher.is_delete = True
+    teacher = Teacher.objects.get(id=teacher_id)
+    teacher.is_active = False
     teacher.save()
     return redirect('teacher-list')
 
 
 def teacher_edit(request, teacher_id):
-    teacher = PersonalInfo.objects.get(id=teacher_id)
-    form = forms.PersonalInfoForm(instance=teacher)
-    address_forms = forms.AddressInfoForm(instance=teacher.address)
-    education_form = forms.EducationInfoForm(instance=teacher.education)
-    training_form = forms.TrainingInfoForm(instance=teacher.training)
-    job_form = forms.JobInfoForm(instance=teacher.job)
-    experience_form = forms.ExperienceInfoForm(instance=teacher.experience)
+    teacher = Teacher.objects.get(id=teacher_id)
     if request.method == 'POST':
-        form = forms.PersonalInfoForm(request.POST, request.FILES, instance=teacher)
-        address_form = forms.AddressInfoForm(request.POST, instance=teacher.address)
-        education_form = forms.EducationInfoForm(request.POST, instance=teacher.education)
-        training_form = forms.TrainingInfoForm(request.POST, instance=teacher.training)
-        job_form = forms.JobInfoForm(request.POST, instance=teacher.job)
-        experience_form = forms.ExperienceInfoForm(request.POST, instance=teacher.experience)
-        if form.is_valid() and address_form.is_valid() and education_form.is_valid() and training_form.is_valid() and job_form.is_valid() and experience_form.is_valid():
-            address_info = address_form.save()
-            education_info = education_form.save()
-            training_info = training_form.save()
-            job_info = job_form.save()
-            experience_info = experience_form.save()
-            personal_info = form.save(commit=False)
-            personal_info.address = address_info
-            personal_info.education = education_info
-            personal_info.training = training_info
-            personal_info.job = job_info
-            personal_info.experience = experience_info
-            personal_info.save()
+        form = forms.TeacherForm(request.POST, request.FILES, instance=teacher)
+        if form.is_valid():
+            form.save()
             return redirect('teacher-list')
+<<<<<<< Updated upstream
 
+=======
+    else:
+        form = forms.TeacherForm(instance=teacher)
+    
+>>>>>>> Stashed changes
     context = {
         'form': form,
-        'address_form': address_forms,
-        'education_form': education_form,
-        'training_form': training_form,
-        'job_form': job_form,
-        'experience_form': experience_form
     }
     return render(request, 'teacher/teacher-edit.html', context)
 
+<<<<<<< Updated upstream
 
 class TeacherLoginView(FormView):
     template_name = 'teacher/teacher_login.html'  # Update the path
@@ -176,3 +146,47 @@ def teacher_dashboard(request):
     }
 
     return render(request, 'teacher/teacher-dashboard.html', context)
+=======
+@login_required
+def teacher_dashboard(request):
+    teacher = request.user.teacher
+    timesheets = Timesheet.objects.filter(teacher=teacher)
+    attendances = StudentAttendance.objects.filter(class_name__session__class_info__teacher=teacher)
+    students = Student.objects.filter(class_registration__session__class_info__teacher=teacher)
+    
+    # Extract sessions from timesheets
+    sessions = {timesheet.session for timesheet in timesheets}
+
+
+    # Debug information
+    print(f"Timesheets: {timesheets}")
+    print(f"Attendances: {attendances}")
+    print(f"Students: {students}")
+    print(f"Sessions: {sessions}")
+    
+    return render(request, 'teacher/dashboard.html', {
+        'timesheets': timesheets,
+        'attendances': attendances,
+        'students': students,
+        'sessions': sessions,
+    })
+
+@login_required
+def submit_attendance_and_timesheet(request, session_id):
+    teacher = request.user.teacher
+    session = get_object_or_404(Session, id=session_id, class_info__in=teacher.subjects_taught.all())
+    if request.method == 'POST':
+        form = forms.AttendanceTimesheetForm(request.POST)
+        if form.is_valid():
+            timesheet = form.save(commit=False)
+            timesheet.teacher = teacher
+            if not timesheet.session:
+                timesheet.session = session
+            if not timesheet.date:
+                timesheet.date = timezone.now().date()
+            timesheet.save()
+            return redirect('teacher_dashboard')
+    else:
+        form = forms.AttendanceTimesheetForm(initial={'session': session, 'date': timezone.now().date()})
+    return render(request, 'teacher/submit_attendance_and_timesheet.html', {'form': form, 'session': session})
+>>>>>>> Stashed changes
