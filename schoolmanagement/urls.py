@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.auth.views import LogoutView  # Add this import
 from .views import home_page
 from . import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
@@ -33,6 +34,7 @@ urlpatterns = [
     path('attendance/', include('attendance.urls')),
     path('teacher/', include('teacher.urls')),
     # path('advanced_filters/', include('advanced_filters.urls'))
+    path('logout/', LogoutView.as_view(), name='logout'),  # Add this line
 ]
 urlpatterns += staticfiles_urlpatterns()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+
+{% block content %}
+<h2>Submit Attendance and Timesheet</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ timesheet_form.as_p }}
+    {{ attendance_formset.management_form }}
+    {% for form in attendance_formset %}
+        <div>
+            {{ form.student_name.value }}
+            {{ form.student_id }}
+            {{ form.status }}
+        </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

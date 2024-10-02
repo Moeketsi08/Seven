@@ -2,15 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from . import forms
-from .models import Teacher, TeacherCenterAssignment, TeacherQualification, TeacherPerformance, Timesheet
-from academic.models import Center, ClassInfo, Session, ClassRegistration, Student
-from administration.models import Designation
+from .models import Teacher, Timesheet
+from academic.models import Session, Student
 from attendance.models import StudentAttendance
 from django.utils import timezone
-
-# Remove the import for District, Upazilla, Union as they're not relevant for Kutlwanong
-
-# Create your views here.
+from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet
 
 def teacher_login(request):
     if request.method == 'POST':
@@ -25,56 +21,6 @@ def teacher_login(request):
     else:
         return render(request, 'teacher/login.html')
 
-def teacher_registration(request):
-    if request.method == 'POST':
-        form = forms.TeacherForm(request.POST, request.FILES)
-        if form.is_valid():
-            teacher = form.save()
-            return redirect('teacher-list')
-    else:
-        form = forms.TeacherForm()
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'teacher/teacher-registration.html', context)
-
-def teacher_list(request):
-    teachers = Teacher.objects.filter(is_active=True)
-    context = {'teachers': teachers}
-    return render(request, 'teacher/teacher-list.html', context)
-
-
-def teacher_profile(request, teacher_id):
-    teacher = Teacher.objects.get(id=teacher_id)
-    context = {
-        'teacher': teacher
-    }
-    return render(request, 'teacher/teacher-profile.html', context)
-
-
-def teacher_delete(request, teacher_id):
-    teacher = Teacher.objects.get(id=teacher_id)
-    teacher.is_active = False
-    teacher.save()
-    return redirect('teacher-list')
-
-
-def teacher_edit(request, teacher_id):
-    teacher = Teacher.objects.get(id=teacher_id)
-    if request.method == 'POST':
-        form = forms.TeacherForm(request.POST, request.FILES, instance=teacher)
-        if form.is_valid():
-            form.save() 
-            return redirect('teacher-list')
-    else:
-        form = forms.TeacherForm(instance=teacher)
-    
-    context = {
-        'form': form,
-    }
-    return render(request, 'teacher/teacher-edit.html', context)
-
 @login_required
 def teacher_dashboard(request):
     teacher = request.user.teacher
@@ -85,13 +31,6 @@ def teacher_dashboard(request):
     # Extract sessions from timesheets
     sessions = {timesheet.session for timesheet in timesheets}
 
-
-    # Debug information
-    print(f"Timesheets: {timesheets}")
-    print(f"Attendances: {attendances}")
-    print(f"Students: {students}")
-    print(f"Sessions: {sessions}")
-    
     return render(request, 'teacher/dashboard.html', {
         'timesheets': timesheets,
         'attendances': attendances,
@@ -103,17 +42,46 @@ def teacher_dashboard(request):
 def submit_attendance_and_timesheet(request, session_id):
     teacher = request.user.teacher
     session = get_object_or_404(Session, id=session_id, class_info__in=teacher.subjects_taught.all())
+    students = Student.objects.filter(class_registration__session=session)
+
     if request.method == 'POST':
-        form = forms.AttendanceTimesheetForm(request.POST)
-        if form.is_valid():
-            timesheet = form.save(commit=False)
+        timesheet_form = AttendanceTimesheetForm(request.POST)
+        attendance_formset = StudentAttendanceFormSet(request.POST)
+        
+        if timesheet_form.is_valid() and attendance_formset.is_valid():
+            timesheet = timesheet_form.save(commit=False)
             timesheet.teacher = teacher
-            if not timesheet.session:
-                timesheet.session = session
-            if not timesheet.date:
-                timesheet.date = timezone.now().date()
+            timesheet.session = session
             timesheet.save()
+
+            for form in attendance_formset:
+                student_id = form.cleaned_data['student_id']
+                status = form.cleaned_data['status']
+                StudentAttendance.objects.create(
+                    student_id=student_id,
+                    class_name=session.class_info,
+                    date=timesheet.date,
+                    status=status
+                )
+
             return redirect('teacher_dashboard')
     else:
-        form = forms.AttendanceTimesheetForm(initial={'session': session, 'date': timezone.now().date()})
-    return render(request, 'teacher/submit_attendance_and_timesheet.html', {'form': form, 'session': session})
+        timesheet_form = AttendanceTimesheetForm(initial={'date': timezone.now().date()})
+        attendance_formset = StudentAttendanceFormSet(initial=[
+            {'student_id': student.id, 'student_name': f"{student.first_name} {student.last_name}"}
+            for student in students
+        ])
+
+    return render(request, 'teacher/submit_attendance_and_timesheet.html', {
+        'timesheet_form': timesheet_form,
+        'attendance_formset': attendance_formset,
+        'session': session
+    })
+
+@login_required
+def teacher_profile(request):
+    teacher = request.user.teacher
+    context = {
+        'teacher': teacher
+    }
+    return render(request, 'teacher/teacher-profile.html', context)

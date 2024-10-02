@@ -1,7 +1,8 @@
 from django import forms
+from django.forms import formset_factory
 from .models import Teacher, TeacherCenterAssignment, TeacherQualification, Timesheet  # Add this import at the top of the file
 from academic.models import Department
-from .models import Timesheet
+#from .models import Timesheet
 
 
 class TeacherForm(forms.ModelForm):
@@ -50,12 +51,23 @@ class TeacherQualificationForm(forms.ModelForm):
 class AttendanceTimesheetForm(forms.ModelForm):
     class Meta:
         model = Timesheet
-        fields = ['session', 'date', 'atp_hours', 'attendance_marked']
+        fields = ['date', 'atp_hours']
         widgets = {
             'date': forms.DateInput(attrs={'type': 'date'}),
             'atp_hours': forms.NumberInput(attrs={'step': '0.5'}),
-            'attendance_marked': forms.CheckboxInput(),
         }
+
+class StudentAttendanceForm(forms.Form):
+    ATTENDANCE_CHOICES = [
+        ('present', 'Present'),
+        ('absent', 'Absent'),
+        ('late', 'Late'),
+    ]
+    student_id = forms.IntegerField(widget=forms.HiddenInput())
+    student_name = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+    status = forms.ChoiceField(choices=ATTENDANCE_CHOICES, widget=forms.RadioSelect)
+
+StudentAttendanceFormSet = formset_factory(StudentAttendanceForm, extra=0)
 
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
