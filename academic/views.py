@@ -4,7 +4,7 @@ from .forms import *
 from .models import *
 from academic.models import ClassRegistration
 from .forms import ClassRegistrationForm
-from .models import District, Upazilla, Union
+#from .models import District, Upazilla, Union
 
 
 
@@ -106,35 +106,6 @@ def class_list(request):
     context = {'register_class': register_class}
     return render(request, 'academic/class-list.html', context)
 
-<<<<<<< Updated upstream
-def create_guide_teacher(request):
-    forms = GuideTeacherForm()
-    if request.method == 'POST':
-        forms = GuideTeacherForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-            return redirect('guide-teacher')
-    guide_teacher = GuideTeacher.objects.all()
-    context = {
-        'forms': forms,
-        'guide_teacher': guide_teacher
-    }
-    return render(request, 'academic/create-guide-teacher.html', context)
-
-# AJAX view for loading Upazillas based on District
-def load_upazilla(request):
-    district_id = request.GET.get('district')
-    upazillas = Upazilla.objects.filter(district_id=district_id).order_by('name')
-    return render(request, 'academic/upazilla_dropdown_list_options.html', {'upazillas': upazillas})
-
-# AJAX view for loading Unions based on Upazilla
-def load_union(request):
-    upazilla_id = request.GET.get('upazilla')
-    unions = Union.objects.filter(upazilla_id=upazilla_id).order_by('name')
-    return render(request, 'academic/union_dropdown_list_options.html', {'unions': unions})
-
-
-=======
 #def create_guide_teacher(request):
     #forms = GuideTeacherForm()
     #if request.method == 'POST':
@@ -148,4 +119,3 @@ def load_union(request):
         #'guide_teacher': guide_teacher
     #}
     #return render(request, 'academic/create-guide-teacher.html', context)
->>>>>>> Stashed changes

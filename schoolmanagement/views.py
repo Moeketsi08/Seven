@@ -7,7 +7,7 @@ import academic
 
 @login_required(login_url='login')
 def home_page(request):
-    total_student = student.models.AcademicInfo.objects.count()
+    total_student = student.models.AcademicInfo.objects.count() # Needs to be accessed differently from the student in academic appp
     total_teacher = teacher.models.PersonalInfo.objects.count()
     #total_employee = employee.models.PersonalInfo.objects.count()
     total_class = academic.models.ClassRegistration.objects.count()

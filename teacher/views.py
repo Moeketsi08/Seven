@@ -1,19 +1,3 @@
-<<<<<<< Updated upstream
-from django.shortcuts import render, redirect
-from django.views.generic import FormView
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
-from . import forms
-from .models import District, Upazilla, Union, PersonalInfo
-from .forms import TimesheetForm  # Import the TimesheetForm
-from .models import Timesheet
-from django.utils import timezone
-
-
-
-
-# Create your views here.
-=======
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
@@ -23,7 +7,6 @@ from academic.models import Center, ClassInfo, Session, ClassRegistration, Stude
 from administration.models import Designation
 from attendance.models import StudentAttendance
 from django.utils import timezone
->>>>>>> Stashed changes
 
 # Remove the import for District, Upazilla, Union as they're not relevant for Kutlwanong
 
@@ -82,71 +65,16 @@ def teacher_edit(request, teacher_id):
     if request.method == 'POST':
         form = forms.TeacherForm(request.POST, request.FILES, instance=teacher)
         if form.is_valid():
-            form.save()
+            form.save() 
             return redirect('teacher-list')
-<<<<<<< Updated upstream
-
-=======
     else:
         form = forms.TeacherForm(instance=teacher)
     
->>>>>>> Stashed changes
     context = {
         'form': form,
     }
     return render(request, 'teacher/teacher-edit.html', context)
 
-<<<<<<< Updated upstream
-
-class TeacherLoginView(FormView):
-    template_name = 'teacher/teacher_login.html'  # Update the path
-    form_class = AuthenticationForm
-
-    def form_valid(self, form):
-        user = form.get_user()
-        login(self.request, user)
-        return super().form_valid(form)
-
-    def get_success_url(self):
-        return '/teacher/dashboard/'  # Redirect to the teacher's dashboard
-
-
-def teacher_dashboard(request):
-    # Logic for the teacher's dashboard
-    return render(request, 'teacher/teacher-dashboard.html')
-
-def teacher_dashboard(request):
-    if request.method == 'POST':
-        form = TimesheetForm(request.POST)
-        if form.is_valid():
-            # Calculate total hours
-            start_time = form.cleaned_data['start_time']
-            end_time = form.cleaned_data['end_time']
-            total_hours = (end_time - start_time).seconds / 3600  # Convert seconds to hours
-
-            # Create and save the new Timesheet record
-            Timesheet.objects.create(
-                user=request.user,
-                date=form.cleaned_data['date'],
-                start_time=start_time,
-                end_time=end_time,
-                total_hours=total_hours,
-            )
-            return redirect('teacher_dashboard')  # Redirect to the same page to avoid resubmission
-
-    else:
-        form = TimesheetForm()
-
-    # Fetch existing timesheets for the logged-in user
-    timesheets = Timesheet.objects.filter(user=request.user).order_by('-date')
-
-    context = {
-        'timesheet_form': form,
-        'timesheets': timesheets
-    }
-
-    return render(request, 'teacher/teacher-dashboard.html', context)
-=======
 @login_required
 def teacher_dashboard(request):
     teacher = request.user.teacher
@@ -189,4 +117,3 @@ def submit_attendance_and_timesheet(request, session_id):
     else:
         form = forms.AttendanceTimesheetForm(initial={'session': session, 'date': timezone.now().date()})
     return render(request, 'teacher/submit_attendance_and_timesheet.html', {'form': form, 'session': session})
->>>>>>> Stashed changes

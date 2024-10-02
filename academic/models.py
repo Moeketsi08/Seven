@@ -70,63 +70,22 @@ class Center(models.Model):
     address = models.TextField(default='Default Address')
 
     def __str__(self):
-<<<<<<< Updated upstream
-        return str(self.name)
-    
-    
-class District(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    date = models.DateField(auto_now_add=True)
+        return self.name
 
     def __str__(self):
         return self.name
 
 
-class Upazilla(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    district = models.ForeignKey(District, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
-=======
-        return self.name
->>>>>>> Stashed changes
-
-    def __str__(self):
-        return self.name
-
-
-class Union(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+#class Union(models.Model):
+    #name = models.CharField(max_length=100, unique=True)
+    #upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE)
+    #date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.name
 class ClassRegistration(models.Model):
-<<<<<<< Updated upstream
-    name = models.CharField(max_length=10, unique=True)
-    department_select = (
-        ('general', 'General'),
-        ('science', 'Science'),
-        ('business', 'Business'),
-        ('humanities', 'Humanities'),
-        ('Maths', 'Maths'),
-        ('English', 'English'),
-        ('Physics', 'Physics')
-    )
-    department = models.CharField(choices=department_select, max_length=15)
-    class_name = models.ForeignKey(ClassInfo, on_delete=models.CASCADE, null=True)
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, null=True)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True)
-    shift = models.ForeignKey(Shift, on_delete=models.CASCADE, null=True)
-    guide_teacher = models.OneToOneField(GuideTeacher, on_delete=models.CASCADE, null=True)
-    district = models.ForeignKey(District, on_delete=models.CASCADE, null=True)
-    upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE, null=True)
-    union = models.ForeignKey(Union, on_delete=models.CASCADE, null=True)
-    date = models.DateField(auto_now_add=True)
-=======
     center = models.ForeignKey(Center, on_delete=models.CASCADE, null=True, blank=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True)
->>>>>>> Stashed changes
 
     class Meta:
         unique_together = ['center', 'session']

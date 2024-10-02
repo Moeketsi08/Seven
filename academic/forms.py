@@ -1,7 +1,6 @@
 from django import forms
 from . import models
 from academic.models import ClassRegistration
-from .models import ClassRegistration, District, Upazilla, Union
 
 
 
