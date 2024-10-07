@@ -128,8 +128,8 @@
           <input type="submit" value="Login" class="btn-login" />
         </form>
         <div class="link-section">
-          <a href="/teacher/login">Teacher Login</a>
-          {% comment %} <a href="/students/login">Student Login</a> {% endcomment %}
+          <a href="{% static '../teacher/teacher_login' %}">Teacher Login</a>
+          <a href="{% static '../administration/center_login' %}">Center Manager Login</a>
         </div>
       </div>
     </div>

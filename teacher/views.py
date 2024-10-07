@@ -6,9 +6,15 @@ from .models import Teacher, Timesheet
 from academic.models import Session, Student
 from attendance.models import StudentAttendance
 from django.utils import timezone
-from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet, TimesheetForm, TeacherForm
+from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet, TimesheetForm
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import FormView
+from django.urls import reverse
 
-def teacher_login(request):
+""" def teacher_login(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -18,13 +24,44 @@ def teacher_login(request):
             return redirect('teacher-dashboard')
         else:
             return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
+            return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
     else:
-        return render(request, 'teacher/teacher_login.html')
+        return render(request, 'teacher/teacher_login.html') """
 
 @login_required
 def teacher_dashboard(request):
-    teacher = request.user.teacher
-    timesheets = Timesheet.objects.filter(teacher=teacher)
+    # Logic for the teacher's dashboard
+    return render(request, 'teacher/teacher-dashboard.html')
+
+@login_required
+def teacher_dashboard(request):
+    # Try to retrieve the Teacher instance related to the user
+    teacher = get_object_or_404(Teacher, user=request.user)
+    request.teacher = teacher
+
+    if request.method == 'POST':
+        form = TimesheetForm(request.POST)
+        if form.is_valid():
+            # Calculate total hours
+            start_time = form.cleaned_data['start_time']
+            end_time = form.cleaned_data['end_time']
+            total_hours = (end_time - start_time).seconds / 3600  # Convert seconds to hours
+
+            # Create and save the new Timesheet record
+            Timesheet.objects.create(
+                teacher=teacher,
+                date=form.cleaned_data['date'],
+                atp_hours=total_hours,  # Assuming atp_hours corresponds to total_hours
+                attendance_marked=False  # Set this as per your logic
+            )
+            messages.success(request, 'Timesheet saved successfully.')
+            return redirect('teacher_dashboard')  # Redirect to avoid resubmission
+
+    else:
+        form = TimesheetForm()
+
+    # Fetch existing timesheets for the logged-in user
+    timesheets = Timesheet.objects.filter(teacher=teacher).order_by('-date')
     attendances = StudentAttendance.objects.filter(class_name__session__class_info__teacher=teacher)
     students = Student.objects.filter(class_registration__session__class_info__teacher=teacher)
     
@@ -32,6 +69,7 @@ def teacher_dashboard(request):
     sessions = {timesheet.session for timesheet in timesheets}
 
     return render(request, 'teacher/teacher-dashboard.html', {
+        'timesheet_form': form,
         'timesheets': timesheets,
         'attendances': attendances,
         'students': students,
@@ -85,3 +123,22 @@ def teacher_profile(request):
         'teacher': teacher
     }
     return render(request, 'teacher/teacher-profile.html', context)
+
+
+class TeacherLoginView(SuccessMessageMixin,FormView):
+    template_name = 'teacher/teacher_login.html'  # Update the path
+    form_class = AuthenticationForm
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        messages.success(self.request, f'Welcome  Teacher')
+        #print("Form data:", self.request.POST)  # Debug line
+        return super().form_valid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid credentials. Please try again.')
+
+        # Re-render the form with the error messages
+        return redirect('/teacher/teacher_login')
+    def get_success_url(self):
+        return reverse('teacher_dashboard')  # Redirect to the teacher's dashboard

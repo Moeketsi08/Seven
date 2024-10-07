@@ -2,11 +2,15 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
-
+from django.contrib.messages.views import SuccessMessageMixin
 from .models import Designation
 from teacher.models import Teacher, Department
 from .forms import *
 from teacher.forms import TeacherForm
+from django.views.generic import FormView
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from django.urls import reverse
 
 def is_admin(user):
     return user.is_staff or user.is_superuser
@@ -28,6 +32,51 @@ def admin_login(request):
 def admin_logout(request):
     logout(request)
     return redirect('login')
+
+def center_login(request):
+    forms = AdminLoginForm()
+    if request.method == 'POST':
+        forms = AdminLoginForm(request.POST)
+        if forms.is_valid():
+            username = forms.cleaned_data['username']
+            password = forms.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user:
+                login(request, user)
+                return redirect('home')
+    context = {'forms': forms}
+    return render(request, 'administration/center_login.html', context)
+
+class CenterLoginView(SuccessMessageMixin,FormView):
+    template_name = 'administration/center_login.html'  # Update the path
+    form_class = AuthenticationForm
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        messages.success(self.request, f'Welcome  Center Manager')
+        #print("Form data:", self.request.POST)  # Debug line
+        return super().form_valid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid credentials. Please try again.')
+
+        # Re-render the form with the error messages
+        return redirect('/administration/center_login')
+    def get_success_url(self):
+        return reverse('center_dashboard')  # Redirect to the Center manager's dashboard
+
+
+def center_logout(request):
+    logout(request)
+    return redirect('login')
+
+@login_required
+def center_dashboard(request):
+    # Logic for the center's dashboard
+    return render(request, 'administration/center_dashboard.html')
+    
+
+
 
 @login_required
 @user_passes_test(is_admin)

@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Submit Attendance and Timesheet</h2>
-<form method="post">
+<form action="{% url 'submit_attendance_and_timesheet' session_id=session.id %}" method="post">
     {% csrf_token %}
     {{ timesheet_form.as_p }}
     {{ attendance_formset.management_form }}
