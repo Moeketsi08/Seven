@@ -48,10 +48,10 @@ INSTALLED_APPS = [
 
     'administration',
     'teacher',
-    #'student',
+    'student',
     'academic',
-    #'employee',
-    #'result',
+    'employee',
+    'result',
     'address',
     'account',
     'attendance',

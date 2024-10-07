@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from . import forms
+
 from .models import Teacher, Timesheet
 from academic.models import Session, Student
 from attendance.models import StudentAttendance
 from django.utils import timezone
-from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet
+from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet, TimesheetForm, TeacherForm
 
 def teacher_login(request):
     if request.method == 'POST':
@@ -15,11 +15,11 @@ def teacher_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('teacher_dashboard')
+            return redirect('teacher-dashboard')
         else:
-            return render(request, 'teacher/login.html', {'error': 'Invalid username or password'})
+            return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
     else:
-        return render(request, 'teacher/login.html')
+        return render(request, 'teacher/teacher_login.html')
 
 @login_required
 def teacher_dashboard(request):
@@ -31,7 +31,7 @@ def teacher_dashboard(request):
     # Extract sessions from timesheets
     sessions = {timesheet.session for timesheet in timesheets}
 
-    return render(request, 'teacher/dashboard.html', {
+    return render(request, 'teacher/teacher-dashboard.html', {
         'timesheets': timesheets,
         'attendances': attendances,
         'students': students,
