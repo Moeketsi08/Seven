@@ -11,18 +11,20 @@ class Department(models.Model):
 class ClassInfo(models.Model):
     SUBJECT_CHOICES = [
         ('Mathematics', 'Mathematics'),
+        ('Mathematics Exam', 'Mathematics Examination'),
         ('Physical Science', 'Physical Science'),
+        ('Physical Science Exam', 'Physical Science Examination')
     ]
     GRADE_CHOICES = [
         ('10', 'Grade 10'),
         ('11', 'Grade 11'),
         ('12', 'Grade 12'),
     ]
-    subject = models.CharField(max_length=20, choices=SUBJECT_CHOICES, default='Mathematics')  # Added default value
+    subject = models.CharField(max_length=21, choices=SUBJECT_CHOICES, default='Mathematics')  # Added default value
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, default='10')  # Already had default value
 
-    class Meta:
-        unique_together = ['subject', 'grade']
+    # class Meta:
+    #     unique_together = ['subject', 'grade']
 
     def __str__(self):
         return f"{self.get_subject_display()} - Grade {self.grade}"
@@ -38,8 +40,13 @@ class Session(models.Model):
     DAY_CHOICES = [
         ('SAT', 'Saturday'),
         ('SUN', 'Sunday'),
+        ('MON', 'Monday'),
+        ('TUE', 'Tuesday'),
+        ('WED', 'Wednesday'),
+        ('THUR', 'Thursday'),
+        ('FRI', 'Friday'),
     ]
-    day = models.CharField(max_length=3, choices=DAY_CHOICES, default='SAT')
+    day = models.CharField(max_length=4, choices=DAY_CHOICES, default='SAT')
     start_time = models.TimeField(default='09:00')
     end_time = models.TimeField(default='17:00')
     class_info = models.ForeignKey(ClassInfo, on_delete=models.CASCADE, default=1)  # Add this line
