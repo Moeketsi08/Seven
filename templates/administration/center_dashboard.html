@@ -1,4 +1,4 @@
-{% extends 'base/base.html' %}
+{% extends 'base/base2.html' %}
 {% load static %}
 {% block title %} Data Management System {% endblock %}
 {% block content %}
@@ -106,8 +106,8 @@
 </head>
 <body>
     <div class="container">
-        <h2 class="text-xl text-blue-500">Hi Admin</h2>
-        <p class="text-slate-600 font-light">Welcome to your Admin Dashboard</p>
+        <h2 class="text-xl text-blue-500">Hi Center Manager</h2>
+        <p class="text-slate-600 font-light">Welcome to your Center's Dashboard</p>
         
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-1 py-1">
             <!-- Main Content -->
@@ -120,7 +120,7 @@
             <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="card-title">Total Students</div>
+                        <div class="card-title">Total Teachers</div>
                         <div class="btn-group">
                             <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-settings"></i>
@@ -139,7 +139,7 @@
                     <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                         <canvas id="donutChartTotalStudents" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                            Total Students 100
+                            Total Teachers 100
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
             <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="card-title">Student Active Status</div>
+                        <div class="card-title">Number of Classes</div>
                         <div class="btn-group">
                             <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-settings"></i>
@@ -215,7 +215,7 @@
             <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="card-title">Learner Attendance</div>
+                        <div class="card-title">Attendance Percentage</div>
                         <div class="btn-group">
                             <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-settings"></i>
@@ -247,7 +247,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-2">
                 <!-- Bar Chart Section -->
                 <div class="col-span-1 lg:col-span-3 bg-white p-4 h-80 rounded-lg shadow">
-                    <h3 class="text-base text-slate-600 mt-4">Learner Enrollment</h3>
+                    <h3 class="text-base text-slate-600 mt-4">Add Teachers</h3>
                     <p> </p>
                     <div class="min-h-full w-full mt-5">
                                   <!-- Progress Circles Section -->

@@ -25,3 +25,14 @@ class AddDesignationForm(forms.ModelForm):
             'physical_address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'documents': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
+
+""" class AllocateTeacherForm(forms.ModelForm):
+    class Meta:
+        model = models.Designation
+        fields = ['designation_type','center', 'teacher', 'session']
+        widgets = {
+            'designation_type': forms.Select(attrs={'class': 'form-control'}),
+            'center': forms.Select(attrs={'class': 'form-control'}),
+            'teacher': forms.Select(attrs={'class': 'form-control'}),
+            'session': forms.Select(attrs={'class': 'form-control'}),
+        }  """       
