@@ -88,6 +88,27 @@
         </li>
         <!-- Attendence Report Section END -->
 
+        <!-- Student Section START -->
+            <li class="nav-item nav-dropdown">
+             <a class="nav-link nav-dropdown-toggle" href="#">
+                 <i class="nav-icon icon-puzzle"></i>Learner</a>
+             <ul class="nav-dropdown-items">
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'student-registration' %}">
+                         <i class="fa fa-plus-circle"></i>Add Learner to class</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'student-list' %}">
+                         <i class="fa fa-list"></i>Learner List</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'student-search' %}">
+                         <i class="fa fa-search-plus"></i>Learner Search</a>
+                 </li>
+             </ul>
+           </li>
+           <!-- Student Section END -->
+
        <!-- Holiday Section START -->
       <!-- <li class="nav-item nav-dropdown">
         <a class="nav-link nav-dropdown-toggle" href="#">

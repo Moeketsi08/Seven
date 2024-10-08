@@ -1,11 +1,14 @@
 from django.db import models
 import random
+from django.utils.timezone import now
 
 from academic.models import ClassInfo, ClassRegistration
 from address.models import District, Upazilla, Union
+from teacher.models import Teacher
 
 class PersonalInfo(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=45)
+    surname = models.CharField(max_length=45)
     photo = models.ImageField(upload_to='student-photos/')
     blood_group_choice = (
         ('a+', 'A+'),
@@ -20,9 +23,9 @@ class PersonalInfo(models.Model):
     blood_group = models.CharField(choices=blood_group_choice, max_length=5)
     date_of_birth = models.DateField()
     gender_choice = (
-        ('male', 'Male'),
-        ('female', 'Female'),
-        ('other', 'Other')
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other')
     )
     gender = models.CharField(choices=gender_choice, max_length=10)
     phone_no = models.CharField(max_length=11)
@@ -37,10 +40,38 @@ class PersonalInfo(models.Model):
     )
     religion = models.CharField(choices=religion_choice, max_length=45)
     nationality_choice = (
-        ('South African', 'South African'),
-        ('Zimbabwe', 'Zimbabwe')
+        ('SA', 'South African'),
+        ('ZW', 'Zimbabwe')
     )
     nationality = models.CharField(choices=nationality_choice, max_length=45)
+    race_choices = (
+        ('B', 'Black African'),
+        ('W', 'White'),
+        ('C', 'Coloured'),
+        ('A', 'Asian/Indian'),
+        ('O', 'Other')
+    )
+    race = models.CharField(choices=race_choices, max_length=45)
+    home_language_choices = (
+        ('english', 'English'),
+        ('zulu', 'Zulu'),
+        ('xhosa', 'Xhosa'),
+        ('afrikaans', 'Afrikaans'),
+        ('pedi', 'Pedi'),
+        ('tswana', 'Tswana'),
+        ('sotho', 'Sotho'),
+        ('tsonga', 'Tsonga'),
+        ('swati', 'Swati'),
+        ('venda', 'Venda'),
+        ('ndebele', 'Ndebele'),
+        ('other', 'Other')        
+    )
+    home_language = models.CharField(choices=home_language_choices, max_length=45)
+    disability_choices = (
+        ('Y', 'Yes'),
+        ('N', 'No')
+    )
+    disability = models.CharField(choices=disability_choices, max_length=10)
 
     def __str__(self):
         return self.name
@@ -56,44 +87,9 @@ class StudentAddressInfo(models.Model):
 
 
 class GuardianInfo(models.Model):
-    father_name = models.CharField(max_length=100)
-    father_phone_no = models.CharField(max_length=11)
-    father_occupation_choice = (
-        ('Agriculture', 'Agriculture'),
-        ('Banker', 'Banker'),
-        ('Business', 'Business'),
-        ('Doctor', 'Doctor'),
-        ('Farmer', 'Farmer'),
-        ('Fisherman', 'Fisherman'),
-        ('Public Service', 'Public Service'),
-        ('Private Service', 'Private Service'),
-        ('Shopkeeper', 'Shopkeeper'),
-        ('Driver', 'Driver'),
-        ('Worker', 'Worker'),
-        ('N/A', 'N/A'),
-    )
-    father_occupation = models.CharField(choices=father_occupation_choice, max_length=45)
-    father_yearly_income = models.IntegerField()
-    mother_name = models.CharField(max_length=100)
-    mother_phone_no = models.CharField(max_length=11)
-    mother_occupation_choice = (
-        ('Agriculture', 'Agriculture'),
-        ('Banker', 'Banker'),
-        ('Business', 'Business'),
-        ('Doctor', 'Doctor'),
-        ('Farmer', 'Farmer'),
-        ('Fisherman', 'Fisherman'),
-        ('Public Service', 'Public Service'),
-        ('Private Service', 'Private Service'),
-        ('Shopkeeper', 'Shopkeeper'),
-        ('Driver', 'Driver'),
-        ('Worker', 'Worker'),
-        ('N/A', 'N/A'),
-    )
-    mother_occupation = models.CharField(choices=mother_occupation_choice, max_length=45)
-    guardian_name = models.CharField(max_length=100)
-    guardian_phone_no = models.CharField(max_length=11)
-    guardian_email = models.EmailField(blank=True, null=True)
+    student = models.ForeignKey(PersonalInfo, on_delete=models.CASCADE)
+    guardian_name = models.CharField(max_length=45)
+    guardian_surname = models.CharField(max_length=45)
     relationship_choice = (
         ('Father', 'Father'),
         ('Mother', 'Mother'),
@@ -102,11 +98,16 @@ class GuardianInfo(models.Model):
         ('Aunt', 'Aunt'),
     )
     relationship_with_student = models.CharField(choices=relationship_choice, max_length=45)
-
+    guardian_phone_no = models.CharField(max_length=11)
+    guardian_email = models.EmailField(blank=True, null=True)
+    place_of_work =models.CharField(max_length=100)
+    guardian_work_no = models.CharField(max_length=11)
+    
     def __str__(self):
         return self.guardian_name
 
 class EmergencyContactDetails(models.Model):
+    student = models.ForeignKey(PersonalInfo, on_delete=models.CASCADE)
     emergency_guardian_name = models.CharField(max_length=100)
     address = models.TextField()
     relationship_choice = (
@@ -161,22 +162,43 @@ class AcademicInfo(models.Model):
     emergency_contact_info = models.ForeignKey(EmergencyContactDetails, on_delete=models.CASCADE, null=True)
     previous_academic_info = models.ForeignKey(PreviousAcademicInfo, on_delete=models.CASCADE, null=True)
     previous_academic_certificate = models.ForeignKey(PreviousAcademicCertificate, on_delete=models.CASCADE, null=True)
+    joined_programme = models.DateField(auto_now_add=True, null=True)
     date = models.DateField(auto_now_add=True)
     is_delete = models.BooleanField(default=False)
+    learner_provice_choice = (
+        ('EC', 'Eastern Cape'),
+        ('GP', 'Gauteng'),
+        ('KZN', 'KwaZulu-Natal'),
+        ('LP', 'Limpopo'),
+        ('MP', 'Mpumalanga'),
+        ('NC', 'Northern Cape'),
+        ('NW', 'North West'),
+        ('WC', 'Western Cape'),
+        ('FS', 'Free State')
+    )
+    learner_provice = models.CharField(choices=learner_provice_choice, max_length=50, null=True)
 
     def __str__(self):
         return str(self.registration_no)
 
 class EnrolledStudent(models.Model):
     class_name = models.ForeignKey(ClassRegistration, on_delete=models.CASCADE)
-    student = models.OneToOneField(AcademicInfo, on_delete=models.CASCADE)
-    roll = models.IntegerField()
+    student_record = models.OneToOneField(AcademicInfo, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['class_name', 'roll']
+        unique_together = ['class_name', 'student_record']
     
     def __str__(self):
         return str(self.roll)
+
+
+class Student(models.Model):
+    student = models.ForeignKey(EnrolledStudent, on_delete=models.CASCADE)
+    class_registration = models.ForeignKey(ClassRegistration, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='students')
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
 
 

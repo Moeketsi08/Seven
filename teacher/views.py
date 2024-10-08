@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 
 from .models import Teacher, Timesheet
-from academic.models import Session, Student, ClassInfo
+from academic.models import Session, ClassInfo
+from student.models import Student, AcademicInfo
 from attendance.models import StudentAttendance
 from django.utils import timezone
 from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet, TimesheetForm
+from student.forms import StudentSearchForm
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet
@@ -138,7 +140,46 @@ def teacher_profile(request):
     }
     return render(request, 'teacher/teacher-profile.html', context)
 
+def student_list(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
+    students = teacher.students.all()
+    context = {'students': students}
+    return render(request, 'teacher/student-list.html', context)
 
+def student_search(request):
+    forms = StudentSearchForm()
+    cls_name = request.GET.get('class_info', None)
+    reg_no = request.GET.get('registration_no', None)
+    if cls_name:
+        student = AcademicInfo.objects.filter(class_info=cls_name)
+        if reg_no:
+            student = student.filter(registration_no=reg_no)
+        context = {
+            'forms': forms,
+            'student': student
+        }
+        return render(request, 'teacher/student-search.html', context)
+    else:
+        student = AcademicInfo.objects.filter(registration_no=reg_no)
+        context = {
+            'forms': forms,
+            'student': student
+        }
+        return render(request, 'teacher/student-search.html', context)
+
+# def create_class(request):
+#     form = ClassRegistrationForm()
+#     districts = District.objects.all()  # Add this line to get the districts
+#     if request.method == 'POST':
+#         form = ClassRegistrationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('class-list')
+#     context = {
+#         'form': form,
+#         'districts': districts  # Pass the districts to the template
+#     }
+#     return render(request, 'teacher/create-class.html', context)
 class TeacherLoginView(SuccessMessageMixin,FormView):
     template_name = 'teacher/teacher_login.html'  # Update the path
     form_class = AuthenticationForm

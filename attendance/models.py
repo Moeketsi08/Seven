@@ -1,5 +1,6 @@
 from django.db import models
-from academic.models import ClassRegistration, Student
+from academic.models import ClassRegistration
+from student.models import Student
 
 class AttendanceManager(models.Manager):
     def create_attendance(self, std_class, std_roll):

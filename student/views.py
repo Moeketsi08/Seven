@@ -59,11 +59,6 @@ def student_registration(request):
     }
     return render(request, 'student/student-registration.html', context)
 
-def student_list(request):
-    student = AcademicInfo.objects.filter(is_delete=False).order_by('-id')
-    context = {'student': student}
-    return render(request, 'student/student-list.html', context)
-
 def student_profile(request, reg_no):
     student = AcademicInfo.objects.get(registration_no=reg_no)
     context = {
@@ -123,31 +118,6 @@ def student_delete(request, reg_no):
     student.save()
     return redirect('student-list')
 
-def student_search(request):
-    forms = StudentSearchForm()
-    cls_name = request.GET.get('class_info', None)
-    reg_no = request.GET.get('registration_no', None)
-    if cls_name:
-        student = AcademicInfo.objects.filter(class_info=cls_name)
-        if reg_no:
-            student = student.filter(registration_no=reg_no)
-        context = {
-            'forms': forms,
-            'student': student
-        }
-        return render(request, 'student/student-search.html', context)
-    else:
-        student = AcademicInfo.objects.filter(registration_no=reg_no)
-        context = {
-            'forms': forms,
-            'student': student
-        }
-        return render(request, 'student/student-search.html', context)
-    context = {
-            'forms': forms,
-            'student': student
-        }
-    return render(request, 'student/student-search.html', context)
 
 
 def enrolled_student(request):
