@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.contrib.auth.views import LogoutView,LoginView  # Add this import
+from django.contrib.auth.views import LogoutView, LoginView  # Add this import
 from .views import home_page
 from . import settings
 from django.contrib.staticfiles.urls import static, staticfiles_urlpatterns
@@ -26,14 +26,13 @@ urlpatterns = [
     path('', home_page, name='home'),
     path('', include('administration.urls')),
     path('teacher/', include('teacher.urls')),
-    #path('student/', include('student.urls')),
+    path('student/', include('student.urls')),
     path('academic/', include('academic.urls')),
-    #path('employee/', include('employee.urls')),
-    #path('result/', include('result.urls')),
+    path('employee/', include('employee.urls')),
+    # path('result/', include('result.urls')),
     path('address/', include('address.urls')),
     path('account/', include('account.urls')),
     path('attendance/', include('attendance.urls')),
-    path('teacher/', include('teacher.urls')),
     # path('advanced_filters/', include('advanced_filters.urls'))
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),  # Add this line

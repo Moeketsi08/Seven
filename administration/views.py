@@ -109,7 +109,7 @@ def teacher_registration(request):
 @user_passes_test(is_admin)
 def admin_teacher_list(request):
     teachers = Teacher.objects.all()
-    return render(request, 'administration/teacher_list.html', {'teachers': teachers})
+    return render(request, 'teacher/teacher-list.html', {'teachers': teachers})
 
 @login_required
 @user_passes_test(is_admin)

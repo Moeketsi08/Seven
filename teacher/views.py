@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-from . import forms
+
 from .models import Teacher, Timesheet
-from academic.models import Session, Student
+from academic.models import Session, Student, ClassInfo
 from attendance.models import StudentAttendance
 from django.utils import timezone
 from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet, TimesheetForm
@@ -14,6 +14,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import FormView
 from django.urls import reverse
 
+from datetime import datetime
+
 """ def teacher_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -21,16 +23,17 @@ from django.urls import reverse
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('teacher_dashboard')
+            return redirect('teacher-dashboard')
         else:
+            return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
             return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
     else:
         return render(request, 'teacher/teacher_login.html') """
 
-@login_required
-def teacher_dashboard(request):
-    # Logic for the teacher's dashboard
-    return render(request, 'teacher/teacher-dashboard.html')
+# @login_required
+# def teacher_dashboard(request):
+#     # Logic for the teacher's dashboard
+#     return render(request, 'teacher/teacher-dashboard.html')
 
 @login_required
 def teacher_dashboard(request):
@@ -39,26 +42,38 @@ def teacher_dashboard(request):
     request.teacher = teacher
 
     if request.method == 'POST':
-        form = TimesheetForm(request.POST)
-        if form.is_valid():
-            # Calculate total hours
-            start_time = form.cleaned_data['start_time']
-            end_time = form.cleaned_data['end_time']
-            total_hours = (end_time - start_time).seconds / 3600  # Convert seconds to hours
+        timesheet_form = TimesheetForm(request.POST) if request.POST.get('form_type') == 'timesheet_form' else TimesheetForm()
+        attendance_form = AttendanceTimesheetForm(request.POST) if request.POST.get('form_type') == 'attendance_form' else AttendanceTimesheetForm()
+        if request.POST.get('form_type') == 'timesheet_form':
+            if timesheet_form.is_valid():
+                # Calculate total hours
+                start_time = timesheet_form.cleaned_data['start_time']
+                end_time = timesheet_form.cleaned_data['end_time']
+                today = datetime.today().date()
+                start_datetime = datetime.combine(today, start_time)
+                end_datetime = datetime.combine(today, end_time)
+                total_hours = (end_datetime - start_datetime).seconds / 3600   # Convert seconds to hours
+                classInfo = ClassInfo.objects.create(subject=timesheet_form.cleaned_data['subjects'], grade=timesheet_form.cleaned_data['grades'])
+                session = Session.objects.create(start_time=start_time, end_time=end_time, class_info=classInfo)
 
-            # Create and save the new Timesheet record
-            Timesheet.objects.create(
-                teacher=teacher,
-                date=form.cleaned_data['date'],
-                atp_hours=total_hours,  # Assuming atp_hours corresponds to total_hours
-                attendance_marked=False  # Set this as per your logic
-            )
-            messages.success(request, 'Timesheet saved successfully.')
-            return redirect('teacher_dashboard')  # Redirect to avoid resubmission
-
+                # Create and save the new Timesheet record
+                Timesheet.objects.create(
+                    teacher=teacher,
+                    session=session,
+                    date=timesheet_form.cleaned_data['date'],
+                    atp_hours=total_hours,  # Assuming atp_hours corresponds to total_hours
+                    attendance_marked=False  # Set this as per your logic
+                )
+                messages.success(request, 'Timesheet saved successfully.')
+                return redirect('teacher_dashboard')  # Redirect to avoid resubmission
+        if request.POST.get('form_type') == 'attendance_form':
+            if attendance_form.is_valid():
+                attendance_form.save()
+                messages.success(request, 'Attendance saved successfully.')
+                return redirect('teacher_dashboard')  # Redirect to avoid resubmission
     else:
-        form = TimesheetForm()
-
+        timesheet_form = TimesheetForm()
+        attendance_form = AttendanceTimesheetForm()
     # Fetch existing timesheets for the logged-in user
     timesheets = Timesheet.objects.filter(teacher=teacher).order_by('-date')
     attendances = StudentAttendance.objects.filter(class_name__session__class_info__teacher=teacher)
@@ -67,15 +82,13 @@ def teacher_dashboard(request):
     # Extract sessions from timesheets
     sessions = {timesheet.session for timesheet in timesheets}
 
-    context = {
-        'timesheet_form': form,
+    return render(request, 'teacher/teacher-dashboard.html', {
+        'timesheet_form': timesheet_form,
         'timesheets': timesheets,
         'attendances': attendances,
         'students': students,
         'sessions': sessions,
-    }
-
-    return render(request, 'teacher/teacher-dashboard.html', context)
+    })
 
 @login_required
 def submit_attendance_and_timesheet(request, session_id):

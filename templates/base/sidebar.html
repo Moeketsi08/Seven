@@ -87,16 +87,16 @@
                  <i class="nav-icon icon-puzzle"></i>Learner</a>
              <ul class="nav-dropdown-items">
                  <li class="nav-item">
-                     <a class="nav-link" href="#">
-                         <i class="fa fa-plus-circle"></i>Learner Registration</a>
+                     {% comment %} <a class="nav-link" href="{% url 'student-registration' %}">
+                         <i class="fa fa-plus-circle"></i>Learner Registration</a> {% endcomment %}
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#">
-                         <i class="fa fa-list"></i>Learner List</a>
+                     {% comment %} <a class="nav-link" href="{% url 'student-list' %}">
+                         <i class="fa fa-list"></i>Learner List</a> {% endcomment %}
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="#">
-                         <i class="fa fa-search-plus"></i>Learner Search</a>
+                     {% comment %} <a class="nav-link" href="{% url 'student-search' %}">
+                         <i class="fa fa-search-plus"></i>Learner Search</a> {% endcomment %}
                  </li>
              </ul>
            </li>
@@ -108,11 +108,11 @@
                 <i class="nav-icon icon-puzzle"></i>Enroll Learner</a>
             <ul class="nav-dropdown-items">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    {% comment %} <a class="nav-link" href="{% url 'enrolled-student' %}">
                         <i class="fa fa-plus-circle"></i>Learner Enrolled</a>
                     <a class="nav-link" href="#">
                         <i class="fa fa-list"></i>Enrolled Learner List</a>
-                    
+                     {% endcomment %}
                 </li>
             </ul>
           </li>
@@ -124,36 +124,36 @@
                 <i class="nav-icon icon-puzzle"></i>Employee</a>
             <ul class="nav-dropdown-items">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa fa-plus-circle"></i>Add Employee</a>
+                    {% comment %} <a class="nav-link" href="{% url 'employee-registration' %}">
+                        <i class="fa fa-plus-circle"></i>Add Employee</a> {% endcomment %}
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa fa-list"></i>Employee List</a>
+                    {% comment %} <a class="nav-link" href="{% url 'employee-list' %}">
+                        <i class="fa fa-list"></i>Employee List</a> {% endcomment %}
                 </li>
             </ul>
           </li>
           <!-- Employee Section END -->
 
           <!-- Result Section START -->
-          <!--<li class="nav-item nav-dropdown">
+          <li class="nav-item nav-dropdown">
            <a class="nav-link nav-dropdown-toggle" href="#">
                <i class="nav-icon icon-puzzle"></i>Result</a>
            <ul class="nav-dropdown-items">
                <li class="nav-item">
-                   <a class="nav-link" href="#">
-                       <i class="fa fa-plus-circle"></i>Add Subject</a>
+                   {% comment %} <a class="nav-link" href="{% url 'add-subject' %}">
+                       <i class="fa fa-plus-circle"></i>Add Subject</a> {% endcomment %}
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="#">
-                       <i class="fa fa-list"></i>Subject List</a>
+                   {% comment %} <a class="nav-link" href="{% url 'subject-list' %}">
+                       <i class="fa fa-list"></i>Subject List</a> {% endcomment %}
                </li>
                <li class="nav-item">
-                   <a class="nav-link" href="#">
-                       <i class="fa fa-plus-circle"></i>Mark Entry</a>
+                   {% comment %} <a class="nav-link" href="{% url 'mark-entry' %}">
+                       <i class="fa fa-plus-circle"></i>Mark Entry</a> {% endcomment %}
                </li>
            </ul>
-         </li> -->
+         </li> 
          <!-- Result Section END -->
 
          <!-- Attendence Report Section START -->
@@ -162,15 +162,15 @@
               <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
           <ul class="nav-dropdown-items">
               <li class="nav-item">
-                  <a class="nav-link" href="#">
-                      <i class="fa fa-plus-circle"></i>Student Attendence</a>
+                  {% comment %} <a class="nav-link" href="{% url 'student-attendance' %}">
+                      <i class="fa fa-plus-circle"></i>Student Attendence</a> {% endcomment %}
               </li>
           </ul>
         </li>
         <!-- Attendence Report Section END -->
 
        <!-- Holiday Section START -->
-      <!-- <li class="nav-item nav-dropdown">
+      <li class="nav-item nav-dropdown">
         <a class="nav-link nav-dropdown-toggle" href="#">
             <i class="nav-icon icon-puzzle"></i>Holiday</a>
         <ul class="nav-dropdown-items">
@@ -179,11 +179,11 @@
                     <i class="nav-icon icon-puzzle"></i>Student List</a>
             </li>
         </ul>
-      </li> -->
+      </li> 
       <!-- Holiday Section END -->
 
         <!-- Event Section START -->
-        <!--<li class="nav-item nav-dropdown">
+        <li class="nav-item nav-dropdown">
          <a class="nav-link nav-dropdown-toggle" href="#">
              <i class="nav-icon icon-puzzle"></i>Event</a>
          <ul class="nav-dropdown-items">
@@ -192,7 +192,7 @@
                      <i class="nav-icon icon-puzzle"></i>Student List</a>
              </li>
          </ul>
-       </li> -->
+       </li> 
        <!-- Event Section END -->
 
         <!-- User-Manual Section START -->

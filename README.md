@@ -2,7 +2,7 @@
 # Project Name: School Management System Software
 
 ## How To Setup On Machine
-1. Clone This Project `git clone https://github.com/sajib1066/school_management_system.git`
+1. Clone This Project `git clone https://github.com/Royal-McGrady/RoyalMcgrady-KDMS`
 2. Go To Project Directory `cd school_management_system`
 3. Create a Virtual Environment `python -m venv venv`
 4. Activate Virtual Environment `source venv/bin/activate`
@@ -13,6 +13,5 @@
 
 ## Github Reposotory
 <!-- Administration Section Start -->
-![1](https://github.com/LwaziMazibuko/kutlwanongDMS)
+![1](https://github.com/Royal-McGrady/RoyalMcgrady-KDMS)
 ## Login Page
-![1](https://user-images.githubusercontent.com/39632170/63769728-54fe3780-c8f5-11e9-8e42-b582e43d666c.png)

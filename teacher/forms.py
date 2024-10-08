@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import formset_factory
 from .models import Teacher, TeacherCenterAssignment, TeacherQualification, Timesheet  # Add this import at the top of the file
-from academic.models import Department
+from academic.models import Department, ClassInfo, Session
 #from .models import Timesheet
 
 
@@ -73,11 +73,18 @@ class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
     start_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'Start Time'}))
     end_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'End Time'}))
+    subjects = forms.ChoiceField(choices=ClassInfo.SUBJECT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    grades = forms.ChoiceField(choices=ClassInfo.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    day = forms.ChoiceField(choices=Session.DAY_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    
 
     def clean(self):
         cleaned_data = super().clean()
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")
+        subjects = cleaned_data.get("subjects")
+        grades = cleaned_data.get("grades")
+        day = cleaned_data.get("day")
         
         if start_time and end_time:
             if end_time <= start_time:
