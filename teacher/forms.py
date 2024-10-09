@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import formset_factory
-from .models import Teacher, TeacherCenterAssignment, TeacherQualification, Timesheet  # Add this import at the top of the file
+from .models import Teacher, TeacherCenterAssignment, Timesheet  # Add this import at the top of the file
 from academic.models import Department, ClassInfo, Session
 #from .models import Timesheet
 
@@ -35,17 +35,6 @@ class TeacherCenterAssignmentForm(forms.ModelForm):
             'start_date': forms.DateInput(attrs={'class': 'form-control'}),
             'end_date': forms.DateInput(attrs={'class': 'form-control'}),
             'is_current': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-        }
-
-class TeacherQualificationForm(forms.ModelForm):
-    class Meta:
-        model = TeacherQualification
-        fields = '__all__'
-        widgets = {
-            'teacher': forms.Select(attrs={'class': 'form-control'}),
-            'qualification_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'institution': forms.TextInput(attrs={'class': 'form-control'}),
-            'year_obtained': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
 class AttendanceTimesheetForm(forms.ModelForm):

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('academic', '0003_auto_20241007_2359'),
         ('address', '0002_auto_20241005_1503'),
-        ('administration', '0002_auto_20241005_1503'),
+        ('center_manager', '0002_auto_20241005_1503'),
     ]
 
     operations = [
@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('recreation_leave_due_year', models.IntegerField()),
                 ('expected_retirement_year', models.IntegerField()),
                 ('department', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.department')),
-                ('job_designation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='administration.designation')),
+                ('job_designation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='center_manager.designation')),
             ],
         ),
         migrations.CreateModel(

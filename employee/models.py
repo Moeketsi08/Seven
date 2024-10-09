@@ -1,8 +1,9 @@
 from django.db import models
 from address.models import District, Upazilla, Union
-from administration.models import Designation
+from center_manager.models import Designation
 from academic.models import Department
 
+# TODO Remove 
 
 class EmployeeAddressInfo(models.Model):
     district = models.ForeignKey(District, on_delete=models.CASCADE, null=True)

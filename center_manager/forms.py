@@ -1,13 +1,13 @@
 from django import forms
-from teacher import models
+from teacher.models import Designation, Department, ClassGroup
 
-class AdminLoginForm(forms.Form):
+class CenterManagerLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
 class AddDepartmentForm(forms.ModelForm):
     class Meta:
-        model = models.Department
+        model = Department
         fields = '__all__'
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -15,7 +15,7 @@ class AddDepartmentForm(forms.ModelForm):
 
 class AddDesignationForm(forms.ModelForm):
     class Meta:
-        model = models.Designation
+        model = Designation
         fields = ['designation_type', 'name_surname', 'contact_number', 'email_address', 'physical_address', 'documents']
         widgets = {
             'designation_type': forms.Select(attrs={'class': 'form-control'}),
@@ -36,3 +36,13 @@ class AddDesignationForm(forms.ModelForm):
             'teacher': forms.Select(attrs={'class': 'form-control'}),
             'session': forms.Select(attrs={'class': 'form-control'}),
         }  """       
+
+class AllocateTeacherForm(forms.ModelForm):
+    class Meta:
+        model = ClassGroup
+        fields = ['class_info', 'students', 'teacher']  # Removed 'sessions'
+        widgets = {
+            'class_info': forms.Select(attrs={'class': 'form-control'}),  # Dropdown for ClassInfo selection
+            'students': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
+            'teacher': forms.RadioSelect(attrs={'class': 'form-control'}),
+        }

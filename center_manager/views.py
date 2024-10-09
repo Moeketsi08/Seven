@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.messages.views import SuccessMessageMixin
 from .models import Designation
-from teacher.models import Teacher, Department
+from teacher.models import Teacher
 from .forms import *
 from teacher.forms import TeacherForm
 from django.views.generic import FormView
@@ -15,10 +15,13 @@ from django.urls import reverse
 def is_admin(user):
     return user.is_staff or user.is_superuser
 
+def is_center_manager(user):
+    return user.groups.filter(name='Center Manager').exists()
+
 def admin_login(request):
-    forms = AdminLoginForm()
+    forms = CenterManagerLoginForm()
     if request.method == 'POST':
-        forms = AdminLoginForm(request.POST)
+        forms = CenterManagerLoginForm(request.POST)
         if forms.is_valid():
             username = forms.cleaned_data['username']
             password = forms.cleaned_data['password']
@@ -27,16 +30,16 @@ def admin_login(request):
                 login(request, user)
                 return redirect('home')
     context = {'forms': forms}
-    return render(request, 'administration/login.html', context)
+    return render(request, 'center_manager/login.html', context)
 
 def admin_logout(request):
     logout(request)
     return redirect('login')
 
 def center_login(request):
-    forms = AdminLoginForm()
+    forms = CenterManagerLoginForm()
     if request.method == 'POST':
-        forms = AdminLoginForm(request.POST)
+        forms = CenterManagerLoginForm(request.POST)
         if forms.is_valid():
             username = forms.cleaned_data['username']
             password = forms.cleaned_data['password']
@@ -45,10 +48,10 @@ def center_login(request):
                 login(request, user)
                 return redirect('home')
     context = {'forms': forms}
-    return render(request, 'administration/center_login.html', context)
+    return render(request, 'center_manager/center_login.html', context)
 
 class CenterLoginView(SuccessMessageMixin,FormView):
-    template_name = 'administration/center_login.html'  # Update the path
+    template_name = 'center_manager/center_login.html'  # Update the path
     form_class = AuthenticationForm
 
     def form_valid(self, form):
@@ -61,7 +64,7 @@ class CenterLoginView(SuccessMessageMixin,FormView):
         messages.error(self.request, 'Invalid credentials. Please try again.')
 
         # Re-render the form with the error messages
-        return redirect('/administration/center_login')
+        return redirect('/center_manager/center_login')
     def get_success_url(self):
         return reverse('center_dashboard')  # Redirect to the Center manager's dashboard
 
@@ -71,9 +74,24 @@ def center_logout(request):
     return redirect('login')
 
 @login_required
+@user_passes_test(is_admin)
 def center_dashboard(request):
-    # Logic for the center's dashboard
-    return render(request, 'administration/center_dashboard.html')
+    teachers = Teacher.objects.all().count()
+    return render(request, 'center_manager/center_dashboard.html', {'teachers':teachers})
+
+@login_required
+@user_passes_test(is_admin)
+def allocate_teacher(request):
+    if request.method == 'POST':
+         teacher_allocation_form = AllocateTeacherForm(request.POST) if request.POST.get('form_type') == 'teacher_allocation_form' else AllocateTeacherForm()
+         if request.POST.get('form_type') == 'teacher_allocation_form':
+            if teacher_allocation_form.is_valid():
+                # TODO Complete implemnation
+                teacher_allocation_form.save()
+                return redirect('allocate_teacher')
+    else:
+            teacher_allocation_form = AllocateTeacherForm()
+    return render(request, 'center_manager/allocate_teacher.html', {'teacher_allocation_form': teacher_allocation_form})
     
 
 
@@ -89,7 +107,7 @@ def add_designation(request):
             return redirect('designation')
     designation = Designation.objects.all()
     context = {'forms': forms, 'designation': designation}
-    return render(request, 'administration/designation.html', context)
+    return render(request, 'center_manager/designation.html', context)
 
 # New teacher management views
 
@@ -103,7 +121,7 @@ def teacher_registration(request):
             return redirect('admin_teacher_list')
     else:
         form = TeacherForm()
-    return render(request, 'administration/teacher_registration.html', {'form': form})
+    return render(request, 'center_manager/teacher_registration.html', {'form': form})
 
 @login_required
 @user_passes_test(is_admin)
@@ -115,7 +133,7 @@ def admin_teacher_list(request):
 @user_passes_test(is_admin)
 def admin_teacher_profile(request, teacher_id):
     teacher = get_object_or_404(Teacher, id=teacher_id)
-    return render(request, 'administration/teacher_profile.html', {'teacher': teacher})
+    return render(request, 'center_manager/teacher_profile.html', {'teacher': teacher})
 
 @login_required
 @user_passes_test(is_admin)
@@ -136,10 +154,10 @@ def admin_teacher_edit(request, teacher_id):
             return redirect('admin_teacher_list')
     else:
         form = TeacherForm(instance=teacher)
-    return render(request, 'administration/teacher_edit.html', {'form': form})
+    return render(request, 'center_manager/teacher_edit.html', {'form': form})
 
 
 def designation_view(request):
     designations = Designation.objects.all()
-    return render(request, 'administration/designation.html', {'designations': designations})
+    return render(request, 'center_manager/designation.html', {'designations': designations})
 

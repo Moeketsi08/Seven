@@ -28,12 +28,12 @@ class ClassInfo(models.Model):
     def __str__(self):
         return f"{self.get_subject_display()} - Grade {self.grade}"
 
-class Section(models.Model):
-    name = models.CharField(max_length=45, unique=True)
-    date = models.DateField(auto_now_add=True)
+# class Section(models.Model):
+#     name = models.CharField(max_length=45, unique=True)
+#     date = models.DateField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 class Session(models.Model):
     DAY_CHOICES = [
@@ -56,12 +56,12 @@ class Session(models.Model):
     def __str__(self):
         return f"{self.class_info} - {self.get_day_display()} ({self.start_time} - {self.end_time})"
 
-class Shift(models.Model):
-    name = models.CharField(max_length=45, unique=True)
-    date = models.DateField(auto_now_add=True)
+# class Shift(models.Model):
+#     name = models.CharField(max_length=45, unique=True)
+#     date = models.DateField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 #class GuideTeacher(models.Model):
     #name = models.OneToOneField('teacher.PersonalInfo', on_delete=models.CASCADE, null=True)
@@ -71,9 +71,10 @@ class Shift(models.Model):
         #PersonalInfo = apps.get_model('teacher', 'PersonalInfo')
         #return str(self.name)
 
-class Center(models.Model):
+class Center(models.Model): # EG Dobsonville
     name = models.CharField(max_length=100, default='Default Center')
     address = models.TextField(default='Default Address')
+
 
     def __str__(self):
         return self.name
@@ -85,11 +86,11 @@ class Center(models.Model):
 #class Union(models.Model):
     #name = models.CharField(max_length=100, unique=True)
     #upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE)
-    #date = models.DateField(auto_now_add=True)
+    # #date = models.DateField(auto_now_add=True)
 
-    def __str__(self):
-        return self.name
-class ClassRegistration(models.Model):
+    # def __str__(self):
+    #     return self.name
+class ClassRegistration(models.Model): # CENTER MANAGER, 
     center = models.ForeignKey(Center, on_delete=models.CASCADE, null=True, blank=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True)
 
@@ -100,6 +101,7 @@ class ClassRegistration(models.Model):
         center_name = self.center.name if self.center else "No Center"
         session_name = str(self.session) if self.session else "No Session"
         return f"{center_name} - {session_name}"
+
 
 
 

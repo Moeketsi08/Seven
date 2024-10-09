@@ -24,7 +24,8 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page, name='home'),
-    path('', include('administration.urls')),
+    path('', include('center_manager.urls')),
+    # path('center_manager/', include('center_manager.urls')),
     path('teacher/', include('teacher.urls')),
     path('student/', include('student.urls')),
     path('academic/', include('academic.urls')),
@@ -35,8 +36,6 @@ urlpatterns = [
     path('attendance/', include('attendance.urls')),
     # path('advanced_filters/', include('advanced_filters.urls'))
     path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),  # Add this line
-    path('center_login/', include('administration.urls')),
     path('logout/', LogoutView.as_view(), name='logout'),
 ]
 urlpatterns += staticfiles_urlpatterns()

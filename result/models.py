@@ -4,6 +4,8 @@ from academic.models import ClassRegistration
 
 # Create your models here.
 
+# TODO linked to teacher
+
 class SubjectRegistration(models.Model):
     select_class = models.ForeignKey(ClassRegistration, on_delete=models.CASCADE, null=True)
     subject_name = models.CharField(max_length=45)

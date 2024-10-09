@@ -21,28 +21,12 @@ class ClassForm(forms.ModelForm):
             'display_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-class SectionForm(forms.ModelForm):
-    class Meta:
-        model = models.Section
-        fields = '__all__'
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-
 class SessionForm(forms.ModelForm):
     class Meta:
         model = models.Session
         fields = '__all__'
         widgets = {
             'name': forms.NumberInput(attrs={'class': 'form-control'}),
-        }
-
-class ShiftForm(forms.ModelForm):
-    class Meta:
-        model = models.Shift
-        fields = '__all__'
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 class ClassRegistrationForm(forms.ModelForm):
@@ -55,10 +39,7 @@ class ClassRegistrationForm(forms.ModelForm):
             'class_name': forms.Select(attrs={'class': 'form-control'}),
             'section': forms.Select(attrs={'class': 'form-control'}),
             'session': forms.Select(attrs={'class': 'form-control'}),
-            'shift': forms.Select(attrs={'class': 'form-control'}),
             'guide_teacher': forms.Select(attrs={'class': 'form-control'}),
-            'Province': forms.Select(attrs={'class': 'form-control'}),
-            'Region': forms.Select(attrs={'class': 'form-control'}),
             'Center': forms.Select(attrs={'class': 'form-control'}),
         }
 

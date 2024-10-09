@@ -4,23 +4,11 @@ from django.utils.timezone import now
 
 from academic.models import ClassInfo, ClassRegistration
 from address.models import District, Upazilla, Union
-from teacher.models import Teacher
 
 class PersonalInfo(models.Model):
     name = models.CharField(max_length=45)
     surname = models.CharField(max_length=45)
     photo = models.ImageField(upload_to='student-photos/')
-    blood_group_choice = (
-        ('a+', 'A+'),
-        ('o+', 'O+'),
-        ('b+', 'B+'),
-        ('ab+', 'AB+'),
-        ('a-', 'A-'),
-        ('o-', 'O-'),
-        ('b-', 'B-'),
-        ('ab-', 'AB-')
-    )
-    blood_group = models.CharField(choices=blood_group_choice, max_length=5)
     date_of_birth = models.DateField()
     gender_choice = (
         ('M', 'Male'),
@@ -31,14 +19,6 @@ class PersonalInfo(models.Model):
     phone_no = models.CharField(max_length=11)
     email = models.EmailField(blank=True, null=True)
     birth_certificate_no = models.CharField(max_length=50)  # Changed to CharField to accommodate alphanumeric certificates
-    religion_choice = (
-        ('Islam', 'Islam'),
-        ('Hinduism', 'Hinduism'),
-        ('Buddhism', 'Buddhism'),
-        ('Christianity', 'Christianity'),
-        ('Others', 'Others')
-    )
-    religion = models.CharField(choices=religion_choice, max_length=45)
     nationality_choice = (
         ('SA', 'South African'),
         ('ZW', 'Zimbabwe')
@@ -125,18 +105,18 @@ class EmergencyContactDetails(models.Model):
         return self.emergency_guardian_name
 
 
-class PreviousAcademicInfo(models.Model):
-    institute_name = models.CharField(max_length=100)
-    name_of_exam = models.CharField(max_length=100)
-    group = models.CharField(max_length=45)
-    gpa = models.CharField(max_length=10)
-    board_roll = models.CharField(max_length=50)  # Changed to CharField for flexibility
-    passing_year = models.IntegerField()
+# class PreviousAcademicInfo(models.Model):
+#     institute_name = models.CharField(max_length=100)
+#     name_of_exam = models.CharField(max_length=100)
+#     group = models.CharField(max_length=45)
+#     gpa = models.CharField(max_length=10)
+#     board_roll = models.CharField(max_length=50)  # Changed to CharField for flexibility
+#     passing_year = models.IntegerField()
 
-    def __str__(self):
-        return self.institute_name
+#     def __str__(self):
+#         return self.institute_name
 
-class PreviousAcademicCertificate(models.Model):
+class PreviousAcademicCertificate(models.Model): #TODO RENAME THIS
     birth_certificate = models.FileField(upload_to='documents/', blank=True)
     release_letter = models.FileField(upload_to='documents/', blank=True)
     testimonial = models.FileField(upload_to='documents/', blank=True)
@@ -160,7 +140,7 @@ class AcademicInfo(models.Model):
     address_info = models.ForeignKey(StudentAddressInfo, on_delete=models.CASCADE, null=True)
     guardian_info = models.ForeignKey(GuardianInfo, on_delete=models.CASCADE, null=True)
     emergency_contact_info = models.ForeignKey(EmergencyContactDetails, on_delete=models.CASCADE, null=True)
-    previous_academic_info = models.ForeignKey(PreviousAcademicInfo, on_delete=models.CASCADE, null=True)
+    # previous_academic_info = models.ForeignKey(PreviousAcademicInfo, on_delete=models.CASCADE, null=True)
     previous_academic_certificate = models.ForeignKey(PreviousAcademicCertificate, on_delete=models.CASCADE, null=True)
     joined_programme = models.DateField(auto_now_add=True, null=True)
     date = models.DateField(auto_now_add=True)
@@ -196,7 +176,6 @@ class EnrolledStudent(models.Model):
 class Student(models.Model):
     student = models.ForeignKey(EnrolledStudent, on_delete=models.CASCADE)
     class_registration = models.ForeignKey(ClassRegistration, on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, related_name='students')
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
-    'administration',
+    'center_manager',
     'teacher',
     'student',
     'academic',

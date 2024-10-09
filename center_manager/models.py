@@ -17,4 +17,13 @@ class Designation(models.Model):
 
     def __str__(self):
         return f"{self.designation_type} - {self.name_surname}"
+    
+    
+class Center(models.Model):
+    name = models.CharField(max_length=100, default='Default Center')
+    address = models.TextField(default='Default Address')
+    
+    def __str__(self):
+        return self.name
+    
 

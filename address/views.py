@@ -10,7 +10,7 @@ def load_upazilla(request):
     context = {
         'upazilla': upazilla
     }
-    return render(request, 'administration/upazilla_dropdown_list_options.html', context)
+    return render(request, 'center_manager/upazilla_dropdown_list_options.html', context)
 
 def load_union(request):
     upazilla_id = request.GET.get('upazilla')
