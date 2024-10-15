@@ -1,6 +1,6 @@
 from django import forms
 from . import models
-from academic.models import ClassRegistration
+from academic.models import Registration
 
 
 
@@ -12,14 +12,14 @@ class DepartmentForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
-class ClassForm(forms.ModelForm):
-    class Meta:
-        model = models.ClassInfo
-        fields = '__all__'
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'display_name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+# class ClassForm(forms.ModelForm):
+#     class Meta:
+#         model = models.
+#         fields = '__all__'
+#         widgets = {
+#             'name': forms.TextInput(attrs={'class': 'form-control'}),
+#             'display_name': forms.TextInput(attrs={'class': 'form-control'}),
+#         }
 
 class SessionForm(forms.ModelForm):
     class Meta:
@@ -31,16 +31,14 @@ class SessionForm(forms.ModelForm):
 
 class ClassRegistrationForm(forms.ModelForm):
     class Meta:
-        model = ClassRegistration
+        model = Registration
         fields = '__all__'
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'department': forms.Select(attrs={'class': 'form-control'}),
-            'class_name': forms.Select(attrs={'class': 'form-control'}),
-            'section': forms.Select(attrs={'class': 'form-control'}),
-            'session': forms.Select(attrs={'class': 'form-control'}),
-            'guide_teacher': forms.Select(attrs={'class': 'form-control'}),
-            'Center': forms.Select(attrs={'class': 'form-control'}),
+            'student': forms.Select(attrs={'class': 'form-control'}),
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'fees_paid': forms.Select(attrs={'class': 'form-control'}),
+            'notes': forms.Select(attrs={'class': 'form-control'}),
+            'registration_date': forms.DateInput(attrs={'class': 'form-control'}),
         }
 
 #class GuideTeacherForm(forms.ModelForm):

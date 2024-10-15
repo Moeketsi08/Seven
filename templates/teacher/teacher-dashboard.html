@@ -1,5 +1,5 @@
 <!-- templates/teacher/teacher-dashboard.html -->
-{% extends 'base/base3.html' %}
+{% extends 'base/teacher_base.html' %}
 {% load static %}
 {% include 'base/header.html' %}
 {% block content %}
@@ -37,8 +37,8 @@
                 <tr>
                     <td class='center-text'>{{ timesheet.session.start_time }}</td>
                     <td class='center-text'>{{ timesheet.session.end_time }}</td>
-                    <td class='center-text'> {{ timesheet.session.class_info.grade }} </td>
-                    <td class='center-text'> {{ timesheet.session.class_info.subject }}</td>
+                    <td class='center-text'> {{ timesheet.session.grade.grade }} </td>
+                    <td class='center-text'> {{ timesheet.session.subject.subject }}</td>
                     <td class='center-text'>{{ timesheet.atp_hours }}</td>
                     <td class='center-text'>{{ timesheet.date }}</td>
                     <td class='center-text'>{{ timesheet.date_submitted }}</td>

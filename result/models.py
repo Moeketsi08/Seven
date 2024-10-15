@@ -1,13 +1,13 @@
 from django.db import models
 
-from academic.models import ClassRegistration
+from academic.models import Registration
 
 # Create your models here.
 
 # TODO linked to teacher
 
 class SubjectRegistration(models.Model):
-    select_class = models.ForeignKey(ClassRegistration, on_delete=models.CASCADE, null=True)
+    select_class = models.ForeignKey(Registration, on_delete=models.CASCADE, null=True)
     subject_name = models.CharField(max_length=45)
     subject_code = models.IntegerField(unique=True)
     marks = models.IntegerField()

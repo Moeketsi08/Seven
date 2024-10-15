@@ -5,7 +5,6 @@ from rest_framework import status
 
 #from .forms import SearchEnrolledStudentForm
 #from student.models import EnrolledStudent
-from academic.models import ClassRegistration
 from .models import StudentAttendance
 
 #def student_attendance(request):

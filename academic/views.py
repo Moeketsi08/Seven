@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from .models import *
-from academic.models import ClassRegistration
+from academic.models import Registration
 from .forms import ClassRegistrationForm
 #from .models import District, Upazilla, Union
 
@@ -21,23 +21,22 @@ def add_department(request):
     context = {'forms': forms, 'department': department}
     return render(request, 'academic/add-department.html', context)
 
-def add_class(request):
-    forms = ClassForm()
-    if request.method == 'POST':
-        forms = ClassForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-            return redirect('create-class')
-    class_obj = ClassInfo.objects.all()
-    context = {
-        'forms': forms,
-        'class_obj': class_obj
-    }
-    return render(request, 'academic/create-class.html', context)
+# def add_class(request):
+#     forms = ClassForm()
+#     if request.method == 'POST':
+#         forms = ClassForm(request.POST)
+#         if forms.is_valid():
+#             forms.save()
+#             return redirect('create-class')
+#     class_obj = ClassInfo.objects.all()
+#     context = {
+#         'forms': forms,
+#         'class_obj': class_obj
+#     }
+#     return render(request, 'academic/create-class.html', context)
 
 def create_class(request):
     form = ClassRegistrationForm()
-    districts = District.objects.all()  # Add this line to get the districts
     if request.method == 'POST':
         form = ClassRegistrationForm(request.POST)
         if form.is_valid():
@@ -45,23 +44,8 @@ def create_class(request):
             return redirect('class-list')
     context = {
         'form': form,
-        'districts': districts  # Pass the districts to the template
     }
     return render(request, 'academic/create-class.html', context)
-
-def create_section(request):
-    forms = SectionForm()
-    if request.method == 'POST':
-        forms = SectionForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-            return redirect('create-section')
-    section = Section.objects.all()
-    context = {
-        'forms': forms,
-        'section': section
-    }
-    return render(request, 'academic/create-section.html', context)
 
 def create_session(request):
     forms = SessionForm()
@@ -77,20 +61,6 @@ def create_session(request):
     }
     return render(request, 'academic/create-session.html', context)
 
-def create_shift(request):
-    forms = ShiftForm()
-    if request.method == 'POST':
-        forms = ShiftForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-            return redirect('create-shift')
-    shift = Shift.objects.all()
-    context = {
-        'forms': forms,
-        'shift': shift
-    }
-    return render(request, 'academic/create-shift.html', context)
-
 def class_registration(request):
     forms = ClassRegistrationForm()
     if request.method == 'POST':
@@ -102,7 +72,7 @@ def class_registration(request):
     return render(request, 'academic/class-registration.html', context)
 
 def class_list(request):
-    register_class = ClassRegistration.objects.all()
+    register_class = Registration.objects.all()
     context = {'register_class': register_class}
     return render(request, 'academic/class-list.html', context)
 

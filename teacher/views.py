@@ -1,20 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-
-from .models import Teacher, Timesheet
-from academic.models import Session, ClassInfo
-from student.models import Student, AcademicInfo
-from attendance.models import StudentAttendance
-from django.utils import timezone
-from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet, TimesheetForm
-from student.forms import StudentSearchForm
-from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import AttendanceTimesheetForm, StudentAttendanceFormSet
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import FormView
 from django.urls import reverse
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
+from django.utils import timezone
+
+
+from teacher.models import Teacher, Timesheet, Classroom
+from academic.models import Session, Grade, Subject, Registration
+from student.models import Student
+from attendance.models import StudentAttendance
+from teacher.forms import AttendanceTimesheetForm, TimesheetForm
+from student.forms import StudentSearchForm
+
 
 from datetime import datetime
 
@@ -49,14 +51,16 @@ def teacher_dashboard(request):
         if request.POST.get('form_type') == 'timesheet_form':
             if timesheet_form.is_valid():
                 # Calculate total hours
-                start_time = timesheet_form.cleaned_data['start_time']
-                end_time = timesheet_form.cleaned_data['end_time']
+                start_time = datetime.strptime(timesheet_form.cleaned_data['start_time'], '%H:%M').time() 
+                end_time = datetime.strptime(timesheet_form.cleaned_data['end_time'], '%H:%M').time()
                 today = datetime.today().date()
                 start_datetime = datetime.combine(today, start_time)
                 end_datetime = datetime.combine(today, end_time)
                 total_hours = (end_datetime - start_datetime).seconds / 3600   # Convert seconds to hours
-                classInfo = ClassInfo.objects.create(subject=timesheet_form.cleaned_data['subjects'], grade=timesheet_form.cleaned_data['grades'])
-                session = Session.objects.create(start_time=start_time, end_time=end_time, class_info=classInfo)
+                subject_instance, subject_created = Subject.objects.get_or_create(subject=timesheet_form.cleaned_data['subjects'])
+                grade_instance, grade_created = Grade.objects.get_or_create(grade=timesheet_form.cleaned_data['grades'])
+
+                session = Session.objects.create(start_time=start_time, end_time=end_time, subject=subject_instance, grade=grade_instance)
 
                 # Create and save the new Timesheet record
                 Timesheet.objects.create(
@@ -78,8 +82,8 @@ def teacher_dashboard(request):
         attendance_form = AttendanceTimesheetForm()
     # Fetch existing timesheets for the logged-in user
     timesheets = Timesheet.objects.filter(teacher=teacher).order_by('-date')
-    attendances = StudentAttendance.objects.filter(class_name__session__class_info__teacher=teacher)
-    students = Student.objects.filter(class_registration__session__class_info__teacher=teacher)
+    # attendances = StudentAttendance.objects.filter(class_name__session__class_info__teacher=teacher)
+    # students = Student.objects.filter(class_registration__session__class_info__teacher=teacher)
     
     # Extract sessions from timesheets
     sessions = {timesheet.session for timesheet in timesheets}
@@ -87,50 +91,50 @@ def teacher_dashboard(request):
     return render(request, 'teacher/teacher-dashboard.html', {
         'timesheet_form': timesheet_form,
         'timesheets': timesheets,
-        'attendances': attendances,
-        'students': students,
+        # 'attendances': attendances,
+        # 'students': students,
         'sessions': sessions,
     })
 
-@login_required
-def submit_attendance_and_timesheet(request, session_id):
-    teacher = request.user.teacher
-    session = get_object_or_404(Session, id=session_id, class_info__in=teacher.subjects_taught.all())
-    students = Student.objects.filter(class_registration__session=session)
+# @login_required
+# def submit_attendance_and_timesheet(request, session_id):
+#     teacher = request.user.teacher
+#     session = get_object_or_404(Session, id=session_id, class_info__in=teacher.subjects_taught.all())
+#     students = Student.objects.filter(class_registration__session=session)
 
-    if request.method == 'POST':
-        timesheet_form = AttendanceTimesheetForm(request.POST)
-        attendance_formset = StudentAttendanceFormSet(request.POST)
+#     if request.method == 'POST':
+#         timesheet_form = AttendanceTimesheetForm(request.POST)
+#         attendance_formset = StudentAttendanceFormSet(request.POST)
         
-        if timesheet_form.is_valid() and attendance_formset.is_valid():
-            timesheet = timesheet_form.save(commit=False)
-            timesheet.teacher = teacher
-            timesheet.session = session
-            timesheet.save()
+#         if timesheet_form.is_valid() and attendance_formset.is_valid():
+#             timesheet = timesheet_form.save(commit=False)
+#             timesheet.teacher = teacher
+#             timesheet.session = session
+#             timesheet.save()
 
-            for form in attendance_formset:
-                student_id = form.cleaned_data['student_id']
-                status = form.cleaned_data['status']
-                StudentAttendance.objects.create(
-                    student_id=student_id,
-                    class_name=session.class_info,
-                    date=timesheet.date,
-                    status=status
-                )
+#             for form in attendance_formset:
+#                 student_id = form.cleaned_data['student_id']
+#                 status = form.cleaned_data['status']
+#                 StudentAttendance.objects.create(
+#                     student_id=student_id,
+#                     class_name=session.class_info,
+#                     date=timesheet.date,
+#                     status=status
+#                 )
 
-            return redirect('teacher_dashboard')
-    else:
-        timesheet_form = AttendanceTimesheetForm(initial={'date': timezone.now().date()})
-        attendance_formset = StudentAttendanceFormSet(initial=[
-            {'student_id': student.id, 'student_name': f"{student.first_name} {student.last_name}"}
-            for student in students
-        ])
+#             return redirect('teacher_dashboard')
+#     else:
+#         timesheet_form = AttendanceTimesheetForm(initial={'date': timezone.now().date()})
+#         attendance_formset = StudentAttendanceFormSet(initial=[
+#             {'student_id': student.id, 'student_name': f"{student.first_name} {student.last_name}"}
+#             for student in students
+#         ])
 
-    return render(request, 'teacher/submit_attendance_and_timesheet.html', {
-        'timesheet_form': timesheet_form,
-        'attendance_formset': attendance_formset,
-        'session': session
-    })
+#     return render(request, 'teacher/submit_attendance_and_timesheet.html', {
+#         'timesheet_form': timesheet_form,
+#         'attendance_formset': attendance_formset,
+#         'session': session
+#     })
 
 @login_required
 def teacher_profile(request):
@@ -141,31 +145,45 @@ def teacher_profile(request):
     return render(request, 'teacher/teacher-profile.html', context)
 
 def student_list(request):
-    teacher = get_object_or_404(Teacher, user=request.user)
-    students = teacher.students.all()
-    context = {'students': students}
+    search_query = request.GET.get('search', '')
+    
+    # Prefetch students related to classrooms and their registration data
+    classrooms = Classroom.objects.prefetch_related('students').all()
+
+    if search_query:
+        # Filter by registration number through the related Registration model
+        classrooms = classrooms.filter(students__registration__registration_number__icontains=search_query)
+
+    paginator = Paginator(classrooms, 10)  # Show 10 classrooms per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    # Fetch all registrations
+    registrations = Registration.objects.select_related('student').all()
+    print(registrations)
+
+    context = {
+        'classrooms': page_obj,  # Paginated classrooms
+        'page_obj': page_obj,    # For pagination control
+        'registrations': registrations,  # List of all registrations
+    }
+    
     return render(request, 'teacher/student-list.html', context)
+
 
 def student_search(request):
     forms = StudentSearchForm()
-    cls_name = request.GET.get('class_info', None)
+    student = None
     reg_no = request.GET.get('registration_no', None)
-    if cls_name:
-        student = AcademicInfo.objects.filter(class_info=cls_name)
-        if reg_no:
-            student = student.filter(registration_no=reg_no)
-        context = {
-            'forms': forms,
-            'student': student
-        }
-        return render(request, 'teacher/student-search.html', context)
-    else:
-        student = AcademicInfo.objects.filter(registration_no=reg_no)
-        context = {
-            'forms': forms,
-            'student': student
-        }
-        return render(request, 'teacher/student-search.html', context)
+    
+    if reg_no:  # Check if a registration number was provided
+        student = Registration.objects.filter(registration_number=reg_no).first()  # Get the first matching student
+    
+    context = {
+        'forms': forms,
+        'student': student
+    }
+    return render(request, 'teacher/student-search.html', context)
 
 # def create_class(request):
 #     form = ClassRegistrationForm()

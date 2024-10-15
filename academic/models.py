@@ -1,117 +1,104 @@
 from django.db import models
+from django_countries.fields import CountryField
+from django.utils.timezone import now
+from django.core.exceptions import ValidationError
+
+from center_manager.models import Center
 
 class Department(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    date = models.DateField(auto_now_add=True)
+    created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+    
 
-class ClassInfo(models.Model):
+class Subject(models.Model):
     SUBJECT_CHOICES = [
         ('Mathematics', 'Mathematics'),
         ('Mathematics Exam', 'Mathematics Examination'),
         ('Physical Science', 'Physical Science'),
         ('Physical Science Exam', 'Physical Science Examination')
     ]
+    subject = models.CharField(max_length=21, choices=SUBJECT_CHOICES, default='Mathematics', unique=True)  # Added default valu
+    created = models.DateField(default=now)
+
+    def __str__(self):
+        return self.subject
+    
+class Grade(models.Model):
     GRADE_CHOICES = [
         ('10', 'Grade 10'),
         ('11', 'Grade 11'),
         ('12', 'Grade 12'),
     ]
-    subject = models.CharField(max_length=21, choices=SUBJECT_CHOICES, default='Mathematics')  # Added default value
-    grade = models.CharField(max_length=2, choices=GRADE_CHOICES, default='10')  # Already had default value
-
-    # class Meta:
-    #     unique_together = ['subject', 'grade']
-
+    grade = models.CharField(max_length=2, choices=GRADE_CHOICES, default='10', unique=True)  # Already had default value
+    created = models.DateField(auto_now_add=True)
+    
     def __str__(self):
-        return f"{self.get_subject_display()} - Grade {self.grade}"
-
-# class Section(models.Model):
-#     name = models.CharField(max_length=45, unique=True)
-#     date = models.DateField(auto_now_add=True)
-
-#     def __str__(self):
-#         return self.name
+        return self.grade
 
 class Session(models.Model):
     DAY_CHOICES = [
         ('SAT', 'Saturday'),
-        ('SUN', 'Sunday'),
-        ('MON', 'Monday'),
-        ('TUE', 'Tuesday'),
-        ('WED', 'Wednesday'),
-        ('THUR', 'Thursday'),
-        ('FRI', 'Friday'),
+        ('SUN', 'Sunday')
+    ]
+    START_TIME = [
+        ('09:00', '09:00'),
+        ('10:00', '10:00'),
+        ('12:00', '12:00'),
+        ('14:00', '14:00'),
+    ]
+    END_TIME = [
+        ('12:00', '12:00'),
+        ('14:00', '14:00'),
+        ('15:00', '15:00'),
+        ('16:00', '16:00'),
     ]
     day = models.CharField(max_length=4, choices=DAY_CHOICES, default='SAT')
-    start_time = models.TimeField(default='09:00')
-    end_time = models.TimeField(default='17:00')
-    class_info = models.ForeignKey(ClassInfo, on_delete=models.CASCADE, default=1)  # Add this line
-
-    class Meta:
-        unique_together = ['day', 'start_time', 'end_time', 'class_info']
-
+    start_time = models.TimeField(choices=START_TIME, default='10:00')
+    end_time = models.TimeField(choices=END_TIME,default='16:00')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True)
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, null=True, blank=True)
+    
     def __str__(self):
-        return f"{self.class_info} - {self.get_day_display()} ({self.start_time} - {self.end_time})"
-
-# class Shift(models.Model):
-#     name = models.CharField(max_length=45, unique=True)
-#     date = models.DateField(auto_now_add=True)
-
-#     def __str__(self):
-#         return self.name
-
-#class GuideTeacher(models.Model):
-    #name = models.OneToOneField('teacher.PersonalInfo', on_delete=models.CASCADE, null=True)
-    #date = models.DateField(auto_now_add=True)
-
-    #def __str__(self):
-        #PersonalInfo = apps.get_model('teacher', 'PersonalInfo')
-        #return str(self.name)
-
-class Center(models.Model): # EG Dobsonville
-    name = models.CharField(max_length=100, default='Default Center')
-    address = models.TextField(default='Default Address')
+        subject_str = str(self.subject) if self.subject else "No Subject"
+        grade_str = str(self.grade) if self.grade else "No Grade"
+        return f"{subject_str} - {grade_str}- {self.get_day_display()} ({self.start_time} - {self.end_time})"
+    
+    def clean(self):
+        if self.end_time <= self.start_time:
+            raise ValidationError("End time must be after start time.")
 
 
-    def __str__(self):
-        return self.name
 
-    def __str__(self):
-        return self.name
-
-
-#class Union(models.Model):
-    #name = models.CharField(max_length=100, unique=True)
-    #upazilla = models.ForeignKey(Upazilla, on_delete=models.CASCADE)
-    # #date = models.DateField(auto_now_add=True)
-
-    # def __str__(self):
-    #     return self.name
-class ClassRegistration(models.Model): # CENTER MANAGER, 
+class Registration(models.Model):  # Corrected from models.Models
+    student = models.ForeignKey('student.Student', on_delete=models.CASCADE)
+    registration_number = models.PositiveIntegerField(unique=True, blank=True, null=True)
+    registration_date = models.DateTimeField(auto_now_add=True)  # Automatically set the date and time of registration
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Completed', 'Completed')
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    fees_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    notes = models.TextField(blank=True, null=True)
     center = models.ForeignKey(Center, on_delete=models.CASCADE, null=True, blank=True)
-    session = models.ForeignKey(Session, on_delete=models.CASCADE, null=True, blank=True)
-
-    class Meta:
-        unique_together = ['center', 'session']
+    
+    def save(self, *args, **kwargs):
+        if self.registration_number is None and self.status == 'Completed':
+            last_student = Registration.objects.order_by('registration_number').last()
+            self.registration_number = last_student.registration_number + 1 if last_student else 1
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        center_name = self.center.name if self.center else "No Center"
-        session_name = str(self.session) if self.session else "No Session"
-        return f"{center_name} - {session_name}"
+        return f"{self.student.name} {self.student.surname} - {self.status}"
+    
+    
+class Nationality(models.Model):
+    nationality = CountryField(blank_label="(select country)")
+    created = models.DateField(auto_now_add=True)
 
-
-
-
-#class ClassRegistrationNew(models.Model):
-    #center = models.ForeignKey(Center, on_delete=models.CASCADE)
-    #session = models.ForeignKey(Session, on_delete=models.CASCADE)
-
-    #class Meta:
-        #unique_together = ['center', 'session']
-
-    #def __str__(self):
-        #return f"{self.center} - {self.session}"
+    def __str__(self):
+        return self.nationality.name                             
 

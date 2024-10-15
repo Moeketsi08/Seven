@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import formset_factory
+from django_countries.fields import CountryField
 from .models import Teacher, TeacherCenterAssignment, Timesheet  # Add this import at the top of the file
-from academic.models import Department, ClassInfo, Session
+from academic.models import Department, Grade, Subject, Session
 #from .models import Timesheet
 
 
@@ -11,18 +12,20 @@ class TeacherForm(forms.ModelForm):
         exclude = {'centers', 'is_active'}
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'surname': forms.TextInput(attrs={'class': 'form-control'}),
             'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'date_of_birth': forms.DateInput(attrs={'class': 'form-control'}),
-            'gender': forms.Select(attrs={'class': 'form-control'}),
+            'gender': forms.ChoiceField(choices=Teacher.GENDER_CHOICES, widget=forms.Select(attrs={'class': 'form-control'})),
             'phone_no': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control'}),
-            'highest_degree': forms.TextInput(attrs={'class': 'form-control'}),
+            'id_number': forms.TextInput(attrs={'class': 'form-control'}),
             'institution': forms.TextInput(attrs={'class': 'form-control'}),
             'specialization': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),
             'subjects_taught': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'date_joined': forms.DateInput(attrs={'class': 'form-control'}),
+            'nationality': CountryField().formfield()
         }
 
 class TeacherCenterAssignmentForm(forms.ModelForm):
@@ -46,24 +49,24 @@ class AttendanceTimesheetForm(forms.ModelForm):
             'atp_hours': forms.NumberInput(attrs={'step': '0.5'}),
         }
 
-class StudentAttendanceForm(forms.Form):
-    ATTENDANCE_CHOICES = [
-        ('present', 'Present'),
-        ('absent', 'Absent'),
-        ('late', 'Late'),
-    ]
-    student_id = forms.IntegerField(widget=forms.HiddenInput())
-    student_name = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-    status = forms.ChoiceField(choices=ATTENDANCE_CHOICES, widget=forms.RadioSelect)
+# class StudentAttendanceForm(forms.Form):
+#     ATTENDANCE_CHOICES = [
+#         ('present', 'Present'),
+#         ('absent', 'Absent'),
+#         ('late', 'Late'),
+#     ]
+#     student_id = forms.IntegerField(widget=forms.HiddenInput())
+#     student_name = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+#     status = forms.ChoiceField(choices=ATTENDANCE_CHOICES, widget=forms.RadioSelect)
 
-StudentAttendanceFormSet = formset_factory(StudentAttendanceForm, extra=0)
+# StudentAttendanceFormSet = formset_factory(StudentAttendanceForm, extra=0)
 
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
-    start_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'Start Time'}))
-    end_time = forms.TimeField(widget=forms.TimeInput(attrs={'class': 'form-control', 'placeholder': 'End Time'}))
-    subjects = forms.ChoiceField(choices=ClassInfo.SUBJECT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-    grades = forms.ChoiceField(choices=ClassInfo.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    start_time = forms.ChoiceField(choices=Session.START_TIME, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Start Time'}))
+    end_time = forms.ChoiceField(choices=Session.END_TIME, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'End Time'}))
+    subjects = forms.ChoiceField(choices=Subject.SUBJECT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    grades = forms.ChoiceField(choices=Grade.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     day = forms.ChoiceField(choices=Session.DAY_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
     
 

@@ -1,7 +1,6 @@
 from django.contrib import admin
-from .models import District, Upazilla, Union
+from .models import Address, Province
 
 
-admin.site.register(District)
-admin.site.register(Upazilla)
-admin.site.register(Union)
+admin.site.register(Address)
+admin.site.register(Province)

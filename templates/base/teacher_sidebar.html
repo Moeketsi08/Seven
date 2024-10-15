@@ -3,7 +3,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'teacher-dashboard' %}"><i class="icon-speedometer"></i> Dashboard</a>
+                <a class="nav-link" href="{% url 'teacher_dashboard' %}"><i class="icon-speedometer"></i> Dashboard</a>
             </li>
 
             <!-- Administration Section Start -->
@@ -12,19 +12,19 @@
                  <i class="nav-icon icon-puzzle"></i>Administration</a>
              <ul class="nav-dropdown-items">
                  <li class="nav-item">
-                     <a class="nav-link" href="{% url 'designation' %}">
+                     <a class="nav-link" href="#">
                          <i class="fa fa-plus-circle"></i>Add Designation</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="{% url 'district' %}">
+                     <a class="nav-link" href="#">
                          <i class="fa fa-plus-circle"></i>Add Subject</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="{% url 'upazilla' %}">
+                     <a class="nav-link" href="#">
                          <i class="fa fa-plus-circle"></i>Add Class</a>
                  </li>
                  <li class="nav-item">
-                     <a class="nav-link" href="{% url 'union' %}">
+                     <a class="nav-link" href="#">
                          <i class="fa fa-plus-circle"></i>Add Learner</a>
                  </li>
              </ul>
@@ -37,11 +37,11 @@
                 <i class="nav-icon icon-puzzle"></i>Academic</a>
             <ul class="nav-dropdown-items">
               <li class="nav-item">
-                  <a class="nav-link" href="{% url 'create-class' %}">
+                  <a class="nav-link" href="#">
                       <i class="fa fa-plus-circle"></i>Create Class</a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="{% url 'create-section' %}">
+                  <a class="nav-link" href="#">
                       <i class="fa fa-plus-circle"></i>Create Section</a>
               </li>
 
@@ -93,10 +93,6 @@
              <a class="nav-link nav-dropdown-toggle" href="#">
                  <i class="nav-icon icon-puzzle"></i>Learner</a>
              <ul class="nav-dropdown-items">
-                 <li class="nav-item">
-                     <a class="nav-link" href="{% url 'student-registration' %}">
-                         <i class="fa fa-plus-circle"></i>Add Learner to class</a>
-                 </li>
                  <li class="nav-item">
                      <a class="nav-link" href="{% url 'student-list' %}">
                          <i class="fa fa-list"></i>Learner List</a>

@@ -1,5 +1,6 @@
 from django import forms
-from teacher.models import Designation, Department, ClassGroup
+from teacher.models import Department, Classroom
+from center_manager.models import Designation
 
 class CenterManagerLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
@@ -39,10 +40,11 @@ class AddDesignationForm(forms.ModelForm):
 
 class AllocateTeacherForm(forms.ModelForm):
     class Meta:
-        model = ClassGroup
-        fields = ['class_info', 'students', 'teacher']  # Removed 'sessions'
+        model = Classroom
+        fields = ['subject', 'grade', 'students', 'teacher']  # Removed 'sessions'
         widgets = {
-            'class_info': forms.Select(attrs={'class': 'form-control'}),  # Dropdown for ClassInfo selection
-            'students': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
-            'teacher': forms.RadioSelect(attrs={'class': 'form-control'}),
+            'subject': forms.Select(attrs={'class': 'form-control'}),
+            'grade': forms.Select(attrs={'class': 'form-control'}),
+            'students': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'teacher': forms.Select(attrs={'class': 'form-control'}),
         }

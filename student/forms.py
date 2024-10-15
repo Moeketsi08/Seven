@@ -1,116 +1,74 @@
 from django import forms
+from django_countries.fields import CountryField
 
-from .models import *
-from academic.models import ClassInfo
+from student.models import Student, ParentGuardian, EmergencyContact
+from academic.models import Registration
+from address.models import Address
 
-class AcademicInfoForm(forms.ModelForm):
+class StudentForm(forms.ModelForm):
     class Meta:
-        model = AcademicInfo
-        exclude = ['registration_no', 'status', 'personal_info', 'address_info', 'guardian_info', 'emergency_contact_info', 'previous_academic_info', 'previous_academic_certificate', 'is_delete']
-        widgets = {
-            'class_info': forms.Select(attrs={'class': 'form-control'})
-        }
-
-class PersonalInfoForm(forms.ModelForm):
-    class Meta:
-        model = PersonalInfo
+        model = Student
         fields = '__all__'
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'surname': forms.TextInput(attrs={'class': 'form-control'}),
             'photo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'blood_group': forms.Select(attrs={'class': 'form-control'}),
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control'}),
             'gender': forms.Select(attrs={'class': 'form-control'}),
             'phone_no': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'birth_certificate_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'religion': forms.Select(attrs={'class': 'form-control'}),
-            'nationality': forms.Select(attrs={'class': 'form-control'})
+            'nationality': CountryField().formfield(),
+            'race': forms.Select(attrs={'class': 'form-control'}),
+            'home_language': forms.Select(attrs={'class': 'form-control'}),
+            'disability': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class StudentAddressInfoForm(forms.ModelForm):
     class Meta:
-        model = StudentAddressInfo
+        model = Address
         fields = '__all__'
         widgets = {
-            'Province': forms.Select(attrs={'class': 'form-control'}),
-            'Region': forms.Select(attrs={'class': 'form-control'}),
-            'Center': forms.Select(attrs={'class': 'form-control'}),
-            'village': forms.TextInput(attrs={'class': 'form-control'})
+            'unit_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'building_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'street_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'street': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'province': forms.Select(attrs={'class': 'form-control'}),
+            
         }
-
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.fields['upazilla'].queryset = Upazilla.objects.none()
-
-            if 'upazilla' in self.data:
-                try:
-                    district_id = int(self.data.get('district'))
-                    self.fields['upazilla'].queryset = Upazilla.objects.filter(district_id=district_id).order_by('name')
-                except (ValueError, TypeError):
-                    pass
-            elif self.instance.pk:
-                self.fields['upazilla'].queryset = self.instance.district.upazilla_set.order_by('name')
-
-            self.fields['union'].queryset = Union.objects.none()
-
-            if 'union' in self.data:
-                try:
-                    upazilla_id = int(self.data.get('upazilla'))
-                    self.fields['union'].queryset = Union.objects.filter(upazilla_id=upazilla_id).order_by('name')
-                except (ValueError, TypeError):
-                    pass
-            elif self.instance.pk:
-                self.fields['union'].queryset = self.instance.upazilla.union_set.order_by('name')
 
 
 class GuardianInfoForm(forms.ModelForm):
     class Meta:
-        model = GuardianInfo
+        model = ParentGuardian
         fields = '__all__'
         widgets = {
-            'father_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'father_phone_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'father_occupation': forms.Select(attrs={'class': 'form-control'}),
-            'father_yearly_income': forms.TextInput(attrs={'class': 'form-control'}),
-            'mother_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'mother_phone_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'mother_occupation': forms.Select(attrs={'class': 'form-control'}),
-            'guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'guardian_phone_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'guardian_email': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'surname': forms.TextInput(attrs={'class': 'form-control'}),
+            'work_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'place_of_employment': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.Textarea(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
             'relationship_with_student': forms.Select(attrs={'class': 'form-control'}),
         }
 
 class EmergencyContactDetailsForm(forms.ModelForm):
     class Meta:
-        model = EmergencyContactDetails
+        model = EmergencyContact
         fields = '__all__'
         widgets = {
-            'emergency_guardian_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'surname': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.Textarea(attrs={'class': 'form-control'}),
             'relationship_with_student': forms.Select(attrs={'class': 'form-control'}),
-            'phone_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
+            'phone_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'work_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
         }
 
 
-class PreviousAcademicCertificateForm(forms.ModelForm):
-    class Meta:
-        model = PreviousAcademicCertificate
-        fields = '__all__'
-
 class StudentSearchForm(forms.Form):
-    class_info = forms.ModelChoiceField(required=False, queryset=ClassInfo.objects.all())
-    registration_no = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'placeholder': 'Registration No', 'aria-controls': 'DataTables_Table_0'}))
-
-class EnrolledStudentForm(forms.Form):
-    class_name = forms.ModelChoiceField(queryset=ClassInfo.objects.all())
-
-class StudentEnrollForm(forms.Form):
-    class_name = forms.ModelChoiceField(queryset=ClassRegistration.objects.all(), widget=forms.Select(attrs={'class': 'form-control'}))
-    roll_no = forms.IntegerField(widget=forms.NumberInput(attrs={'placeholder': 'Enter Roll', 'class': 'form-control'}))
-
-class SearchEnrolledStudentForm(forms.Form):
-    reg_class = forms.ModelChoiceField(queryset=ClassRegistration.objects.all())
-    roll_no = forms.IntegerField(required=False, widget=forms.NumberInput(attrs={'placeholder': 'Enter Roll'}))
+    registration_no = forms.CharField(label='Registration No', max_length=20, required=False)

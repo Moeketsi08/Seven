@@ -1,16 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.messages.views import SuccessMessageMixin
-from .models import Designation
-from teacher.models import Teacher
-from .forms import *
-from teacher.forms import TeacherForm
 from django.views.generic import FormView
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.urls import reverse
+from django.db import transaction
+
+
+from center_manager.models import Designation
+from center_manager.forms import CenterManagerLoginForm, AllocateTeacherForm, AddDesignationForm
+from teacher.forms import TeacherForm
+from teacher.models import Teacher, Classroom
 
 def is_admin(user):
     return user.is_staff or user.is_superuser
@@ -86,8 +88,13 @@ def allocate_teacher(request):
          teacher_allocation_form = AllocateTeacherForm(request.POST) if request.POST.get('form_type') == 'teacher_allocation_form' else AllocateTeacherForm()
          if request.POST.get('form_type') == 'teacher_allocation_form':
             if teacher_allocation_form.is_valid():
-                # TODO Complete implemnation
-                teacher_allocation_form.save()
+                with transaction.atomic():
+                    classroom = Classroom.objects.create(
+                        grade=teacher_allocation_form.cleaned_data['grade'],
+                        subject=teacher_allocation_form.cleaned_data['subject'],
+                        teacher=teacher_allocation_form.cleaned_data['teacher']
+                    )
+                    classroom.students.set(teacher_allocation_form.cleaned_data['students'])
                 return redirect('allocate_teacher')
     else:
             teacher_allocation_form = AllocateTeacherForm()

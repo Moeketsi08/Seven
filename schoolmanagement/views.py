@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from student.models import Student
-from academic.models import ClassRegistration
+from academic.models import Registration
 #import student
 from teacher import models as teacher_models
 #import employee
@@ -12,7 +12,7 @@ def home_page(request):
     total_student = Student.objects.all() # Needs to be accessed differently from the student in academic appp
     total_teacher = teacher_models.Teacher.objects.all()
     #total_employee = employee_models.PersonalInfo.objects.count()
-    total_class = ClassRegistration.objects.all()
+    total_class = Registration.objects.all()
     context = {
         'student': total_student,
         'teacher': total_teacher,

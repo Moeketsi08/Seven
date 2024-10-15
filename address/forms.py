@@ -1,30 +1,20 @@
 from django import forms
-from .models import District, Upazilla, Union
+from .models import Address, Province
 
 
-class DistrictForm(forms.ModelForm):
+class AddressForm(forms.ModelForm):
     class Meta:
-        model = District
+        model = Address
         fields = '__all__'
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'unit_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'building_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'street_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'street': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'})
         }
-
-class UpazillaForm(forms.ModelForm):
-    class Meta:
-        model = Upazilla
-        fields = '__all__'
-        widgets = {
-            'district': forms.Select(attrs={'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-
-class UnionForm(forms.ModelForm):
-    class Meta:
-        model = Union
-        fields = '__all__'
-        widgets = {
-            'district': forms.Select(attrs={'class': 'form-control'}),
-            'upazilla': forms.Select(attrs={'class': 'form-control'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-        }
+        province = forms.ModelChoiceField(
+        queryset=Province.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
