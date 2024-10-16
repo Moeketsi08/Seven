@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from academic.models import Department, Subject, Grade, Subject, Nationality, Session
 from center_manager.models import Center
 from address.models import Address
-from student.models import Student
+from learner.models import Learner
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='teacher')
@@ -28,6 +28,7 @@ class Teacher(models.Model):
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     centers = models.ManyToManyField(Center, through='TeacherCenterAssignment')
     subjects_taught = models.ManyToManyField(Subject)
+    grade_taught = models.ManyToManyField(Grade)
     nationality = models.ForeignKey(Nationality, on_delete=models.SET_NULL, null=True)
     date_joined = models.DateField()
     is_active = models.BooleanField(default=True)
@@ -71,7 +72,8 @@ class Classroom(models.Model):
     grade =  models.ForeignKey(Grade, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    students = models.ManyToManyField(Student)
+    center = models.ForeignKey(Center, on_delete=models.CASCADE)
+    learners = models.ManyToManyField(Learner)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def Meta(self):
@@ -79,4 +81,4 @@ class Classroom(models.Model):
     
 
     def __str__(self):
-        return f"{self.teacher.name} {self.teacher.surname}: {self.grade.grade} - {self.subject.subject}"
+        return f"{self.teacher.name} {self.teacher.surname}: Grade {self.grade.grade} - {self.subject.subject}"

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
         ('address', '0003_auto_20241015_0014'),
         ('academic', '0007_auto_20241015_0014'),
         ('center_manager', '0003_auto_20241015_0014'),
-        ('student', '0004_auto_20241015_0014'),
+        ('learner', '0004_auto_20241015_0014'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('teacher', '0003_auto_20241009_2314'),
     ]
@@ -92,7 +92,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('grade', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.grade')),
-                ('students', models.ManyToManyField(to='student.Student')),
+                ('learners', models.ManyToManyField(to='learner.Learner')),
                 ('subject', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.subject')),
                 ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='teacher.teacher')),
             ],

@@ -115,18 +115,18 @@
 <!-- Cards Section -->
 <div class="animated fadeIn">
     <div class="row">
-        <!-- Card: Total Students -->
+        <!-- Card: Total Learners -->
         <div class="col-sm-6 col-lg-3">
             <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="card-title">Total Students</div>
+                        <div class="card-title">Total Learners</div>
                         <div class="btn-group">
                             <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-settings"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                {% comment %} <a class="dropdown-item" href="{% url 'student-list' %}">Center 1</a> {% endcomment %}
+                                {% comment %} <a class="dropdown-item" href="{% url 'learner-list' %}">Center 1</a> {% endcomment %}
                                 <a class="dropdown-item" href="#">All</a>
                                 <a class="dropdown-item" href="#">Center 2</a>
                                 <a class="dropdown-item" href="#">Center 3</a>
@@ -137,27 +137,27 @@
                         </div>
                     </div>
                     <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                        <canvas id="donutChartTotalStudents" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                        <canvas id="donutChartTotalLearners" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                            Total Students 100
+                            Total Learners 100
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Card: Student Active Status -->
+        <!-- Card: Learner Active Status -->
         <div class="col-sm-6 col-lg-3">
             <div class="card bg-white text-primary">
                 <div class="card-body pb-0">
                     <div class="d-flex justify-content-between">
-                        <div class="card-title">Student Active Status</div>
+                        <div class="card-title">Learner Active Status</div>
                         <div class="btn-group">
                             <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="icon-settings"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                {% comment %} <a class="dropdown-item" href="{% url 'student-list' %}">All Centers</a> {% endcomment %}
+                                {% comment %} <a class="dropdown-item" href="{% url 'learner-list' %}">All Centers</a> {% endcomment %}
                                 <a class="dropdown-item" href="#">Center 1</a>
                                 <a class="dropdown-item" href="#">Center 2</a>
                                 <a class="dropdown-item" href="#">Center 3</a>
@@ -409,10 +409,10 @@
             tooltips: { enabled: false }  // Disable tooltips
         };
 
-        // Donut Chart: Total Students
-        var ctxTotalStudents = document.getElementById('donutChartTotalStudents').getContext('2d');
-        var totalStudents = 100; // Replace with dynamic value for total students
-        new Chart(ctxTotalStudents, {
+        // Donut Chart: Total Learners
+        var ctxTotalLearners = document.getElementById('donutChartTotalLearners').getContext('2d');
+        var totalLearners = 100; // Replace with dynamic value for total learners
+        new Chart(ctxTotalLearners, {
             type: 'doughnut',
             data: {
                 labels: ['Male', 'Female'],
@@ -430,7 +430,7 @@
                         display: true,
                         color: 'white',
                         formatter: function() {
-                            return totalStudents + ' Students';
+                            return totalLearners + ' Learners';
                         },
                         font: {
                             weight: 'bold',
@@ -441,7 +441,7 @@
             }
         });
 
-        // Donut Chart: Student Active Status
+        // Donut Chart: Learner Active Status
         var ctxActiveStatus = document.getElementById('donutChartActiveStatus').getContext('2d');
         new Chart(ctxActiveStatus, {
             type: 'doughnut',

@@ -5,7 +5,7 @@
   <div class="card">
     <div class="card-header">Center Register Form</div>
     <div class="card-body">
-      <form class="" action="" method="post" id="StudentRegistrationForm" data-upazilla-url={% url 'load-upazilla' %}>
+      <form class="" action="" method="post" id="LearnerRegistrationForm" data-upazilla-url={% url 'load-upazilla' %}>
         {% csrf_token %}
         {{ forms.as_p }}
         <button type="submit" class="btn btn-primary">Submit</button>

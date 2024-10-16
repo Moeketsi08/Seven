@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth.models import User
-from academic.models import ClassInfo, Session, Center, ClassRegistration, Student
-from attendance.models import StudentAttendance
+from academic.models import ClassInfo, Session, Center, ClassRegistration, Learner
+from attendance.models import LearnerAttendance
 from teacher.models import Teacher, Timesheet
 from django.utils import timezone
 from datetime import timedelta
@@ -57,16 +57,16 @@ class TeacherFunctionalityTestCase(TestCase):
             atp_hours=5.0
         )
 
-        # Create a student
-        self.student = Student.objects.create(
+        # Create a learner
+        self.learner = Learner.objects.create(
             first_name='Alice',
             last_name='Johnson',
             class_registration=self.class_reg
         )
 
         # Create an attendance record
-        self.attendance = StudentAttendance.objects.create(
-            student=self.student,
+        self.attendance = LearnerAttendance.objects.create(
+            learner=self.learner,
             class_name=self.class_reg,
             status=1
         )
@@ -123,7 +123,7 @@ class TeacherFunctionalityTestCase(TestCase):
 
         self.assertContains(response, "Alice Johnson")
 
-    def test_teacher_view_student_information(self):
+    def test_teacher_view_learner_information(self):
         # Log in the teacher
         self.client.login(username='teacher1', password='password')
 
@@ -165,7 +165,7 @@ class TeacherFunctionalityTestCase(TestCase):
         #    'atp_hours': 5.0,
         #    'form-TOTAL_FORMS': '1',
         #    'form-INITIAL_FORMS': '0',
-        #    'form-0-student_id': self.student.id,
+        #    'form-0-learner_id': self.learner.id,
         #    'form-0-status': 'present'
         #}
        # response = self.client.post(reverse('submit_attendance_and_timesheet', kwargs={'session_id': self.session.id}), data)
@@ -179,7 +179,7 @@ class TeacherFunctionalityTestCase(TestCase):
      #   self.assertEqual(new_timesheet.atp_hours, 5.0)
         
         # Check if the attendance was created
-     #   attendance = StudentAttendance.objects.filter(student=self.student, class_name=self.session.class_info, date=self.tomorrow).first()
+     #   attendance = LearnerAttendance.objects.filter(learner=self.learner, class_name=self.session.class_info, date=self.tomorrow).first()
      #   self.assertIsNotNone(attendance)
      #   self.assertEqual(attendance.status, 'present')
 
@@ -192,13 +192,13 @@ class TeacherFunctionalityTestCase(TestCase):
     #        'atp_hours': 3.0,
     #        'form-TOTAL_FORMS': '1',
     #        'form-INITIAL_FORMS': '0',
-    #        'form-0-student_id': self.student.id,
+    #        'form-0-learner_id': self.learner.id,
     #        'form-0-status': 'present'
     #    }
     #    response = self.client.post(reverse('submit_attendance_and_timesheet', kwargs={'session_id': self.session.id}), data)
     #    self.assertRedirects(response, reverse('teacher_dashboard'))
     #    self.assertTrue(Timesheet.objects.filter(teacher=self.teacher, date=self.tomorrow, atp_hours=3.0).exists())
-    #    self.assertTrue(StudentAttendance.objects.filter(student=self.student, class_name=self.class_reg, date=self.tomorrow, status='present').exists())
+    #    self.assertTrue(LearnerAttendance.objects.filter(learner=self.learner, class_name=self.class_reg, date=self.tomorrow, status='present').exists())
 
     #def test_teacher_view_class_details(self):
     #    self.client.login(username='teacher1', password='password')

@@ -15,7 +15,7 @@ class UserProfile(models.Model):
         ('professor', 'Professor'),
         ('teacher', 'Teacher'),
         # ('register', 'Register'),
-        ('student', 'Student'),
+        ('learner', 'Learner'),
     )
     employee_type = models.CharField(choices=employee_select, max_length=15)
 

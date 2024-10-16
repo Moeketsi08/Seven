@@ -41,10 +41,11 @@ class AddDesignationForm(forms.ModelForm):
 class AllocateTeacherForm(forms.ModelForm):
     class Meta:
         model = Classroom
-        fields = ['subject', 'grade', 'students', 'teacher']  # Removed 'sessions'
+        fields = ['subject', 'grade', 'learners', 'teacher', 'center']  # Removed 'sessions'
         widgets = {
             'subject': forms.Select(attrs={'class': 'form-control'}),
             'grade': forms.Select(attrs={'class': 'form-control'}),
-            'students': forms.SelectMultiple(attrs={'class': 'form-control'}),
+            'learners': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'teacher': forms.Select(attrs={'class': 'form-control'}),
+            'center': forms.Select(attrs={'class': 'form-control'}),
         }

@@ -7,11 +7,11 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('attendance', '0003_auto_20241009_0038'),
-        ('academic', '0004_remove_student_class_registration'),
+        ('academic', '0004_remove_learner_class_registration'),
     ]
 
     operations = [
         migrations.DeleteModel(
-            name='Student',
+            name='Learner',
         ),
     ]

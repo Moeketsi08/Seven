@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=45)),
                 ('photo', models.ImageField(upload_to='admin/')),
                 ('gender', models.CharField(choices=[('male', 'Male'), ('female', 'Female')], max_length=6)),
-                ('employee_type', models.CharField(choices=[('admin', 'Admin'), ('professor', 'Professor'), ('teacher', 'Teacher'), ('register', 'Register'), ('student', 'Student')], max_length=15)),
+                ('employee_type', models.CharField(choices=[('admin', 'Admin'), ('professor', 'Professor'), ('teacher', 'Teacher'), ('register', 'Register'), ('learner', 'Learner')], max_length=15)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

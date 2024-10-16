@@ -8,8 +8,8 @@
     {{ attendance_formset.management_form }}
     {% for form in attendance_formset %}
         <div>
-            {{ form.student_name.value }}
-            {{ form.student_id }}
+            {{ form.learner_name.value }}
+            {{ form.learner_id }}
             {{ form.status }}
         </div>
     {% endfor %}

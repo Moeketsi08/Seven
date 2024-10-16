@@ -1,14 +1,15 @@
 from django.db import models
 import random
 from django.utils.timezone import now
+from django.core.exceptions import ValidationError
 
 from address.models import Address
 from academic.models import Nationality
 
-class Student(models.Model):
+class Learner(models.Model):
     name = models.CharField(max_length=45)
     surname = models.CharField(max_length=45)
-    photo = models.ImageField(upload_to='student-photos/')
+    photo = models.ImageField(upload_to='learner-photos/')
     date_of_birth = models.DateField()
     GENDER_CHOICE = (
         ('M', 'Male'),
@@ -48,12 +49,33 @@ class Student(models.Model):
         ('N', 'No')
     )
     disability = models.CharField(choices=disability_choices, max_length=10)
+    disabilities = models.ManyToManyField('Disability', related_name='learners_with_disabilities', blank=True)  # This is the field
     joined_programme = models.DateField(auto_now_add=True, null=True)
     exited_programme = models.DateField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)
+    
+    def clean(self):
+        # If disability is 'No', make sure there are no associated disabilities
+        if self.disability == 'N' and self.disabilities.exists():
+            raise ValidationError("A learner without a disability cannot have associated disabilities.")
+        
+        # If disability is 'Yes', ensure at least one disability is assigned
+        if self.disability == 'Y' and not self.disabilities.exists():
+            raise ValidationError("A learner marked as having a disability must be associated with at least one disability.")
+
+    def save(self, *args, **kwargs):
+        # Call the clean method to validate before saving
+        self.clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return f"{self.name} {self.surname}"
+
+class Disability(models.Model):
+    disability_type = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    accommodations = models.TextField(blank=True, null=True)  # Specify any needed accommodations
+    learners = models.ManyToManyField(Learner, related_name='learner_disabilities')  # Many-to-many relationship with Learner
     
 class ParentGuardian(models.Model):
     name = models.CharField(max_length=25)
@@ -65,10 +87,10 @@ class ParentGuardian(models.Model):
         ('Uncle', 'Uncle'),
         ('Aunt', 'Aunt'),
     )
-    relationship_with_student = models.CharField(choices=RELATIONSHIP_CHOICE, max_length=45)
+    relationship_with_learner = models.CharField(choices=RELATIONSHIP_CHOICE, max_length=45)
     phone_number = models.CharField(max_length=15)
     email = models.EmailField(blank=True, null=True)
-    students = models.ManyToManyField(Student, related_name='parents')  # Many-to-Many relationship with Student
+    learners = models.ManyToManyField(Learner, related_name='parents')  # Many-to-Many relationship with Learner
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     work_number = models.CharField(max_length=15)
     employment_place = models.CharField(max_length=25)  # Corrected spelling
@@ -87,10 +109,10 @@ class EmergencyContact(models.Model):
         ('Uncle', 'Uncle'),
         ('Aunt', 'Aunt'),
     )
-    relationship_with_student = models.CharField(choices=RELATIONSHIP_CHOICE, max_length=45)
+    relationship_with_learner = models.CharField(choices=RELATIONSHIP_CHOICE, max_length=45)
     phone_number = models.CharField(max_length=15)
     place_of_employment = models.CharField(max_length=25)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='emergency_contact')  # One emergency contact per student
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE, related_name='emergency_contact')  # One emergency contact per learner
     address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
     work_number = models.CharField(max_length=15)
     email = models.EmailField(max_length=15)
@@ -103,13 +125,8 @@ class SupportDocument(models.Model):
     file = models.FileField(upload_to='support_documents/')
     description = models.TextField(blank=True, null=True)
     upload_date = models.DateField(auto_now_add=True)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE)
 
-class Disability(models.Model):
-    disability_type = models.CharField(max_length=100)
-    description = models.TextField(blank=True, null=True)
-    accommodations = models.TextField(blank=True, null=True)  # Specify any needed accommodations
-    students = models.ManyToManyField(Student, related_name='disabilities')  # Many-to-many relationship with Student
 
     
 
@@ -125,7 +142,7 @@ class Disability(models.Model):
 #     )
 #     status = models.CharField(choices=status_select, default='not enrolled', max_length=15)
 #     personal_info = models.ForeignKey(PersonalInfo, on_delete=models.CASCADE, null=True)
-#     address_info = models.ForeignKey(StudentAddressInfo, on_delete=models.CASCADE, null=True)
+#     address_info = models.ForeignKey(LearnerAddressInfo, on_delete=models.CASCADE, null=True)
 #     guardian_info = models.ForeignKey(GuardianInfo, on_delete=models.CASCADE, null=True)
 #     emergency_contact_info = models.ForeignKey(EmergencyContactDetails, on_delete=models.CASCADE, null=True)
 #     # previous_academic_info = models.ForeignKey(PreviousAcademicInfo, on_delete=models.CASCADE, null=True)

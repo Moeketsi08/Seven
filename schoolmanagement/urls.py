@@ -27,7 +27,7 @@ urlpatterns = [
     path('', include('center_manager.urls')),
     # path('center_manager/', include('center_manager.urls')),
     path('teacher/', include('teacher.urls')),
-    path('student/', include('student.urls')),
+    path('learner/', include('learner.urls')),
     path('academic/', include('academic.urls')),
     path('employee/', include('employee.urls')),
     # path('result/', include('result.urls')),

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             name='status',
             field=models.CharField(choices=[('Present', 'Present'), ('Absent', 'Absent'), ('Late', 'Late')], default='Present', max_length=10),
         ),

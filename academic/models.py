@@ -73,7 +73,7 @@ class Session(models.Model):
 
 
 class Registration(models.Model):  # Corrected from models.Models
-    student = models.ForeignKey('student.Student', on_delete=models.CASCADE)
+    learner = models.ForeignKey('learner.Learner', on_delete=models.CASCADE)
     registration_number = models.PositiveIntegerField(unique=True, blank=True, null=True)
     registration_date = models.DateTimeField(auto_now_add=True)  # Automatically set the date and time of registration
     STATUS_CHOICES = [
@@ -87,12 +87,12 @@ class Registration(models.Model):  # Corrected from models.Models
     
     def save(self, *args, **kwargs):
         if self.registration_number is None and self.status == 'Completed':
-            last_student = Registration.objects.order_by('registration_number').last()
-            self.registration_number = last_student.registration_number + 1 if last_student else 1
+            last_learner = Registration.objects.order_by('registration_number').last()
+            self.registration_number = last_learner.registration_number + 1 if last_learner else 1
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.student.name} {self.student.surname} - {self.status}"
+        return f"{self.learner.name} {self.learner.surname} - {self.status}"
     
     
 class Nationality(models.Model):

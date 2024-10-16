@@ -1,21 +1,21 @@
 from django.db import models
 from academic.models import Registration
-from student.models import Student
+from learner.models import Learner
 from teacher.models import Classroom
 
 class AttendanceManager(models.Manager):
     def create_attendance(self, std_class, std_roll):
         std_cls = Registration.objects.get(name=std_class)
-        std = Student.objects.get(roll=std_roll, class_registration=std_cls)
-        std_att = StudentAttendance.objects.create(
+        std = Learner.objects.get(roll=std_roll, class_registration=std_cls)
+        std_att = LearnerAttendance.objects.create(
             class_name=std_cls,
-            student=std,
+            learner=std,
             status=1
         )
         return std_att
 
-class StudentAttendance(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+class LearnerAttendance(models.Model):
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE)
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     
     STATUS_CHOICES = [('Present', 'Present'), ('Absent', 'Absent'), ('Late', 'Late')]
@@ -25,7 +25,7 @@ class StudentAttendance(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ['student', 'attendance_date']
+        unique_together = ['learner', 'attendance_date']
 
     def __str__(self):
-        return f"{self.student.name} {self.student.surname}"
+        return f"{self.learner.name} {self.learner.surname}"

@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
         ('academic', '0007_auto_20241015_0014'),
         ('attendance', '0004_auto_20241015_0014'),
         ('center_manager', '0003_auto_20241015_0014'),
-        ('student', '0004_auto_20241015_0014'),
+        ('learner', '0004_auto_20241015_0014'),
         ('teacher', '0004_auto_20241015_0014'),
     ]
 
@@ -29,8 +29,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='registration',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student.student'),
+            name='learner',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='learner.learner'),
         ),
         migrations.RemoveField(
             model_name='session',

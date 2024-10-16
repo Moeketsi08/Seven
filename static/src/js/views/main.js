@@ -530,9 +530,9 @@ $(function(){
   //  options: options
   //});
 
-  // Total Students Donut Chart
-  var ctx = document.getElementById('donutChartTotalStudents').getContext('2d');
-  var donutChartTotalStudents = new Chart(ctx, {
+  // Total Learners Donut Chart
+  var ctx = document.getElementById('donutChartTotalLearners').getContext('2d');
+  var donutChartTotalLearners = new Chart(ctx, {
       type: 'doughnut',
       data: {
           labels: ['Male', 'Female'],
@@ -583,7 +583,7 @@ $(function(){
   
 
 // Learner Attendance Donut Chart
-var ctx = document.getElementById('donutChartTotalStudents').getContext('2d');
+var ctx = document.getElementById('donutChartTotalLearners').getContext('2d');
 var donutChart = new Chart(ctx, {
     type: 'doughnut',
     data: {

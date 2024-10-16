@@ -9,40 +9,40 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('teacher', '0004_auto_20241015_0014'),
-        ('student', '0004_auto_20241015_0014'),
+        ('learner', '0004_auto_20241015_0014'),
         ('attendance', '0003_auto_20241009_0038'),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             name='class_name',
         ),
         migrations.AddField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             name='classroom',
             field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='teacher.classroom'),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             name='created_at',
             field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             name='date',
             field=models.DateField(),
         ),
         migrations.AlterField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             name='status',
             field=models.CharField(choices=[('Present', 'Present'), ('Absent', 'Absent'), ('Late', 'Late')], max_length=10),
         ),
         migrations.AlterField(
-            model_name='studentattendance',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student.student'),
+            model_name='learnerattendance',
+            name='learner',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='learner.learner'),
         ),
     ]

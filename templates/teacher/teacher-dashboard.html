@@ -54,7 +54,7 @@
     </div>
 </div>
 
-    <!-- Student Attendance Section -->
+    <!-- Learner Attendance Section -->
     <div class="card mb-4">
         <div class="card-header">
             <h3>Mark Attendance</h3>
@@ -65,7 +65,7 @@
                 {{ attendance_formset.management_form }}
                 {% for form in attendance_formset %}
                 <div>
-               {{ form.student.name }}
+               {{ form.learner.name }}
                 {{ form.status }}
                 </div>
                 {% endfor %}

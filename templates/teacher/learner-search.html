@@ -5,7 +5,7 @@
   <div class="animated fadeIn">
       <div class="card">
           <div class="card-header">
-              <i class="fa fa-search"></i> Search Student
+              <i class="fa fa-search"></i> Search Learner
           </div>
           <div class="card-body">
               <form method="GET">
@@ -14,40 +14,40 @@
                   <button type="submit" class="btn btn-primary">Search</button>
               </form>
 
-              {% if student %}
-                  <h4>Student Details:</h4>
+              {% if learner %}
+                  <h4>Learner Details:</h4>
                   <table class="table table-bordered">
                       <tr>
                           <th>Registration No</th>
-                          <td>{{ student.registration_number }}</td>
+                          <td>{{ learner.registration_number }}</td>
                       </tr>
                       <tr>
                           <th>Name</th>
-                          <td>{{ student.student.name }}</td> <!-- Assuming you have access to student related field -->
+                          <td>{{ learner.learner.name }}</td> <!-- Assuming you have access to learner related field -->
                       </tr>
                       <tr>
                           <th>Surname</th>
-                          <td>{{ student.student.surname }}</td>
+                          <td>{{ learner.learner.surname }}</td>
                       </tr>
                       <tr>
                           <th>Status</th>
-                          <td>{{ student.get_status_display }}</td>
+                          <td>{{ learner.get_status_display }}</td>
                       </tr>
                       <tr>
                           <th>Date of Registration</th>
-                          <td>{{ student.registration_date }}</td>
+                          <td>{{ learner.registration_date }}</td>
                       </tr>
                       <tr>
                           <th>Fees Paid</th>
-                          <td>{{ student.fees_paid }}</td>
+                          <td>{{ learner.fees_paid }}</td>
                       </tr>
                       <tr>
                           <th>Notes</th>
-                          <td>{{ student.notes }}</td>
+                          <td>{{ learner.notes }}</td>
                       </tr>
                   </table>
               {% elif reg_no %}
-                  <h4>No student found with this registration number.</h4>
+                  <h4>No learner found with this registration number.</h4>
               {% endif %}
           </div>
       </div>

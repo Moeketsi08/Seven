@@ -49,7 +49,7 @@ INSTALLED_APPS = [
 
     'center_manager',
     'teacher',
-    'student',
+    'learner',
     'academic',
     'employee',
     'result',

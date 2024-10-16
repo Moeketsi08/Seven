@@ -2,16 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <h2>Student Enrolled Here!</h2>
+    <h2>Learner Enrolled Here!</h2>
     <form action="" method="GET">
         {{ forms }}
         <input type="submit" value="Go">
     </form>
-    {% if student %}
+    {% if learner %}
     <div class="animated fadeIn">
         <div class="card">
             <div class="card-header">
-                <i class="fa fa-edit"></i> Student Tables
+                <i class="fa fa-edit"></i> Learner Tables
             </div>
             <div class="card-body">
                 <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -30,19 +30,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for student in student %}
+                                    {% for learner in learner %}
                                       <tr role="row" class="odd">
                                           <td>{{ forloop.counter }}</td>
-                                          <td>{{ student.personal_info.name }}</td>
-                                          <td>{{ student.registration_no }}</td>
-                                          <td>{{ student.class_info }}</td>
-                                          <td>{{ student.status }}</td>
-                                          <td>{{ student.date }}</td>
+                                          <td>{{ learner.personal_info.name }}</td>
+                                          <td>{{ learner.registration_no }}</td>
+                                          <td>{{ learner.class_info }}</td>
+                                          <td>{{ learner.status }}</td>
+                                          <td>{{ learner.date }}</td>
                                           <td>
-                                              <a class="btn btn-success" href="{% url 'student-profile' student.registration_no %}">
+                                              <a class="btn btn-success" href="{% url 'learner-profile' learner.registration_no %}">
                                                   <i class="fa fa-search-plus"></i>
                                               </a>
-                                              <a class="btn btn-success" href="{% url 'enrolled' student.registration_no %}">Enroll</a>
+                                              <a class="btn btn-success" href="{% url 'enrolled' learner.registration_no %}">Enroll</a>
                                           </td>
                                       </tr>
                                     {% endfor %}

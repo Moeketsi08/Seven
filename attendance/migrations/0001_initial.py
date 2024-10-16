@@ -14,16 +14,16 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='StudentAttendance',
+            name='LearnerAttendance',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('status', models.IntegerField(default=0)),
                 ('date', models.DateField(auto_now_add=True)),
                 ('class_name', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.classregistration')),
-                ('student', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='academic.student')),
+                ('learner', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='academic.learner')),
             ],
             options={
-                'unique_together': {('student', 'date')},
+                'unique_together': {('learner', 'date')},
             },
         ),
     ]

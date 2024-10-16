@@ -6,18 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('student', '0004_auto_20241015_0014'),
+        ('learner', '0004_auto_20241015_0014'),
         ('attendance', '0005_auto_20241015_0056'),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='studentattendance',
+            model_name='learnerattendance',
             old_name='date',
             new_name='attendance_date',
         ),
         migrations.AlterUniqueTogether(
-            name='studentattendance',
-            unique_together={('student', 'attendance_date')},
+            name='learnerattendance',
+            unique_together={('learner', 'attendance_date')},
         ),
     ]

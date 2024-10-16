@@ -92,9 +92,11 @@ def allocate_teacher(request):
                     classroom = Classroom.objects.create(
                         grade=teacher_allocation_form.cleaned_data['grade'],
                         subject=teacher_allocation_form.cleaned_data['subject'],
-                        teacher=teacher_allocation_form.cleaned_data['teacher']
+                        teacher=teacher_allocation_form.cleaned_data['teacher'],
+                        center=teacher_allocation_form.cleaned_data['center']
                     )
-                    classroom.students.set(teacher_allocation_form.cleaned_data['students'])
+                    classroom.learners.set(teacher_allocation_form.cleaned_data['learners'])
+                    
                 return redirect('allocate_teacher')
     else:
             teacher_allocation_form = AllocateTeacherForm()

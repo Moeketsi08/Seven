@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import formset_factory
 from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
 from .models import Teacher, TeacherCenterAssignment, Timesheet  # Add this import at the top of the file
 from academic.models import Department, Grade, Subject, Session
 #from .models import Timesheet
@@ -25,7 +26,7 @@ class TeacherForm(forms.ModelForm):
             'department': forms.Select(attrs={'class': 'form-control'}),
             'subjects_taught': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'date_joined': forms.DateInput(attrs={'class': 'form-control'}),
-            'nationality': CountryField().formfield()
+            'nationality': CountryField().formfield(widget=CountrySelectWidget(attrs={'class': 'form-control'})),
         }
 
 class TeacherCenterAssignmentForm(forms.ModelForm):
@@ -49,17 +50,17 @@ class AttendanceTimesheetForm(forms.ModelForm):
             'atp_hours': forms.NumberInput(attrs={'step': '0.5'}),
         }
 
-# class StudentAttendanceForm(forms.Form):
+# class LearnerAttendanceForm(forms.Form):
 #     ATTENDANCE_CHOICES = [
 #         ('present', 'Present'),
 #         ('absent', 'Absent'),
 #         ('late', 'Late'),
 #     ]
-#     student_id = forms.IntegerField(widget=forms.HiddenInput())
-#     student_name = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+#     learner_id = forms.IntegerField(widget=forms.HiddenInput())
+#     learner_name = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 #     status = forms.ChoiceField(choices=ATTENDANCE_CHOICES, widget=forms.RadioSelect)
 
-# StudentAttendanceFormSet = formset_factory(StudentAttendanceForm, extra=0)
+# LearnerAttendanceFormSet = formset_factory(LearnerAttendanceForm, extra=0)
 
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))

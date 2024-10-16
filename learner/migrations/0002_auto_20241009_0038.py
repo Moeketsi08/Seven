@@ -7,16 +7,16 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('academic', '0004_remove_student_class_registration'),
+        ('academic', '0004_remove_learner_class_registration'),
         ('teacher', '0002_auto_20241005_1503'),
-        ('student', '0001_initial'),
+        ('learner', '0001_initial'),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='enrolledstudent',
-            old_name='student',
-            new_name='student_record',
+            model_name='enrolledlearner',
+            old_name='learner',
+            new_name='learner_record',
         ),
         migrations.RemoveField(
             model_name='guardianinfo',
@@ -58,8 +58,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='emergencycontactdetails',
-            name='student',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='student.personalinfo'),
+            name='learner',
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='learner.personalinfo'),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -82,8 +82,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='guardianinfo',
-            name='student',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='student.personalinfo'),
+            name='learner',
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='learner.personalinfo'),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -136,20 +136,20 @@ class Migration(migrations.Migration):
             field=models.CharField(choices=[('SA', 'South African'), ('ZW', 'Zimbabwe')], max_length=45),
         ),
         migrations.AlterUniqueTogether(
-            name='enrolledstudent',
-            unique_together={('class_name', 'student_record')},
+            name='enrolledlearner',
+            unique_together={('class_name', 'learner_record')},
         ),
         migrations.CreateModel(
-            name='Student',
+            name='Learner',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('class_registration', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.classregistration')),
-                ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student.enrolledstudent')),
-                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='students', to='teacher.teacher')),
+                ('learner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='learner.enrolledlearner')),
+                ('teacher', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='learners', to='teacher.teacher')),
             ],
         ),
         migrations.RemoveField(
-            model_name='enrolledstudent',
+            model_name='enrolledlearner',
             name='roll',
         ),
     ]

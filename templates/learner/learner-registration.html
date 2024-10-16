@@ -4,7 +4,7 @@
   <div class="card">
     <div class="card-header">Learner Register Form</div>
     <div class="card-body">
-      <form class="" action="" method="post" enctype="multipart/form-data" id="StudentRegistrationForm" data-upazilla-url={% url 'load-upazilla' %}>
+      <form class="" action="" method="post" enctype="multipart/form-data" id="LearnerRegistrationForm" data-upazilla-url={% url 'load-upazilla' %}>
         <div class="academic_info">
           <div class="card">
             <div class="card-header">Academic Information</div>
@@ -33,7 +33,7 @@
             <div class="card-header">Address Information</div>
             <div class="card-body">
               {% csrf_token %}
-              {{ student_address_info_form.as_p }}
+              {{ learner_address_info_form.as_p }}
             </div>
           </div>
           <button id="address_info_prev_btn" type="button" class="btn btn-primary pull-left">Previous</button>

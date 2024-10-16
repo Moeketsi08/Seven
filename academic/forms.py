@@ -34,7 +34,7 @@ class ClassRegistrationForm(forms.ModelForm):
         model = Registration
         fields = '__all__'
         widgets = {
-            'student': forms.Select(attrs={'class': 'form-control'}),
+            'learner': forms.Select(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
             'fees_paid': forms.Select(attrs={'class': 'form-control'}),
             'notes': forms.Select(attrs={'class': 'form-control'}),

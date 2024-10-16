@@ -23,22 +23,21 @@ class Designation(models.Model):
     
 class CenterManager(models.Model):
     name = models.CharField(max_length=100)
-    surnname = models.CharField(max_length=100)
+    surname = models.CharField(max_length=100)  # Fixed typo
     phone_number = models.CharField(max_length=15)
     email = models.EmailField()
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='center_managers')
-    
+
     def __str__(self):
-        return f"{self.name} {self.surnname}"
-    
+        return f"{self.name} {self.surname}"
 
 class Center(models.Model):
     name = models.CharField(max_length=255)
     contact_info = models.CharField(max_length=255, blank=True, null=True)  # Optional
-    center_manager = models.ForeignKey(CenterManager, on_delete=models.CASCADE, related_name='centers')
+    center_manager = models.OneToOneField(CenterManager, on_delete=models.CASCADE, related_name='center')  # Changed to OneToOneField
     email = models.EmailField(blank=True, null=True)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='center')
-    
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='centers')
+
     def __str__(self):
         return self.name
     

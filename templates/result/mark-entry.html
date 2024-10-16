@@ -10,7 +10,7 @@
       </form>
     </div>
   </div>
-  {% if student %}
+  {% if learner %}
   <div class="card">
       <div class="card-header">
           <i class="fa fa-align-justify"></i>Class List</div>
@@ -27,7 +27,7 @@
                   </tr>
               </thead>
               <tbody>
-                  {% for std in student %}
+                  {% for std in learner %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ std.personal_info.name }}</td>
