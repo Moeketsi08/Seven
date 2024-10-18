@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 from address.models import Address
 from academic.models import Nationality
+from center_manager.models import Center
 
 class Learner(models.Model):
     name = models.CharField(max_length=45)
@@ -49,19 +50,21 @@ class Learner(models.Model):
         ('N', 'No')
     )
     disability = models.CharField(choices=disability_choices, max_length=10)
-    disabilities = models.ManyToManyField('Disability', related_name='learners_with_disabilities', blank=True)  # This is the field
+    disabilities = models.OneToOneField('Disability', on_delete=models.SET_NULL, null=True, blank=True) 
+    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='learners')  # Center relationship
     joined_programme = models.DateField(auto_now_add=True, null=True)
     exited_programme = models.DateField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)
     
     def clean(self):
-        # If disability is 'No', make sure there are no associated disabilities
-        if self.disability == 'N' and self.disabilities.exists():
-            raise ValidationError("A learner without a disability cannot have associated disabilities.")
+        # If disability is 'No', ensure no disability is associated
+        if self.disability == 'N' and self.disabilities is not None:
+            raise ValidationError("A learner without a disability cannot have an associated disability.")
         
-        # If disability is 'Yes', ensure at least one disability is assigned
-        if self.disability == 'Y' and not self.disabilities.exists():
-            raise ValidationError("A learner marked as having a disability must be associated with at least one disability.")
+        # If disability is 'Yes', ensure a disability is assigned
+        if self.disability == 'Y' and self.disabilities is None:
+            raise ValidationError("A learner marked as having a disability must have an associated disability.")
+
 
     def save(self, *args, **kwargs):
         # Call the clean method to validate before saving
@@ -75,7 +78,11 @@ class Disability(models.Model):
     disability_type = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     accommodations = models.TextField(blank=True, null=True)  # Specify any needed accommodations
-    learners = models.ManyToManyField(Learner, related_name='learner_disabilities')  # Many-to-many relationship with Learner
+    # learners = models.ManyToManyField(Learner, related_name='learner_disabilities')  # Many-to-many relationship with Learner
+    
+    def __str__(self):
+        return self.disability_type
+    
     
 class ParentGuardian(models.Model):
     name = models.CharField(max_length=25)

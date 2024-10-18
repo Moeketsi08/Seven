@@ -20,25 +20,6 @@ from learner.forms import LearnerSearchForm
 
 from datetime import datetime
 
-""" def teacher_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('teacher-dashboard')
-        else:
-            return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
-            return render(request, 'teacher/teacher_login.html', {'error': 'Invalid username or password'})
-    else:
-        return render(request, 'teacher/teacher_login.html') """
-
-# @login_required
-# def teacher_dashboard(request):
-#     # Logic for the teacher's dashboard
-#     return render(request, 'teacher/teacher-dashboard.html')
-
 @login_required
 def teacher_dashboard(request):
     # Try to retrieve the Teacher instance related to the user
@@ -96,46 +77,6 @@ def teacher_dashboard(request):
         'sessions': sessions,
     })
 
-# @login_required
-# def submit_attendance_and_timesheet(request, session_id):
-#     teacher = request.user.teacher
-#     session = get_object_or_404(Session, id=session_id, class_info__in=teacher.subjects_taught.all())
-#     learners = Learner.objects.filter(class_registration__session=session)
-
-#     if request.method == 'POST':
-#         timesheet_form = AttendanceTimesheetForm(request.POST)
-#         attendance_formset = LearnerAttendanceFormSet(request.POST)
-        
-#         if timesheet_form.is_valid() and attendance_formset.is_valid():
-#             timesheet = timesheet_form.save(commit=False)
-#             timesheet.teacher = teacher
-#             timesheet.session = session
-#             timesheet.save()
-
-#             for form in attendance_formset:
-#                 learner_id = form.cleaned_data['learner_id']
-#                 status = form.cleaned_data['status']
-#                 LearnerAttendance.objects.create(
-#                     learner_id=learner_id,
-#                     class_name=session.class_info,
-#                     date=timesheet.date,
-#                     status=status
-#                 )
-
-#             return redirect('teacher_dashboard')
-#     else:
-#         timesheet_form = AttendanceTimesheetForm(initial={'date': timezone.now().date()})
-#         attendance_formset = LearnerAttendanceFormSet(initial=[
-#             {'learner_id': learner.id, 'learner_name': f"{learner.first_name} {learner.last_name}"}
-#             for learner in learners
-#         ])
-
-#     return render(request, 'teacher/submit_attendance_and_timesheet.html', {
-#         'timesheet_form': timesheet_form,
-#         'attendance_formset': attendance_formset,
-#         'session': session
-#     })
-
 @login_required
 def teacher_profile(request):
     teacher = request.user.teacher
@@ -144,6 +85,7 @@ def teacher_profile(request):
     }
     return render(request, 'teacher/teacher-profile.html', context)
 
+@login_required
 def learner_list(request):
     search_query = request.GET.get('search', '')
     
@@ -170,7 +112,7 @@ def learner_list(request):
     
     return render(request, 'teacher/learner-list.html', context)
 
-
+@login_required
 def learner_search(request):
     forms = LearnerSearchForm()
     learner = None
@@ -185,19 +127,6 @@ def learner_search(request):
     }
     return render(request, 'teacher/learner-search.html', context)
 
-# def create_class(request):
-#     form = ClassRegistrationForm()
-#     districts = District.objects.all()  # Add this line to get the districts
-#     if request.method == 'POST':
-#         form = ClassRegistrationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('class-list')
-#     context = {
-#         'form': form,
-#         'districts': districts  # Pass the districts to the template
-#     }
-#     return render(request, 'teacher/create-class.html', context)
 class TeacherLoginView(SuccessMessageMixin,FormView):
     template_name = 'teacher/teacher_login.html'  # Update the path
     form_class = AuthenticationForm
@@ -210,7 +139,6 @@ class TeacherLoginView(SuccessMessageMixin,FormView):
         return super().form_valid(form)
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid credentials. Please try again.')
-
         # Re-render the form with the error messages
         return redirect('/teacher/teacher_login')
     def get_success_url(self):

@@ -1,0 +1,34 @@
+{% extends 'base/center_manager_base.html' %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">Edit Teacher Allocation</div>
+    <div class="card-body">
+      <form method="post" action="{% url 'edit_teacher_allocation' %}">
+    {% csrf_token %}
+    {{ formset.management_form }}  <!-- Needed for Django formsets -->
+    <table>
+        <thead>
+            <tr>
+                <th>Grade</th>
+                <th>Subject</th>
+                <th>Teacher</th>
+                <th>Learners</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for form in formset %}
+                <tr>
+                    <td>{{ form.grade }}</td>
+                    <td>{{ form.subject }}</td>
+                    <td>{{ form.teacher }}</td>
+                    <td>{{ form.learners }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <input type="hidden" name="form_type" value="edit_teacher_allocation">
+    <button type="submit">Save Changes</button>
+</form>
+    </div>
+  </div>
+{% endblock %}

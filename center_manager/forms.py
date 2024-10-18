@@ -1,5 +1,8 @@
 from django import forms
-from teacher.models import Department, Classroom
+from django.forms import modelformset_factory, BaseModelFormSet
+
+from teacher.models import Department, Classroom, Teacher
+from learner.models import Learner
 from center_manager.models import Designation
 
 class CenterManagerLoginForm(forms.Form):
@@ -38,14 +41,35 @@ class AddDesignationForm(forms.ModelForm):
             'session': forms.Select(attrs={'class': 'form-control'}),
         }  """       
 
+
 class AllocateTeacherForm(forms.ModelForm):
     class Meta:
         model = Classroom
-        fields = ['subject', 'grade', 'learners', 'teacher', 'center']  # Removed 'sessions'
+        fields = ['subject', 'grade', 'learners', 'teacher']  # Removed 'sessions'
         widgets = {
             'subject': forms.Select(attrs={'class': 'form-control'}),
             'grade': forms.Select(attrs={'class': 'form-control'}),
-            'learners': forms.SelectMultiple(attrs={'class': 'form-control'}),
             'teacher': forms.Select(attrs={'class': 'form-control'}),
             'center': forms.Select(attrs={'class': 'form-control'}),
         }
+        
+
+
+class ClassroomFormSet(BaseModelFormSet):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Customize widgets for each form in the formset
+        for form in self.forms:
+            form.fields['subject'].widget.attrs.update({'class': 'form-control'})
+            form.fields['grade'].widget.attrs.update({'class': 'form-control'})
+            form.fields['teacher'].widget.attrs.update({'class': 'form-control'})
+            form.fields['learners'].widget = forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'})  # Checkbox select for multiple learners
+            form.fields['learners'].queryset = Learner.objects.all()  # Default queryset, can be filtered later
+
+# Create the formset using the custom formset class
+ClassroomFormSet = modelformset_factory(
+    Classroom,
+    formset=ClassroomFormSet,
+    fields=('grade', 'subject', 'teacher', 'learners'),
+    extra=0,  # No extra forms
+)

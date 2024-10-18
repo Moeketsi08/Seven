@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from address.models import Address
 
@@ -22,6 +23,7 @@ class Designation(models.Model):
     
     
 class CenterManager(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='center_managers')
     name = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)  # Fixed typo
     phone_number = models.CharField(max_length=15)

@@ -72,8 +72,8 @@ class Classroom(models.Model):
     grade =  models.ForeignKey(Grade, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    center = models.ForeignKey(Center, on_delete=models.CASCADE)
-    learners = models.ManyToManyField(Learner)
+    center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='classrooms')
+    learners = models.ManyToManyField(Learner, related_name='classrooms')
     created_at = models.DateTimeField(auto_now_add=True)
     
     def Meta(self):

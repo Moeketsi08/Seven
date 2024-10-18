@@ -13,9 +13,29 @@
               <li class="nav-item">
                   <a class="nav-link" href="{% url 'allocate_teacher' %}">
                       <i class="fa fa-plus-circle"></i>Assign Teacher Class</a>
+                <a class="nav-link" href="{% url 'edit_teacher_allocation' %}">
+                      <i class="fa fa-plus-circle"></i>Edit Teacher Class</a>
+                <a class="nav-link" href="{% url 'teacher_list' %}">
+                      <i class="fa fa-plus-circle"></i>Teacher List</a>
               </li>
             </ul>
           </li>
+
+           <!-- Learner Section START -->
+            <li class="nav-item nav-dropdown">
+             <a class="nav-link nav-dropdown-toggle" href="#">
+                 <i class="nav-icon icon-puzzle"></i>Learner</a>
+             <ul class="nav-dropdown-items">
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'learner-list' %}">
+                         <i class="fa fa-list"></i>Learner List</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'learner-search' %}">
+                         <i class="fa fa-search-plus"></i>Learner Search</a>
+                 </li>
+             </ul>
+           </li>
 
             <!-- Administration Section Start -->
 
