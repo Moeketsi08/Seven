@@ -79,7 +79,7 @@ class TeacherFunctionalityTestCase(TestCase):
 
     def test_teacher_login(self):
         # Test teacher login
-        response = self.client.post(reverse('teacher_login'), {'username': 'teacher1', 'password': 'password'})
+        response = self.client.post(reverse('teacher-login'), {'username': 'teacher1', 'password': 'password'})
         self.assertEqual(response.status_code, 302)  # Redirects to dashboard
 
     def test_teacher_dashboard_access(self):

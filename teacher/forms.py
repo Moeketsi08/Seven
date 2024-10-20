@@ -1,10 +1,11 @@
 from django import forms
-from django.forms import formset_factory
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
-from .models import Teacher, TeacherCenterAssignment, Timesheet  # Add this import at the top of the file
-from academic.models import Department, Grade, Subject, Session
-#from .models import Timesheet
+from django.forms import modelformset_factory
+
+from teacher.models import Teacher, TeacherCenterAssignment, Timesheet, Classroom
+from academic.models import Grade, Subject, Session
+from attendance.models import LearnerAttendance
 
 
 class TeacherForm(forms.ModelForm):
@@ -50,17 +51,14 @@ class AttendanceTimesheetForm(forms.ModelForm):
             'atp_hours': forms.NumberInput(attrs={'step': '0.5'}),
         }
 
-# class LearnerAttendanceForm(forms.Form):
-#     ATTENDANCE_CHOICES = [
-#         ('present', 'Present'),
-#         ('absent', 'Absent'),
-#         ('late', 'Late'),
-#     ]
-#     learner_id = forms.IntegerField(widget=forms.HiddenInput())
-#     learner_name = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
-#     status = forms.ChoiceField(choices=ATTENDANCE_CHOICES, widget=forms.RadioSelect)
-
-# LearnerAttendanceFormSet = formset_factory(LearnerAttendanceForm, extra=0)
+class LearnerAttendanceForm(forms.ModelForm):
+    class Meta:
+        model = LearnerAttendance
+        fields = ['status', 'remarks']
+        widgets = {
+            'status': forms.Select(attrs={'class': 'form-control'}),
+            'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        }
 
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))

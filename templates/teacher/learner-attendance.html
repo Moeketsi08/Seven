@@ -1,0 +1,36 @@
+{% extends 'base/teacher-base.html' %}
+{% load static %}
+
+{% block content %}
+   <!-- Learner Attendance Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h3>Mark Attendance</h3>
+      </div>
+      <div class="card-body">
+        <form method="post" action="{% url 'learner-attendance' %}">
+         {% csrf_token %}
+          <table class="table table-bordered">
+              <thead>
+                  <tr>
+                      <th>Learner</th>
+                      <th>Status</th>
+                      <th>Remarks</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {% for learner, form in learner_forms.items %}
+            <tr>
+                <td>{{ learner.name }} {{ learner.surname }}</td>
+                <td>{{ form.status }}</td>
+                <td>{{ form.remarks }}</td>
+            </tr>
+            {% endfor %}
+              </tbody>
+          </table>
+          <input type="hidden" name="form_type" value="attendance_form">
+          <button type="submit" class="btn btn-primary">Submit Attendance</button>
+      </form>
+      </div>
+    </div>
+{% endblock %}

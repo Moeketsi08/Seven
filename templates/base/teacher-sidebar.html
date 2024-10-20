@@ -3,7 +3,7 @@
     <nav class="sidebar-nav">
         <ul class="nav">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'teacher_dashboard' %}"><i class="icon-speedometer"></i> Dashboard</a>
+                <a class="nav-link" href="{% url 'teacher-dashboard' %}"><i class="icon-speedometer"></i> Dashboard</a>
             </li>
 
             {% comment %} <!-- Administration Section Start -->
@@ -81,8 +81,12 @@
               <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
           <ul class="nav-dropdown-items">
               <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{% url 'learner-attendance' %}">
                       <i class="fa fa-plus-circle"></i>Learner Attendence</a>
+              </li>
+               <li class="nav-item">
+                  <a class="nav-link" href="{% url 'learner-report' %}">
+                      <i class="fa fa-plus-circle"></i>Attendence list</a>
               </li>
           </ul>
         </li>

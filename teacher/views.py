@@ -1,34 +1,50 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import login
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic import FormView
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils import timezone
+from django.db import transaction
 
 
 from teacher.models import Teacher, Timesheet, Classroom
 from academic.models import Session, Grade, Subject, Registration
 from learner.models import Learner
 from attendance.models import LearnerAttendance
-from teacher.forms import AttendanceTimesheetForm, TimesheetForm
+from teacher.forms import LearnerAttendanceForm, TimesheetForm
 from learner.forms import LearnerSearchForm
 
 
 from datetime import datetime
 
-@login_required
+
+class TeacherLoginView(SuccessMessageMixin,FormView):
+    template_name = 'teacher/teacher-login.html'  # Update the path
+    form_class = AuthenticationForm
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        messages.success(self.request, f'Welcome  Teacher')
+        #print("Form data:", self.request.POST)  # Debug line
+        return super().form_valid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid credentials. Please try again.')
+        # Re-render the form with the error messages
+        return redirect('teacher-login')
+    def get_success_url(self):
+        return reverse('teacher-dashboard')  # Redirect to the teacher's dashboard
+
 def teacher_dashboard(request):
-    # Try to retrieve the Teacher instance related to the user
+    # Get the Teacher instance related to the user
     teacher = get_object_or_404(Teacher, user=request.user)
     request.teacher = teacher
-
     if request.method == 'POST':
         timesheet_form = TimesheetForm(request.POST) if request.POST.get('form_type') == 'timesheet_form' else TimesheetForm()
-        attendance_form = AttendanceTimesheetForm(request.POST) if request.POST.get('form_type') == 'attendance_form' else AttendanceTimesheetForm()
         if request.POST.get('form_type') == 'timesheet_form':
             if timesheet_form.is_valid():
                 # Calculate total hours
@@ -43,7 +59,6 @@ def teacher_dashboard(request):
 
                 session = Session.objects.create(start_time=start_time, end_time=end_time, subject=subject_instance, grade=grade_instance)
 
-                # Create and save the new Timesheet record
                 Timesheet.objects.create(
                     teacher=teacher,
                     session=session,
@@ -52,29 +67,15 @@ def teacher_dashboard(request):
                     attendance_marked=False  # Set this as per your logic
                 )
                 messages.success(request, 'Timesheet saved successfully.')
-                return redirect('teacher_dashboard')  # Redirect to avoid resubmission
-        if request.POST.get('form_type') == 'attendance_form':
-            if attendance_form.is_valid():
-                attendance_form.save()
-                messages.success(request, 'Attendance saved successfully.')
-                return redirect('teacher_dashboard')  # Redirect to avoid resubmission
+                return redirect('teacher-dashboard')  # Redirect to avoid resubmission
     else:
         timesheet_form = TimesheetForm()
-        attendance_form = AttendanceTimesheetForm()
     # Fetch existing timesheets for the logged-in user
     timesheets = Timesheet.objects.filter(teacher=teacher).order_by('-date')
-    # attendances = LearnerAttendance.objects.filter(class_name__session__class_info__teacher=teacher)
-    # learners = Learner.objects.filter(class_registration__session__class_info__teacher=teacher)
-    
-    # Extract sessions from timesheets
-    sessions = {timesheet.session for timesheet in timesheets}
 
     return render(request, 'teacher/teacher-dashboard.html', {
         'timesheet_form': timesheet_form,
         'timesheets': timesheets,
-        # 'attendances': attendances,
-        # 'learners': learners,
-        'sessions': sessions,
     })
 
 @login_required
@@ -127,19 +128,53 @@ def learner_search(request):
     }
     return render(request, 'teacher/learner-search.html', context)
 
-class TeacherLoginView(SuccessMessageMixin,FormView):
-    template_name = 'teacher/teacher_login.html'  # Update the path
-    form_class = AuthenticationForm
+@login_required
+def learner_attendance(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
+    classroom = Classroom.objects.filter(teacher=teacher).first()  # Assuming one classroom per teacher for now
+    learners = classroom.learners.all()
+    # Create an empty dictionary to hold forms for each learner
+    learner_forms = {}
 
-    def form_valid(self, form):
-        user = form.get_user()
-        login(self.request, user)
-        messages.success(self.request, f'Welcome  Teacher')
-        #print("Form data:", self.request.POST)  # Debug line
-        return super().form_valid(form)
-    def form_invalid(self, form):
-        messages.error(self.request, 'Invalid credentials. Please try again.')
-        # Re-render the form with the error messages
-        return redirect('/teacher/teacher_login')
-    def get_success_url(self):
-        return reverse('teacher_dashboard')  # Redirect to the teacher's dashboard
+    if request.method == 'POST':
+        # Process form submission for each learner
+        for learner in learners:
+            learner_form = LearnerAttendanceForm(request.POST, prefix=str(learner.id))
+
+            if learner_form.is_valid():
+                attendance = learner_form.save(commit=False)
+                attendance.teacher = teacher
+                attendance.classroom = classroom
+                attendance.learner = learner
+                attendance.save()
+            else:
+                learner_forms[learner] = learner_form  # Re-populate the form with errors if not valid
+
+        messages.success(request, 'Attendance saved successfully.')
+        return redirect('teacher-dashboard')
+    else:
+        # Initialize empty forms for GET requests
+        for learner in learners:
+            learner_forms[learner] = LearnerAttendanceForm(prefix=str(learner.id))
+
+    return render(request, 'teacher/learner-attendance.html', {
+        'learner_forms': learner_forms,
+    })
+
+    
+@login_required
+def learner_report(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
+    request.teacher = teacher
+
+    # Fetch all attendance records for the teacher's learners
+    attendance = LearnerAttendance.objects.filter(teacher=teacher).order_by('-date')
+
+    # Set up pagination
+    paginator = Paginator(attendance, 10)  # Show 10 records per page
+    page_number = request.GET.get('page')
+    attendance_page = paginator.get_page(page_number)
+
+    return render(request, 'teacher/learner-report.html', {
+        'attendance': attendance_page,
+    })

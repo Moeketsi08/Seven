@@ -23,7 +23,7 @@ def is_admin(user):
 @user_passes_test(is_admin)
 def center_dashboard(request):
     teachers = Teacher.objects.all().count()
-    return render(request, 'center_manager/center_dashboard.html', {'teachers':teachers})
+    return render(request, 'center_manager/center-dashboard.html', {'teachers':teachers})
 
 def admin_login(request):
     forms = CenterManagerLoginForm()
@@ -44,7 +44,7 @@ def admin_logout(request):
     return redirect('login')
 
 class CenterLoginView(SuccessMessageMixin, FormView):
-    template_name = 'center_manager/center_login.html'
+    template_name = 'center_manager/center-login.html'
     form_class = AuthenticationForm
     
     def form_valid(self, form):
@@ -58,7 +58,7 @@ class CenterLoginView(SuccessMessageMixin, FormView):
         return self.render_to_response(self.get_context_data(form=form))
     
     def get_success_url(self):
-        return reverse('center_dashboard')
+        return reverse('center-dashboard')
 
 
 def center_logout(request):
@@ -157,8 +157,6 @@ def learner_search(request):
         'learner': learner
     }
     return render(request, 'center_manager/learner-search.html', context)
-
-
 
 
 @login_required

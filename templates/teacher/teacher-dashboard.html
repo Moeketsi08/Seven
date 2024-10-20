@@ -1,5 +1,5 @@
 <!-- templates/teacher/teacher-dashboard.html -->
-{% extends 'base/teacher_base.html' %}
+{% extends 'base/teacher-base.html' %}
 {% load static %}
 {% include 'base/header.html' %}
 {% block content %}
@@ -11,7 +11,7 @@
         <h3>Timesheet</h3>
     </div>
     <div class="card-body">
-        <form action="{% url 'teacher_dashboard' %}" method="post" >
+        <form action="{% url 'teacher-dashboard' %}" method="post" >
             {% csrf_token %}
             {{ timesheet_form.as_p }}
             <input type="hidden" name="form_type" value="timesheet_form">
@@ -35,8 +35,8 @@
             <tbody>
                 {% for timesheet in timesheets %}
                 <tr>
-                    <td class='center-text'>{{ timesheet.session.start_time }}</td>
-                    <td class='center-text'>{{ timesheet.session.end_time }}</td>
+                    <td class='center-text'>{{ timesheet.session.start_time |date:"H:i" }}</td>
+                    <td class='center-text'>{{ timesheet.session.end_time |date:"H:i" }}</td>
                     <td class='center-text'> {{ timesheet.session.grade.grade }} </td>
                     <td class='center-text'> {{ timesheet.session.subject.subject }}</td>
                     <td class='center-text'>{{ timesheet.atp_hours }}</td>
@@ -53,27 +53,6 @@
         
     </div>
 </div>
-
-    <!-- Learner Attendance Section -->
-    <div class="card mb-4">
-        <div class="card-header">
-            <h3>Mark Attendance</h3>
-        </div>
-        <div class="card-body">
-            <form action="#" method="post">
-                {% csrf_token %}
-                {{ attendance_formset.management_form }}
-                {% for form in attendance_formset %}
-                <div>
-               {{ form.learner.name }}
-                {{ form.status }}
-                </div>
-                {% endfor %}
-                  <input type="hidden" name="form_type" value="attendance_form">
-                <button type="submit">Mark Attendance</button>
-            </form>
-        </div>
-    </div>
 
     <!-- Charts Section -->
     <div class="card mb-4">

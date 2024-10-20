@@ -1,4 +1,4 @@
-{% extends 'base/center_manager_base.html' %}
+{% extends 'base/center-manager-base.html' %}
 {% load static %}
 
 {% block content %}
@@ -37,7 +37,7 @@
                             <span class="badge badge-warning">{{ teacher.nationality }}</span>
                         </td>
                          <td>
-                            <a class="btn btn-success" href="{% url 'teacher_profile' teacher.id %}">
+                            <a class="btn btn-success" href="{% url 'teacher-profile' teacher.id %}">
                                 <i class="fa fa-search-plus"></i>
                             </a>
                             <a class="btn btn-danger" href="{% url 'teacher_delete' teacher.id %}">

@@ -1,31 +1,23 @@
 from django.db import models
-from academic.models import Registration
 from learner.models import Learner
-from teacher.models import Classroom
-
-class AttendanceManager(models.Manager):
-    def create_attendance(self, std_class, std_roll):
-        std_cls = Registration.objects.get(name=std_class)
-        std = Learner.objects.get(roll=std_roll, class_registration=std_cls)
-        std_att = LearnerAttendance.objects.create(
-            class_name=std_cls,
-            learner=std,
-            status=1
-        )
-        return std_att
+from teacher.models import Classroom, Teacher
 
 class LearnerAttendance(models.Model):
-    learner = models.ForeignKey(Learner, on_delete=models.CASCADE)
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
-    
-    STATUS_CHOICES = [('Present', 'Present'), ('Absent', 'Absent'), ('Late', 'Late')]
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Present')
-    objects = AttendanceManager()
-    attendance_date = models.DateField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    STATUS_CHOICES = (
+        ('P', 'Present'),
+        ('A', 'Absent'),
+        ('L', 'Late'),
+    )
 
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    learner = models.ForeignKey(Learner, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    status = models.CharField(choices=STATUS_CHOICES, max_length=1)
+    remarks = models.TextField(blank=True, null=True)
+    
     class Meta:
-        unique_together = ['learner', 'attendance_date']
+        unique_together = ('teacher', 'classroom', 'learner', 'date')
 
     def __str__(self):
-        return f"{self.learner.name} {self.learner.surname}"
+        return f'{self.learner.name} - {self.date} - {self.status}'

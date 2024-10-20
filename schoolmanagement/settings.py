@@ -44,9 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_countries',
-
     'rest_framework',
-
     'center_manager',
     'teacher',
     'learner',
