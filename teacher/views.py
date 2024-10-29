@@ -88,10 +88,11 @@ def teacher_profile(request):
 
 @login_required
 def learner_list(request):
+    teacher = get_object_or_404(Teacher, user=request.user)
     search_query = request.GET.get('search', '')
     
     # Prefetch learners related to classrooms and their registration data
-    classrooms = Classroom.objects.prefetch_related('learners').all()
+    classrooms = Classroom.objects.prefetch_related('learners').filter(teacher=teacher)
 
     if search_query:
         # Filter by registration number through the related Registration model
@@ -102,7 +103,7 @@ def learner_list(request):
     page_obj = paginator.get_page(page_number)
 
     # Fetch all registrations
-    registrations = Registration.objects.select_related('learner').all()
+    registrations = Registration.objects.select_related('learner').filter(center=teacher.centers.first())
     print(registrations)
 
     context = {

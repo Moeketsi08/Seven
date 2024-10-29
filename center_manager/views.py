@@ -22,7 +22,8 @@ def is_admin(user):
 @login_required
 @user_passes_test(is_admin)
 def center_dashboard(request):
-    teachers = Teacher.objects.all().count()
+    center = get_object_or_404(Center, center_manager=request.user.center_managers)
+    teachers = Teacher.objects.filter(centers=center).count()
     return render(request, 'center_manager/center-dashboard.html', {'teachers':teachers})
 
 def admin_login(request):
@@ -76,8 +77,7 @@ def allocate_teacher(request):
         return redirect('dashboard')  # Redirect to a suitable page
 
     if request.method == 'POST':
-        teacher_allocation_form = AllocateTeacherForm(request.POST)
-
+        teacher_allocation_form = AllocateTeacherForm(request.POST, center=center)
         if request.POST.get('form_type') == 'teacher_allocation_form':
             if teacher_allocation_form.is_valid():
                 with transaction.atomic():
@@ -90,10 +90,9 @@ def allocate_teacher(request):
                     classroom.learners.set(teacher_allocation_form.cleaned_data['learners'])
                 return redirect('allocate_teacher')
     else:
-        teacher_allocation_form = AllocateTeacherForm()
+        teacher_allocation_form = AllocateTeacherForm(center=center)
 
     return render(request, 'center_manager/allocate_teacher.html', {'teacher_allocation_form': teacher_allocation_form})
-
 @login_required
 @user_passes_test(is_admin)
 def edit_teacher_allocation(request):

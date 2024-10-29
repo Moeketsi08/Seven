@@ -1,9 +1,11 @@
 from django import forms
 from django.forms import modelformset_factory, BaseModelFormSet
+from django_select2.forms import Select2MultipleWidget
 
 from teacher.models import Department, Classroom, Teacher
 from learner.models import Learner
 from center_manager.models import Designation
+from academic.models import Grade, Subject
 
 class CenterManagerLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
@@ -43,15 +45,25 @@ class AddDesignationForm(forms.ModelForm):
 
 
 class AllocateTeacherForm(forms.ModelForm):
+    learner = forms.ModelMultipleChoiceField(
+        queryset=Learner.objects.none(),  # Set an initial empty queryset
+        widget=Select2MultipleWidget(attrs={'class': 'form-control'})  # Correct widget configuration
+    )
+    subject = forms.ChoiceField(choices=Subject.SUBJECT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    grade = forms.ChoiceField(choices=Grade.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    teacher = forms.ModelChoiceField(queryset=Teacher.objects.none(), widget=forms.Select(attrs={'class': 'form-control'}))
+    
     class Meta:
-        model = Classroom
-        fields = ['subject', 'grade', 'learners', 'teacher']  # Removed 'sessions'
-        widgets = {
-            'subject': forms.Select(attrs={'class': 'form-control'}),
-            'grade': forms.Select(attrs={'class': 'form-control'}),
-            'teacher': forms.Select(attrs={'class': 'form-control'}),
-            'center': forms.Select(attrs={'class': 'form-control'}),
-        }
+        model = Classroom  # Specify the model
+        fields = ['subject', 'grade', 'learner', 'teacher'] 
+
+    def __init__(self, *args, **kwargs):
+        center = kwargs.pop('center', None)  # Retrieve center from kwargs
+        super().__init__(*args, **kwargs)
+        if center:
+            # Filter teachers and learners by the center
+            self.fields['teacher'].queryset = Teacher.objects.filter(centers=center)
+            self.fields['learner'].queryset = Learner.objects.filter(center=center)
         
 
 

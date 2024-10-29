@@ -14,8 +14,9 @@ urlpatterns = [
     path('center-manager/teacher-delete/<int:teacher_id>/', views.teacher_delete, name='teacher_delete'),
     path('center-manager/profile/', views.profile, name='profile'),
     path('center-manager/update-profile/', views.update_profile, name='update-profile'),
-    path('center-manager/learner-list/', views.learner_list, name='learner-list'),
-    path('center-manager/learner-search/', views.learner_search, name='learner-search'),
+    path('center-manager/learner-list/', views.learner_list, name='center-learner-list'),
+    path('center-manager/learner-search/', views.learner_search, name='center-learner-search'),
+    
 ]
     
     
