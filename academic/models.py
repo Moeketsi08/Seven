@@ -88,7 +88,10 @@ class Registration(models.Model):  # Corrected from models.Models
     def save(self, *args, **kwargs):
         if self.registration_number is None and self.status == 'Completed':
             last_learner = Registration.objects.order_by('registration_number').last()
-            self.registration_number = last_learner.registration_number + 1 if last_learner else 1
+            if last_learner and last_learner.registration_number is not None:
+                self.registration_number = last_learner.registration_number + 1
+            else:
+                self.registration_number = 1
         super().save(*args, **kwargs)
 
     def __str__(self):

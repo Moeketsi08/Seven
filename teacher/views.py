@@ -104,7 +104,6 @@ def learner_list(request):
 
     # Fetch all registrations
     registrations = Registration.objects.select_related('learner').filter(center=teacher.centers.first())
-    print(registrations)
 
     context = {
         'classrooms': page_obj,  # Paginated classrooms
