@@ -39,6 +39,20 @@ CSRF_TRUSTED_ORIGINS = [
     'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
 ]
 
+import os
+
+# Check the environment and conditionally import the production settings
+ENVIRONMENT = os.getenv('DJANGO_ENV', 'development')
+
+import os
+
+# Check if the environment is production
+if os.getenv('DJANGO_ENV') == 'production':
+    try:
+        from . import production
+    except ImportError:
+        pass  # If no production settings are found, pass gracefully
+
 
 # Application definition
 
