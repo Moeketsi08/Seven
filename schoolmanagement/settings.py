@@ -35,6 +35,9 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+]
 
 
 # Application definition
