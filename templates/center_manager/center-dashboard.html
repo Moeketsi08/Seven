@@ -103,6 +103,338 @@
             border-top: 1px solid #E5E7EB;
         }
     </style>
+    <style>
+        .tabular--wrapper {
+            margin: 20px;
+        }
+    
+        .main--title {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+    
+        .table-calendar-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 20px;
+        }
+    
+        @media (min-width: 1024px) {
+            .table-calendar-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    
+        .notice-board, .calendar-section {
+            background-color: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    
+        .notice-board ul {
+            list-style: none;
+            padding: 0;
+        }
+    
+        .notice-board li {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+    
+        .calendar-section table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+    
+        .calendar-section th, .calendar-section td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+    
+        .calendar-section th {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+    
+        .calendar-section td {
+            text-align: center;
+        }
+    
+        .notification--icon .icon {
+            color: #333; /* Soft gray color for the icon */
+            font-size: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+    
+        .notification--icon .badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background-color: skyblue; 
+            color: white;
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 12px;
+        }
+    
+    
+    </style>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+        *{
+            margin: 0;
+            padding: 0;
+            border: none;
+            outline: none;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+        body {
+            display: flex;
+            
+        }
+    
+        .logo {
+            height: 80px;
+            padding: 16px;
+        }
+        .menu {
+            height: 88%;
+            position: relative;
+            list-style: none;
+            padding: 0;
+        }
+        .menu li{
+            padding: 1rem;
+            margin: 8px 0;
+            border-radius: 8px;
+            transition: all 0.5s ease-in-out;
+        }
+        .menu li:hover, .active{
+            background: #e0e0e058;
+        }
+        .menu a{
+            color: #fff;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .menu a span{
+            overflow: hidden;
+        }
+        .menu a i{
+            font-size: 1.2rem;
+        }
+        .logout{
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+        .main--content{
+            position: relative;
+            background: #ebe9e9 ;
+            width: 100%;
+            padding: 1rem;
+        }
+        .header--wrapper img{
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+        .header--wrapper{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: #fff;
+            border-radius: 10px;
+            padding: 10px 2rem;
+            margin-bottom: 1rem;
+        }
+        .header--title{
+            color:skyblue;
+        }
+        .user--info{
+            display: flex;
+            align-items: center;
+            gap: 1;
+        }
+        .search--box{
+            background: rgb(237, 237, 237);
+            border-radius: 15px;
+            color: skyblue;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            padding: 4px 12px;
+        }
+        .search--box input{
+            background: transparent;
+            padding: 10px;
+        }
+        .search--box i{
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+        }
+        .search--box i:hover{
+            transition: scale(1.2);
+        }
+    
+        .card-container{
+             background: #fff;
+             padding: 2rem;
+             border-radius: 10px;
+        }
+    
+        .card-wrapper{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        } 
+        .main--title{
+            color: skyblue;
+            padding-bottom: 10px;
+            font-size: 15px;
+        }
+        .payment--card{
+            background: rgb(229, 223, 223);
+            border-radius: 10px;
+            padding: 1.2rem;
+            width: 290px;
+            height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.5s ease-in-out ;
+        }
+    
+        .payment--card:hover{
+            transform: translateY(-5px);
+        }
+    
+        .card-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        } 
+        .amount{
+            display: flex;
+            flex-direction: column;
+        }
+        .title{
+            font-size: 12px;
+            font-weight: 200;
+        }
+        .amount--value {
+            font-size: 24px;
+            font-family: "Courier New", Courier,
+            monospace;
+            font-weight: 600;    
+        }
+        .icon{
+            color: #fff;
+            padding: 1rem;
+            height: 60px;
+            width: 60px;
+            text-align: center;
+            border-radius: 50%;
+            border-color: skyblue;
+            border-style: solid;
+            font-size: 1.5rem;
+            background: white;
+        }
+        .card-detail{
+            font-size: 18px;
+            color: #777777;
+            letter-spacing: 2px;
+            font-family:  "Courier New", Courier,
+            monospace;
+        }
+    
+        .light-red{
+            background: rgb(251, 233, 233);
+        }
+        .light-purplr{
+            background: rgb(254, 226, 254);
+        }
+        .light-green{
+            background: rgb(235, 254, 235);
+        }
+        .light-blue{
+            background: rgb(236, 236, 254);
+        }
+        .dark-red{
+            background: red;
+        }
+        .dark-purple{
+            background: purple;
+        }
+        .dark-green{
+            background: green;
+        }
+        .dark-blue{
+            background: blue;
+        }
+    
+        .tabular--wrapper{
+            background: #fff;
+            margin-top: 1rem;
+            border-radius: 10px;
+            padding: 2rem;
+        }
+        .table-container{
+            width: 100%;
+        }
+        .table{
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead{
+            background: skyblue;
+            color: #fff;
+        }
+        th{
+            padding: 15px;
+            text-align: left;
+        }
+        tbody{
+            background: #f2f2f2;
+        }
+        td{
+            padding: 15px;
+            font-size: 14px;
+            color: #333;
+        }
+        tr:nth-child(even){
+            background: #ffff;
+        }
+        tfoot{
+            background: rgba(113, 99, 186, 255);
+            font-weight: bold;
+            color: #fff;
+        }
+        tfoot td{
+            padding: 15px;
+        }
+        .table-container button{
+            color: green;
+            background: none;
+            cursor: pointer;
+        }
+    
+    </style>
 </head>
 <body>
     <div class="container">
@@ -112,236 +444,229 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-1 py-1">
             <!-- Main Content -->
             <div class="col-span-1 lg:col-span-2">
-<!-- Cards Section -->
-<div class="animated fadeIn">
-    <div class="row">
-        <!-- Card: Total Learners -->
-        <div class="col-sm-6 col-lg-3">
-            <div class="card bg-white text-primary">
-                <div class="card-body pb-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="card-title">Total Teachers</div>
-                        <div class="btn-group">
-                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-settings"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Center 1</a>
-                                <a class="dropdown-item" href="#">All</a>
-                                <a class="dropdown-item" href="#">Center 2</a>
-                                <a class="dropdown-item" href="#">Center 3</a>
-                                <a class="dropdown-item" href="#">Center 4</a>
-                                <a class="dropdown-item" href="#">Center 5</a>
-                                <a class="dropdown-item" href="#">Center 6</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                        <canvas id="donutChartTotalLearners" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                            Total Teachers {{ teachers }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Learner Active Status -->
-        <div class="col-sm-6 col-lg-3">
-            <div class="card bg-white text-primary">
-                <div class="card-body pb-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="card-title">Number of Classes</div>
-                        <div class="btn-group">
-                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-settings"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">All Centers</a>
-                                <a class="dropdown-item" href="#">Center 1</a>
-                                <a class="dropdown-item" href="#">Center 2</a>
-                                <a class="dropdown-item" href="#">Center 3</a>
-                                <a class="dropdown-item" href="#">Center 4</a>
-                                <a class="dropdown-item" href="#">Center 5</a>
-                                <a class="dropdown-item" href="#">Center 6</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                        <canvas id="donutChartActiveStatus" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                            Active 81%
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Total Centers -->
-        <div class="col-sm-6 col-lg-3">
-            <div class="card bg-white text-primary">
-                <div class="card-body pb-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="card-title">Total Centers</div>
-                        <div class="btn-group">
-                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-settings"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Gauteng</a>
-                                <a class="dropdown-item" href="#">Mpumalanga</a>
-                                <a class="dropdown-item" href="#">KwaZulu Natal</a>
-                                <a class="dropdown-item" href="#">Western Cape</a>
-                                <a class="dropdown-item" href="#">Eastern Cape</a>
-                                <a class="dropdown-item" href="#">Limpopo</a>
-                                <a class="dropdown-item" href="#">North West</a>
-                                <a class="dropdown-item" href="#">Northern Cape</a>
-                                <a class="dropdown-item" href="#">Free State</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                        <canvas id="donutChartTotalCenters" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                            Centers 25
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Card: Learner Attendance -->
-        <div class="col-sm-6 col-lg-3">
-            <div class="card bg-white text-primary">
-                <div class="card-body pb-0">
-                    <div class="d-flex justify-content-between">
-                        <div class="card-title">Attendance Percentage</div>
-                        <div class="btn-group">
-                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="icon-settings"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#">Center 1</a>
-                                <a class="dropdown-item" href="#">Center 2</a>
-                                <a class="dropdown-item" href="#">Center 3</a>
-                                <a class="dropdown-item" href="#">Center 4</a>
-                                <a class="dropdown-item" href="#">Center 5</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                        <canvas id="donutChartLearnerAttendance" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                            Present 85%
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-        <!-- Learner Enrollment Section -->
-        <div class="mt-3">
-            <div class="grid grid-cols-1 lg:grid-cols-4 gap-2">
-                <!-- Bar Chart Section -->
-                <div class="col-span-1 lg:col-span-3 bg-white p-4 h-80 rounded-lg shadow">
-                    <h3 class="text-base text-slate-600 mt-4">Add Teachers</h3>
-                    <p> </p>
-                    <div class="min-h-full w-full mt-5">
-                                  <!-- Progress Circles Section -->
-                <div class="grid grid-cols-3 gap-2 mt-4">
-                                    <!-- Mathematics Progress Circle -->
-                    <div class="m-2 text-center bg-white rounded-lg shadow">
-                        <div style="width: 100%; padding: 1rem;">
-                            <svg width="80" height="80" viewBox="0 0 36 36" class="circular-chart blue">
-                                <path class="circle-bg"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="circle"
-                                      stroke-dasharray="90, 100"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <text x="18" y="20.35" class="percentage">90%</text>
-                            </svg>
-                            <p style="font-size: 12px; margin-top: 4px;">Mathematics</p>
-                        </div>
-                    </div>
-
-                    <!-- Physics Progress Circle -->
-                    <div class="m-2 text-center bg-white rounded-lg shadow">
-                        <div style="width: 100%; padding: 1rem;">
-                            <svg width="80" height="80" viewBox="0 0 36 36" class="circular-chart blue">
-                                <path class="circle-bg"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="circle"
-                                      stroke-dasharray="90, 100"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <text x="18" y="20.35" class="percentage">90%</text>
-                            </svg>
-                            <p style="font-size: 12px; margin-top: 4px;">Physics</p>
-                        </div>
-                    </div>
-
-                    <!-- English Progress Circle -->
-                    <div class="m-2 text-center bg-white rounded-lg shadow">
-                        <div style="width: 100%; padding: 1rem;">
-                            <svg width="80" height="80" viewBox="0 0 36 36" class="circular-chart blue">
-                                <path class="circle-bg"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <path class="circle"
-                                      stroke-dasharray="80, 100"
-                                      d="M18 2.0845
-                                         a 15.9155 15.9155 0 0 1 0 31.831
-                                         a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                <text x="18" y="20.35" class="percentage">80%</text>
-                            </svg>
-                            <p style="font-size: 12px; margin-top: 4px;">English</p>
-                        </div>
-                    </div>
-                </div>
-                    </div>
-                </div>
-                
-
-            </div>
-        </div>
-            </div>
-                        <!-- Sidebar Section -->
-                        <div class="col-span-1">
-                            <div class="sticky top-0">
-                                <!-- Sidebar Content -->
-                                <div class="bg-white p-4 rounded-lg shadow">
-                                    <div class="border-b py-2">
-                                        <p class="text-slate-600 font-bold">Performance Analysis</p>
+                <!-- Cards Section -->
+                <div class="animated fadeIn">
+                    <div class="row">
+                        <!-- Card: Total Learners -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card bg-white text-primary">
+                                <div class="card-body pb-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="card-title">Total Learners</div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-settings"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#">Center 1</a>
+                                                <a class="dropdown-item" href="#">All</a>
+                                                <a class="dropdown-item" href="#">Center 2</a>
+                                                <a class="dropdown-item" href="#">Center 3</a>
+                                                <a class="dropdown-item" href="#">Center 4</a>
+                                                <a class="dropdown-item" href="#">Center 5</a>
+                                                <a class="dropdown-item" href="#">Center 6</a>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <ul class="mt-2">
-                                        <li class="py-1 px-2">
-                                            <a href="https://app.powerbi.com/groups/me/reports/349f3273-cbe9-44f6-9cc2-88ce267338bc/ReportSection?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi" class="text-blue-500" target="_blank">Learner Performance</a>
-                                        </li>
-                                        <li class="py-1 px-2">
-                                            <a href="https://app.powerbi.com/groups/me/reports/324e2d34-28e0-4829-8145-f18a13edc2d0/ReportSection4e89fb92da0b95c18a76?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi&bookmarkGuid=ca3a9920-d06b-44df-9af0-d0e2396e11c9" class="text-blue-500" target="_blank">Center Performance</a>
-                                        </li>
-                                        <li class="py-1 px-2">
-                                            <a href="https://app.powerbi.com/groups/me/reports/9a2fb30d-44ea-4d4e-a352-f487e14632a1/ReportSection?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi&bookmarkGuid=84f39475-049d-4fb9-8c83-2bd82c9399a7" class="text-blue-500" target="_blank">Teacher Time Sheet</a>
-                                        </li>
-                                    </ul>
+                                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                                        <canvas id="donutChartTotalLearners" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                                            Total Teachers {{ teachers }}
+                                        </div>
+                                    </div>
                                 </div>
-                                
+                            </div>
+                        </div>
+
+                        <!-- Card: Learner Active Status -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card bg-white text-primary">
+                                <div class="card-body pb-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="card-title">Number of Classes</div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-settings"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#">All Centers</a>
+                                                <a class="dropdown-item" href="#">Center 1</a>
+                                                <a class="dropdown-item" href="#">Center 2</a>
+                                                <a class="dropdown-item" href="#">Center 3</a>
+                                                <a class="dropdown-item" href="#">Center 4</a>
+                                                <a class="dropdown-item" href="#">Center 5</a>
+                                                <a class="dropdown-item" href="#">Center 6</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                                        <canvas id="donutChartActiveStatus" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                                            Active 81%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Total Centers -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card bg-white text-primary">
+                                <div class="card-body pb-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="card-title">Teacher Timesheets</div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-settings"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#">January</a>
+                                                <a class="dropdown-item" href="#">February</a>
+                                                <a class="dropdown-item" href="#">March</a>
+                                                <a class="dropdown-item" href="#">April</a>
+                                                <a class="dropdown-item" href="#">May</a>
+                                                <a class="dropdown-item" href="#">June</a>
+                                                <a class="dropdown-item" href="#">July</a>
+                                                <a class="dropdown-item" href="#">August</a>
+                                                <a class="dropdown-item" href="#">September</a>
+                                                <a class="dropdown-item" href="#">October</a>
+                                                <a class="dropdown-item" href="#">November</a>
+                                                <a class="dropdown-item" href="#">December</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                                        <canvas id="donutChartTotalCenters" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                                            Centers 25
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card: Learner Attendance -->
+                        <div class="col-sm-6 col-lg-3">
+                            <div class="card bg-white text-primary">
+                                <div class="card-body pb-0">
+                                    <div class="d-flex justify-content-between">
+                                        <div class="card-title">Learner Attendance</div>
+                                        <div class="btn-group">
+                                            <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="icon-settings"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="#">Center 1</a>
+                                                <a class="dropdown-item" href="#">Center 2</a>
+                                                <a class="dropdown-item" href="#">Center 3</a>
+                                                <a class="dropdown-item" href="#">Center 4</a>
+                                                <a class="dropdown-item" href="#">Center 5</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
+                                        <canvas id="donutChartLearnerAttendance" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                                            Present 85%
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <!-- Notifications Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h3>Notifications</h3>
+                    </div>
+                    <div class="card-body">
+                        <!-- Populate with notifications -->
+                        <ul class="list-group">
+                            <li class="list-group-item">Notification 1</li>
+                            <li class="list-group-item">Notification 2</li>
+                            <li class="list-group-item">Notification 3</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!--Calendar-->
+                <div class="card mb-4">
+                    <h3 class="card-header">Upcoming Events</h3>
+                    <div class="table-calendar-container grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        
+                        <!-- Notice Board Section -->
+                        <div class="notice-board bg-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-lg font-semibold text-slate-600 mb-4">Notice Board</h3>
+                            <ul class="space-y-4">
+                                <li class="flex justify-between items-center">
+                                    <span>School Annual Sports Day</span>
+                                    <span class="text-sm text-gray-500">20 July, 2023</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>Annual Function Celebration</span>
+                                    <span class="text-sm text-gray-500">15 July, 2023</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>Mid Term Examination</span>
+                                    <span class="text-sm text-gray-500">15 June, 2023</span>
+                                </li>
+                                <li class="flex justify-between items-center">
+                                    <span>Inter School Painting Competition</span>
+                                    <span class="text-sm text-gray-500">30 May, 2023</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Calendar Section -->
+                        <div class="calendar-section bg-white p-6 rounded-lg shadow-lg">
+                            <h3 class="text-lg font-semibold text-slate-600 mb-4">Calendar</h3>
+                            <div id="calendar"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h3 class="card-header">Analytics</h3>
+                    <div class="card-wrapper">
+                        <div class="payment--card light-blue">
+                            <div class="card--header">
+                                <h4 class="text-blue-500">Learner Performance</h4>
+                            </div>
+                            <p class="card-detail">In depth analysis of all learners</p>
+                            <div class="amount">
+                                <a href="https://app.powerbi.com/groups/me/reports/349f3273-cbe9-44f6-9cc2-88ce267338bc/ReportSection?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi"  target="_blank">Read More</a>
+                            </div>
+                        </div>
+                
+                        <div class="payment--card light-blue">
+                            <div class="card--header">
+                                <h4 class="text-blue-500">Center Performance</h4>
+                            </div>
+                            <p class="card-detail">In depth analysis of all centers</p>
+                            <div class="amount">
+                                    <a href="https://app.powerbi.com/groups/me/reports/324e2d34-28e0-4829-8145-f18a13edc2d0/ReportSection4e89fb92da0b95c18a76?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi&bookmarkGuid=ca3a9920-d06b-44df-9af0-d0e2396e11c9" class="text-blue-500" target="_blank">Read More</a>
+                            </div>
+                        </div>
+                
+                        <div class="payment--card light-blue">
+                            <div class="card--header">
+                                <h4 class="text-blue-500">Time Sheet Summary</h4>
+                            </div> 
+                            <p class="card-detail">In depth analysis of timesheets</p>
+                            <div class="amount">
+                                    <a href="https://app.powerbi.com/groups/me/reports/9a2fb30d-44ea-4d4e-a352-f487e14632a1/ReportSection?ctid=e126f099-e35a-4d33-ba65-adb7eb6641f0&experience=power-bi&bookmarkGuid=84f39475-049d-4fb9-8c83-2bd82c9399a7" target="_blank">Read More</a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+      
+            </div>
         </div>
+
     </div>
     
     <style>
@@ -486,6 +811,69 @@
             options: commonOptions
         });
     });
+</script>
+<script>
+    // JavaScript to generate the real-time calendar
+    function generateCalendar() {
+        const calendarElement = document.getElementById('calendar');
+        const currentDate = new Date();
+        const month = currentDate.toLocaleString('default', { month: 'long' });
+        const year = currentDate.getFullYear();
+        const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1).getDay();
+        const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+
+        const today = currentDate.getDate();  // Get today's date
+    
+        let calendarHTML = `
+            <div class="flex justify-between mb-4">
+                <span class="text-lg font-semibold">${month} ${year}</span>
+            </div>
+            <table class="w-full table-fixed text-center border-collapse">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="border p-2">Sun</th>
+                        <th class="border p-2">Mon</th>
+                        <th class="border p-2">Tue</th>
+                        <th class="border p-2">Wed</th>
+                        <th class="border p-2">Thu</th>
+                        <th class="border p-2">Fri</th>
+                        <th class="border p-2">Sat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>`;
+    
+        // Empty cells for days before the first day of the month
+        for (let i = 0; i < firstDay; i++) {
+            calendarHTML += '<td class="border p-2"></td>';
+        }
+    
+        // Add the days of the month
+        for (let day = 1; day <= daysInMonth; day++) {
+            if ((day + firstDay - 1) % 7 === 0 && day !== 1) {
+                calendarHTML += '</tr><tr>'; // Start a new row every Sunday
+            }
+            
+            // Highlight today's date with a different background color
+            if (day === today) {
+                calendarHTML += `<td class="border p-2 bg-blue-500 text-red font-bold">${day}</td>`;
+            } else {
+                calendarHTML += `<td class="border p-2">${day}</td>`;
+            }
+        }
+    
+        // Close the last row of the table
+        calendarHTML += `
+                    </tr>
+                </tbody>
+            </table>
+        `;
+    
+        calendarElement.innerHTML = calendarHTML;
+    }
+    
+    // Generate calendar when the page loads
+    window.onload = generateCalendar;
 </script>
 
 </body>

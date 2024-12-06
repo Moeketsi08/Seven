@@ -66,14 +66,17 @@ def center_logout(request):
     logout(request)
     return redirect('login')
 
+from django.contrib import messages
+
 @login_required
 @user_passes_test(is_admin)
 def allocate_teacher(request):
     # Get the center manager's center from the logged-in user
     try:
         center = Center.objects.get(center_manager=request.user.center_managers)
+        print(f"Center: {center.name}")  # Log the center name
     except Center.DoesNotExist:
-        # Handle case where center manager has no center
+        messages.error(request, "No center associated with this manager.")
         return redirect('dashboard')  # Redirect to a suitable page
 
     if request.method == 'POST':
@@ -85,14 +88,22 @@ def allocate_teacher(request):
                         grade=teacher_allocation_form.cleaned_data['grade'],
                         subject=teacher_allocation_form.cleaned_data['subject'],
                         teacher=teacher_allocation_form.cleaned_data['teacher'],
-                        center=center  # Ensures the center is assigned to the classroom
+                        center=center
                     )
-                    classroom.learners.set(teacher_allocation_form.cleaned_data['learners'])
+                    classroom.learners.set(teacher_allocation_form.cleaned_data['learner'])
+                messages.success(request, "Teacher allocated successfully.")
                 return redirect('allocate_teacher')
+            else:
+                messages.error(request, "Form is invalid. Please check the fields.")
     else:
         teacher_allocation_form = AllocateTeacherForm(center=center)
 
+        # Debug the teacher and learner querysets
+        print(f"Teachers available: {teacher_allocation_form.fields['teacher'].queryset}")
+        print(f"Learners available: {teacher_allocation_form.fields['learner'].queryset}")
+
     return render(request, 'center_manager/allocate_teacher.html', {'teacher_allocation_form': teacher_allocation_form})
+
 @login_required
 @user_passes_test(is_admin)
 def edit_teacher_allocation(request):

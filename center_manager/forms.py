@@ -62,8 +62,15 @@ class AllocateTeacherForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if center:
             # Filter teachers and learners by the center
-            self.fields['teacher'].queryset = Teacher.objects.filter(centers=center)
+            self.fields['teacher'].queryset = Teacher.objects.filter(
+                teachercenterassignment__center=center,
+                teachercenterassignment__is_current=True
+            ).distinct()
             self.fields['learner'].queryset = Learner.objects.filter(center=center)
+        else:
+            self.fields['teacher'].queryset = Teacher.objects.none()  # No center, no options
+            self.fields['learner'].queryset = Learner.objects.none()  # No center, no options
+
         
 
 
