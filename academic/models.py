@@ -40,8 +40,13 @@ class Grade(models.Model):
 
 class Session(models.Model):
     DAY_CHOICES = [
-        ('SAT', 'Saturday'),
-        ('SUN', 'Sunday')
+        ('Monday', 'Monday'),
+        ('Tuesday', 'Tuesday'),
+        ('Wednesday', 'Wednesday'),
+        ('Thursday', 'Thursday'),
+        ('Friday', 'Friday'),
+        ('Saturday', 'Saturday'),
+        ('Sunday', 'Sunday'),
     ]
     START_TIME = [
         ('09:00', '09:00'),
@@ -55,7 +60,7 @@ class Session(models.Model):
         ('15:00', '15:00'),
         ('16:00', '16:00'),
     ]
-    day = models.CharField(max_length=4, choices=DAY_CHOICES, default='SAT')
+    day = models.CharField(max_length=9, choices=DAY_CHOICES, default='SAT')
     start_time = models.TimeField(choices=START_TIME, default='10:00')
     end_time = models.TimeField(choices=END_TIME,default='16:00')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=True, blank=True)

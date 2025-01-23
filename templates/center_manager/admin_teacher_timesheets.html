@@ -1,0 +1,80 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="animated fadeIn">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-edit"></i> Teacher Timesheets
+        </div>
+        <!-- Timesheet Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>Timesheet's Summary</h3>
+            </div>
+            <div class="card-body">
+                <!-- Display Timesheet Entries -->
+                {% if timesheets %}
+                    {% for teacher, data in timesheets.items %}
+                        <h5>{{ teacher.name }} {{ teacher.surname }}</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class='center-text'>Start Time</th>
+                                    <th class='center-text'>End Time</th>
+                                    <th class='center-text'>Class Name (Grade)</th>
+                                    <th class='center-text'>Subject</th>
+                                    <th class='center-text'>Total Hours</th>
+                                    <th class='center-text'>Date</th>
+                                    <th class='center-text'>Approved</th>
+                                    <th class='center-text'>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for timesheet in data.timesheets %}
+                                    <tr>
+                                        <td class='center-text'>{{ timesheet.session.start_time|date:"H:i" }}</td>
+                                        <td class='center-text'>{{ timesheet.session.end_time|date:"H:i" }}</td>
+                                        <td class='center-text'>{{ timesheet.session.grade.grade }}</td>
+                                        <td class='center-text'>{{ timesheet.session.subject.subject }}</td>
+                                        <td class='center-text'>{{ timesheet.atp_hours }}</td>
+                                        <td class='center-text'>{{ timesheet.date }}</td>
+                                        <td class='center-text'>
+                                            {% if timesheet.approved %}
+                                                <span class="badge badge-success">Approved</span>
+                                            {% else %}
+                                                <span class="badge badge-warning">Pending</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class='center-text'>
+                                            <form method="POST" action="">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="timesheet_id" value="{{ timesheet.id }}">
+                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                    {% if timesheet.approved %} Unapprove {% else %} Approve {% endif %}
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="8">No timesheets recorded for this teacher.</td>
+                                    </tr>
+                                {% endfor %}
+                                <!-- Row for total hours -->
+                                <tr>
+                                    <td colspan="4" class='center-text'><strong>Total Hours</strong></td>
+                                    <td class='center-text'><strong>{{ data.total_hours }}</strong></td>
+                                    <td colspan="3"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                {% else %}
+                    <p>No timesheets recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

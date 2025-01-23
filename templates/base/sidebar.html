@@ -57,11 +57,11 @@
             <ul class="nav-dropdown-items">
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'admin_teacher_list' %}">
                         <i class="fa fa-list"></i>Teacher List</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'admin_teacher_timesheets' %}">
                         <i class="fa fa-list"></i>Teacher Timesheet</a>
                 </li>
             </ul>
@@ -91,16 +91,16 @@
                  <i class="nav-icon icon-puzzle"></i>Learner</a>
              <ul class="nav-dropdown-items">
                  <li class="nav-item">
-                     {% comment %} <a class="nav-link" href="{% url 'learner-registration' %}">
-                         <i class="fa fa-plus-circle"></i>Learner Registration</a> {% endcomment %}
+                     <a class="nav-link" href="{% url 'admin-learner-registration' %}">
+                         <i class="fa fa-plus-circle"></i>Learner Registration</a> 
                  </li>
                  <li class="nav-item">
-                     {% comment %} <a class="nav-link" href="{% url 'learner-list' %}">
-                         <i class="fa fa-list"></i>Learner List</a> {% endcomment %}
+                     <a class="nav-link" href="{% url 'admin-learner-list' %}">
+                         <i class="fa fa-list"></i>Learner List</a> 
                  </li>
                  <li class="nav-item">
-                     {% comment %} <a class="nav-link" href="{% url 'learner-search' %}">
-                         <i class="fa fa-search-plus"></i>Learner Search</a> {% endcomment %}
+                     <a class="nav-link" href="{% url 'admin-learner-search' %}">
+                         <i class="fa fa-search-plus"></i>Learner Search</a> 
                  </li>
              </ul>
            </li>
@@ -179,7 +179,7 @@
               <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
           <ul class="nav-dropdown-items">
               <li class="nav-item">
-                  {% comment %} <a class="nav-link" href="{% url 'learner-attendance' %}">
+                  {% comment %} <a class="nav-link" href="{% url 'admin-learner-attendance' %}">
                       <i class="fa fa-plus-circle"></i>Learner Attendence</a> {% endcomment %}
               </li>
           </ul>

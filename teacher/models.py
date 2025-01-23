@@ -60,10 +60,11 @@ class TeacherCenterAssignment(models.Model):
 class Timesheet(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
-    date = models.DateField()  # Add this line
-    atp_hours = models.DecimalField(max_digits=4, decimal_places=2)
-    date_submitted = models.DateTimeField(auto_now_add=True)
-    attendance_marked = models.BooleanField(default=False)  # Add this line
+    date = models.DateField()  # Date of the timesheet
+    atp_hours = models.DecimalField(max_digits=4, decimal_places=2)  # Hours spent
+    date_submitted = models.DateTimeField(auto_now_add=True)  # Auto-submitted timestamp
+    attendance_marked = models.BooleanField(default=False)  # Indicates if attendance is marked
+    approved = models.BooleanField(default=False)  # Field to indicate approval status
 
     def __str__(self):
         return f"{self.teacher.name} - {self.session} - {self.date}"
@@ -76,7 +77,7 @@ class Classroom(models.Model):
     learners = models.ManyToManyField(Learner, related_name='classrooms')
     created_at = models.DateTimeField(auto_now_add=True)
     
-    def Meta(self):
+    class Meta:
         unique_together = ('grade', 'subject', 'teacher')
     
 

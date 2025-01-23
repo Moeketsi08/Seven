@@ -2,12 +2,13 @@ from django.db import models
 import random
 from django.utils.timezone import now
 from django.core.exceptions import ValidationError
-
+from django.contrib.auth.models import User
 from address.models import Address
 from academic.models import Nationality
 from center_manager.models import Center
 
 class Learner(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,blank=True, related_name='learner')
     name = models.CharField(max_length=45)
     surname = models.CharField(max_length=45)
     photo = models.ImageField(upload_to='learner-photos/')
@@ -20,7 +21,7 @@ class Learner(models.Model):
     gender = models.CharField(choices=GENDER_CHOICE, max_length=10)
     phone_no = models.CharField(max_length=11)
     email = models.EmailField(blank=True, null=True)
-    birth_certificate_no = models.CharField(max_length=50)  # Changed to CharField to accommodate alphanumeric certificates
+    id_no = models.CharField(max_length=50)  # Changed to CharField to accommodate alphanumeric certificates
     nationality = models.ForeignKey(Nationality, on_delete=models.SET_NULL, null=True)
     RACE_CHOICE = (
         ('B', 'Black African'),
@@ -50,8 +51,21 @@ class Learner(models.Model):
         ('N', 'No')
     )
     disability = models.CharField(choices=disability_choices, max_length=10)
-    disabilities = models.OneToOneField('Disability', on_delete=models.SET_NULL, null=True, blank=True) 
+    DISABILITY_CHOICES = [
+        ('hearing_impairment', 'Hearing Impairment - Difficulties hearing properly (Needs to sit near/far)'),
+        ('visual_impairment', 'Visual Impairment - Near/far sighted'),
+        ('physical_disability', 'Physical Disability - Physically impaired'),
+        ('cognitive_impairment', 'Cognitive Impairment'),
+    ]
+
+    disabilities = models.CharField(
+        choices=DISABILITY_CHOICES,
+        max_length=50,  # Adjust the length based on the actual values
+        blank=True,
+        null=True
+    )
     center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='learners')  # Center relationship
+    documents = models.URLField(max_length=500, blank=True, null=True) 
     joined_programme = models.DateField(auto_now_add=True, null=True)
     exited_programme = models.DateField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)

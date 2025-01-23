@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django import forms
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
@@ -55,10 +56,25 @@ class LearnerAttendanceForm(forms.ModelForm):
     class Meta:
         model = LearnerAttendance
         fields = ['status', 'remarks']
-        widgets = {
-            'status': forms.Select(attrs={'class': 'form-control'}),
-            'remarks': forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
-        }
+
+    def __init__(self, *args, **kwargs):
+        # Get the learner and classroom from the kwargs
+        self.learner = kwargs.pop('learner', None)
+        self.classroom = kwargs.pop('classroom', None)
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        # Check if attendance already exists for this learner, classroom, and date
+        if self.learner is not None and self.classroom is not None:
+            date = timezone.localdate()  # This will get the current date based on the current timezone
+
+            # Check if attendance already exists for this learner, classroom, and date
+            if LearnerAttendance.objects.filter(learner=self.learner, classroom=self.classroom, date=date).exists():
+                raise forms.ValidationError("Attendance has already been recorded for this learner today.")
+        
+        return cleaned_data
 
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))

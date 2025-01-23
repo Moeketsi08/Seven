@@ -2,6 +2,13 @@ from django.shortcuts import render, redirect
 from academic.models import Registration
 from learner.forms import *
 from learner.models import *
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic import FormView
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from django.contrib.auth import login
+from django.urls import reverse
+from django.shortcuts import render, redirect, get_object_or_404
 
 # def load_upazilla(request):
 #     district_id = request.GET.get('district')
@@ -21,7 +28,28 @@ from learner.models import *
 #     context = {'register_class': register_class}
 #     return render(request, 'learner/class-wise-learner-registration.html', context)
 
-# def learner_registration(request):
+class LearnerLoginView(SuccessMessageMixin,FormView):
+    template_name = 'learner/learner-login.html'  # Update the path
+    form_class = AuthenticationForm
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
+        messages.success(self.request, f'Welcome  Learner')
+        #print("Form data:", self.request.POST)  # Debug line
+        return super().form_valid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid credentials. Please try again.')
+        # Re-render the form with the error messages
+        return redirect('learner-login')
+    def get_success_url(self):
+        return reverse('learner-dashboard')  # Redirect to the learner's dashboard
+
+#def learner_dashboard(request):
+    # Get the Teacher instance related to the user
+
+
+# """ def learner_registration(request):
 #     academic_info_form = AcademicInfoForm(request.POST or None)
 #     personal_info_form = PersonalInfoForm(request.POST or None, request.FILES or None)
 #     learner_address_info_form = LearnerAddressInfoForm(request.POST or None)
@@ -57,7 +85,7 @@ from learner.models import *
 #         'previous_academic_info_form': previous_academic_info_form,
 #         'previous_academic_certificate_form': previous_academic_certificate_form
 #     }
-#     return render(request, 'learner/learner-registration.html', context)
+#     return render(request, 'learner/learner-registration.html', context) """
 
 # def learner_profile(request, reg_no):
 #     learner = AcademicInfo.objects.get(registration_no=reg_no)

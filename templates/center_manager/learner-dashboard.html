@@ -1,5 +1,5 @@
 <!-- templates/teacher/teacher-dashboard.html -->
-{% extends 'base/teacher-base.html' %}
+{% extends 'base/center-manager-base.html' %}
 {% load static %}
 {% include 'base/header.html' %}
 {% block content %}
@@ -769,7 +769,7 @@
     <!-- Cards Section -->
     <div class="animated fadeIn">
         <div class="row">
-            <!-- Card: Total Hours -->
+            <!-- Card: Total Learners -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card bg-white text-primary">
                     <div class="card-body pb-0">
@@ -780,28 +780,33 @@
                                     <i class="icon-settings"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    {% for date, total_hours in total_hours_by_date.items %}
-                                        <a class="dropdown-item" href="#">{{ date }} - {{ total_hours|floatformat:2 }} hours</a>
-                                    {% empty %}
-                                        <a class="dropdown-item disabled" href="#">No timesheets available</a>
-                                    {% endfor %}
+                                    <a class="dropdown-item" href="#">January</a>
+                                    <a class="dropdown-item" href="#">All</a>
+                                    <a class="dropdown-item" href="#">February</a>
+                                    <a class="dropdown-item" href="#">March</a>
+                                    <a class="dropdown-item" href="#">April</a>
+                                    <a class="dropdown-item" href="#">May</a>
+                                    <a class="dropdown-item" href="#">June</a>
+                                    <a class="dropdown-item" href="#">July</a>
+                                    <a class="dropdown-item" href="#">August</a>
+                                    <a class="dropdown-item" href="#">September</a>
+                                    <a class="dropdown-item" href="#">October</a>
+                                    <a class="dropdown-item" href="#">November</a>
+                                    <a class="dropdown-item" href="#">December</a>
                                 </div>
                             </div>
                         </div>
                         <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                             <canvas id="donutChartTotalLearners" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                Total Timesheet Hours: {{ total_hours }}
+                                Total Timesheet Hours {{ teachers }}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            
-            
 
-            <!-- Card: Total Classes -->
+            <!-- Card: Learner Active Status -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card bg-white text-primary">
                     <div class="card-body pb-0">
@@ -813,26 +818,26 @@
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a class="dropdown-item" href="#">All Centers</a>
-                                    {% for combination in grade_subject_combinations %}
-                                        <a class="dropdown-item" href="#">
-                                            {{ combination.grade__grade }} - {{ combination.subject__subject }}
-                                        </a>
-                                    {% endfor %}
+                                    <a class="dropdown-item" href="#">Center 1</a>
+                                    <a class="dropdown-item" href="#">Center 2</a>
+                                    <a class="dropdown-item" href="#">Center 3</a>
+                                    <a class="dropdown-item" href="#">Center 4</a>
+                                    <a class="dropdown-item" href="#">Center 5</a>
+                                    <a class="dropdown-item" href="#">Center 6</a>
                                 </div>
                             </div>
                         </div>
                         <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                             <canvas id="donutChartActiveStatus" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                Classes Taught: {{ total_classes }}
+                                Active 81%
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            
 
-            <!-- Card: Total Learners -->
+            <!-- Card: Total Centers -->
             <div class="col-sm-6 col-lg-3">
                 <div class="card bg-white text-primary">
                     <div class="card-body pb-0">
@@ -843,21 +848,22 @@
                                     <i class="icon-settings"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">All Learners</a>
-                                    {% for classroom, learner_count in classroom_learners.items %}
-                                        <a class="dropdown-item" href="#">
-                                            {{ classroom }} - {{ learner_count }} Learners
-                                        </a>
-                                
+                                    <a class="dropdown-item" href="#">Gauteng</a>
+                                    <a class="dropdown-item" href="#">Mpumalanga</a>
+                                    <a class="dropdown-item" href="#">KwaZulu Natal</a>
+                                    <a class="dropdown-item" href="#">Western Cape</a>
+                                    <a class="dropdown-item" href="#">Eastern Cape</a>
+                                    <a class="dropdown-item" href="#">Limpopo</a>
+                                    <a class="dropdown-item" href="#">North West</a>
+                                    <a class="dropdown-item" href="#">Northern Cape</a>
+                                    <a class="dropdown-item" href="#">Free State</a>
                                 </div>
                             </div>
                         </div>
                         <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                             <canvas id="donutChartTotalCenters" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                             <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                
-                                    Learners: {{ learner_count }} 
-                                {% endfor %}    
+                                Centers 25
                             </div>
                         </div>
                     </div>
@@ -875,39 +881,25 @@
                                     <i class="icon-settings"></i>
                                 </button>
                                 <div class="dropdown-menu dropdown-menu-right">
-                                    {% for grade_subject, attendance_data in classroom_attendance.items %}
-                                        <div class="dropdown-item">
-                                            <strong>{{ grade_subject }}</strong>
-                                            <div class="ml-3">
-                                                {% for date, attendance in attendance_data.date_attendance.items %}
-                                                    <div class="dropdown-item">
-                                                        {{ date }} - {{ attendance|floatformat:2 }}%
-                                                    </div>
-                                                {% endfor %}
-                                                <div class="text-muted mt-1">
-                                                    Overall: {{ attendance_data.overall_percentage|floatformat:2 }}%
-                                                </div>
-                                            </div>
-                                        </div>
-                                        {% if not forloop.last %}
-                                            <div class="dropdown-divider"></div>
-                                        {% endif %}
-                                    
+                                    <a class="dropdown-item" href="#">Center 1</a>
+                                    <a class="dropdown-item" href="#">Center 2</a>
+                                    <a class="dropdown-item" href="#">Center 3</a>
+                                    <a class="dropdown-item" href="#">Center 4</a>
+                                    <a class="dropdown-item" href="#">Center 5</a>
                                 </div>
                             </div>
                         </div>
                         <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                             <canvas id="donutChartLearnerAttendance" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18px; font-weight: bold; text-align: center;">
-                                Attendance <br>
-                                <span>{{ attendance_data.overall_percentage|floatformat:2 }}%</span>
-                                {% endfor %}
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
+                                Present 85%
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
+        </div>
+    </div>
 
    <!-- Timesheet Section -->
    <div class="card mb-4">
@@ -921,33 +913,6 @@
             <input type="hidden" name="form_type" value="timesheet_form">
             <button type="submit" class="btn btn-primary">Save Timesheet</button>
         </form>
-        <!-- Modal for Messages -->
-        <div id="messageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="messageModalLabel">Notifications</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }} mb-2" role="alert">
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% else %}
-                            <p>No messages to display.</p>
-                        {% endif %}
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <hr>
         <!-- Display Timesheet Entries -->
         <h4>Your Timesheets</h4>
@@ -961,7 +926,6 @@
                     <th class='center-text'>Total Hours</th>
                     <th class='center-text'>Date</th>
                     <th class='center-text'>Created At</th>
-                    <th class='center-text'>Approved</th>
                 </tr>
             </thead>
             <tbody>
@@ -974,13 +938,6 @@
                     <td class='center-text'>{{ timesheet.atp_hours }}</td>
                     <td class='center-text'>{{ timesheet.date }}</td>
                     <td class='center-text'>{{ timesheet.date_submitted }}</td>
-                    <td>
-                        {% if timesheet.approved %}
-                            <span class="badge badge-success">Approved</span>
-                        {% else %}
-                            <span class="badge badge-warning">Pending Approval</span>
-                        {% endif %}
-                    </td>
                 </tr>
                 {% empty %}
                 <tr>
@@ -1043,15 +1000,7 @@
             </div>
         </div>
     </div>
-    {% if messages %}
-    <!-- Pop-up message container -->
-    <div id="popupMessage">
-        {% for message in messages %}
-            {{ message }}  <!-- This will hold the Django message -->
-        {% endfor %}
-        <button id="closeButton">Close</button>
-    </div>
-    {% endif %}
+
 </div>
 <style>
     /* Additional styles for circular progress bars */
@@ -1091,22 +1040,6 @@
 <!-- Additional Chart.js Code -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" ></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // Show the popup if there's a message
-    const popupMessage = document.getElementById('popupMessage');
-    const closeButton = document.getElementById('closeButton');
-
-    if (popupMessage.textContent.trim() !== '') {
-        popupMessage.style.display = 'block';
-    }
-
-    // Close popup on button click
-    closeButton.addEventListener('click', function () {
-        popupMessage.style.display = 'none';
-    });
-</script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
