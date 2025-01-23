@@ -13,4 +13,5 @@ urlpatterns = [
     # path('submit-attendance-timesheet/<int:session_id>/', views.submit_attendance_and_timesheet, name='submit_attendance_and_timesheet'),
     path('learner-list/', views.learner_list, name='learner-list'),
     path('learner-search/', views.learner_search, name='learner-search'),
+    path('teachers-timesheet/', views.teacher_timesheets, name='teachers-timesheet'),
 ]

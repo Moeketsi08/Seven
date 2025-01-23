@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 
-
 urlpatterns = [
     path('login/', views.admin_login, name='admin_login'),
     path('center-manager/center-login/', views.CenterLoginView.as_view(), name='center-login'),
@@ -16,7 +15,21 @@ urlpatterns = [
     path('center-manager/update-profile/', views.update_profile, name='update-profile'),
     path('center-manager/learner-list/', views.learner_list, name='center-learner-list'),
     path('center-manager/learner-search/', views.learner_search, name='center-learner-search'),
-    
+    path('center-manager/learner-login/', views.LearnerLoginView.as_view(), name='learner-login'),
+    path('center-manager/learner-dashboard/', views.learner_dashboard, name='learner-dashboard'),
+    path('center-manager/learner-registration/', views.learner_registration, name='learner-registration'),
+    path('center-manager/teacher-timesheets/', views.teacher_timesheets, name='teacher-timesheets'),
+    path('center-manager/learner-attendance/',  views.learner_attendance, name='center-learner-attendance'),
+    path('center-manager/learner-report/', views.learner_report, name='center-learner-report'),
+        path('center-manager/admin-learner-registration/', views.admin_learner_registration, name='admin-learner-registration'),
+    path('center-manager/admin_teacher_timesheets/', views.admin_teacher_timesheets, name='admin_teacher_timesheets'),
+    path('center-manager/admin-learner-attendance/',  views.admin_learner_attendance, name='admin-learner-attendance'),
+    path('center-manager/admin-learner-report/', views.admin_learner_report, name='admin-learner-report'),
+        path('center-manager/admin-learner-list/', views.admin_learner_list, name='admin-learner-list'),
+    path('center-manager/admin-learner-search/', views.admin_learner_search, name='admin-learner-search'),
+     path('center-manager/admin_edit_teacher_allocate/', views.admin_edit_teacher_allocation, name='admin_edit_teacher_allocation'),
+    path('center-manager/admin_teacher-list/', views.admin_teacher_list, name='admin_teacher_list'),
+    path('center-manager/admin_teacher-profile/<int:teacher_id>/', views.admin_teacher_profile, name='admin_teacher-profile'),
 ]
     
     

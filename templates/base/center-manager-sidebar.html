@@ -17,7 +17,7 @@
                       <i class="fa fa-plus-circle"></i>Edit Teacher Class</a>
                 <a class="nav-link" href="{% url 'teacher_list' %}">
                       <i class="fa fa-plus-circle"></i>Teacher List</a>
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'teacher-timesheets' %}">
                 <i class="fa fa-plus-circle"></i>Teacher Timesheet</a>      
               </li>
             </ul>
@@ -32,10 +32,10 @@
                      <a class="nav-link" href="{% url 'center-learner-list' %}">
                          <i class="fa fa-list"></i>Learner List</a>
                  </li>
-                 <li class="nav-item">
+<!--                  <li class="nav-item">
                      <a class="nav-link" href="{% url 'center-learner-search' %}">
                          <i class="fa fa-search-plus"></i>Learner Search</a>
-                 </li>
+                 </li> -->
              </ul>
            </li>
 
@@ -44,12 +44,8 @@
             <a class="nav-link nav-dropdown-toggle" href="#">
                 <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
             <ul class="nav-dropdown-items">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'learner-attendance' %}">
-                        <i class="fa fa-plus-circle"></i>Learner Attendence</a>
-                </li>
                  <li class="nav-item">
-                    <a class="nav-link" href="{% url 'learner-report' %}">
+                    <a class="nav-link" href="{% url 'center-learner-report' %}">
                         <i class="fa fa-plus-circle"></i>Attendence list</a>
                 </li>
             </ul>

@@ -1,11 +1,12 @@
 from django import forms
 from django.forms import modelformset_factory, BaseModelFormSet
 from django_select2.forms import Select2MultipleWidget
-
-from teacher.models import Department, Classroom, Teacher
+from django_countries.fields import CountryField
+from django_countries.widgets import CountrySelectWidget
+from teacher.models import Department, Classroom, Teacher, Timesheet
 from learner.models import Learner
-from center_manager.models import Designation
-from academic.models import Grade, Subject
+from center_manager.models import Center, Designation
+from academic.models import Grade, Nationality, Session, Subject
 
 class CenterManagerLoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}))
@@ -31,18 +32,6 @@ class AddDesignationForm(forms.ModelForm):
             'physical_address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'documents': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
         }
-
-""" class AllocateTeacherForm(forms.ModelForm):
-    class Meta:
-        model = models.Designation
-        fields = ['designation_type','center', 'teacher', 'session']
-        widgets = {
-            'designation_type': forms.Select(attrs={'class': 'form-control'}),
-            'center': forms.Select(attrs={'class': 'form-control'}),
-            'teacher': forms.Select(attrs={'class': 'form-control'}),
-            'session': forms.Select(attrs={'class': 'form-control'}),
-        }  """       
-
 
 class AllocateTeacherForm(forms.ModelForm):
     learner = forms.ModelMultipleChoiceField(
@@ -72,7 +61,139 @@ class AllocateTeacherForm(forms.ModelForm):
             self.fields['learner'].queryset = Learner.objects.none()  # No center, no options
 
         
+class TimesheetForm(forms.Form):
+    date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    start_time = forms.ChoiceField(choices=Session.START_TIME, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'Start Time'}))
+    end_time = forms.ChoiceField(choices=Session.END_TIME, widget=forms.Select(attrs={'class': 'form-control', 'placeholder': 'End Time'}))
+    subjects = forms.ChoiceField(choices=Subject.SUBJECT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    grades = forms.ChoiceField(choices=Grade.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    day = forms.ChoiceField(choices=Session.DAY_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    
 
+    def clean(self):
+        cleaned_data = super().clean()
+        start_time = cleaned_data.get("start_time")
+        end_time = cleaned_data.get("end_time")
+        subjects = cleaned_data.get("subjects")
+        grades = cleaned_data.get("grades")
+        day = cleaned_data.get("day")
+        
+        if start_time and end_time:
+            if end_time <= start_time:
+                self.add_error('end_time', 'End time must be after start time.')
+
+class LearnerRegistrationForm(forms.ModelForm):
+    class Meta:
+        model = Learner
+        fields = [
+            'name', 'surname', 'photo', 'date_of_birth', 'gender',
+            'phone_no', 'email', 'id_no', 'nationality',
+            'race', 'home_language', 'disability', 'disabilities', 'center',
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'name'}),
+            'surname': forms.TextInput(attrs={'class': 'form-control','placeholder':'surname'}),
+            'photo': forms.ClearableFileInput(attrs={'class': 'form-control','placeholder':'photo'}),
+            'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','placeholder':'date_of_birth'}),
+            'gender': forms.TextInput(attrs={'class': 'form-control','placeholder':'gender'}),
+            'phone_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'phone_no'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control','placeholder':'name'}),
+            'id_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'ID No'}),
+            'nationality': CountryField().formfield(widget=CountrySelectWidget(attrs={'class': 'form-control'})),
+            'race': forms.TextInput(attrs={'class': 'form-control','placeholder':'race'}),
+            'home_language': forms.TextInput(attrs={'class': 'form-control','placeholder':'home_language'}),
+            'disability': forms.CheckboxInput(attrs={'class': 'form-control','placeholder':'disability'}),
+            'disabilities': forms.Select(attrs={'class': 'form-control','placeholder':'name'}),
+            'center': forms.TextInput(attrs={'class': 'form-control','placeholder':'center'}),
+        }
+
+     # ForeignKey fields: use ModelChoiceField for nationality and center
+    nationality = forms.ModelChoiceField(
+        queryset=Nationality.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False
+    )
+    center = forms.ModelChoiceField(
+        queryset=Center.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
+    # Choice fields: use ChoiceField for predefined choices like gender, race, home language, disability
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other')
+    )
+    gender = forms.ChoiceField(
+        choices=GENDER_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    RACE_CHOICES = (
+        ('B', 'Black African'),
+        ('W', 'White'),
+        ('C', 'Coloured'),
+        ('A', 'Asian/Indian'),
+        ('O', 'Other')
+    )
+    race = forms.ChoiceField(
+        choices=RACE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    HOME_LANGUAGE_CHOICES = (
+        ('english', 'English'),
+        ('zulu', 'Zulu'),
+        ('xhosa', 'Xhosa'),
+        ('afrikaans', 'Afrikaans'),
+        ('pedi', 'Pedi'),
+        ('tswana', 'Tswana'),
+        ('sotho', 'Sotho'),
+        ('tsonga', 'Tsonga'),
+        ('swati', 'Swati'),
+        ('venda', 'Venda'),
+        ('ndebele', 'Ndebele'),
+        ('other', 'Other')
+    )
+    home_language = forms.ChoiceField(
+        choices=HOME_LANGUAGE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    DISABILITY_CHOICES = [
+        ('hearing_impairment', 'Hearing Impairment - Difficulties hearing properly (Needs to sit near/far)'),
+        ('visual_impairment', 'Visual Impairment - Near/far sighted'),
+        ('physical_disability', 'Physical Disability - Physically impaired'),
+        ('cognitive_impairment', 'Cognitive Impairment'),
+    ]
+    disabilities = forms.ChoiceField(
+        choices=DISABILITY_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'}),
+        required=False
+    )
+
+    DISABILITY_CHOICES_YES_NO = (
+        ('Y', 'Yes'),
+        ('N', 'No')
+    )
+    disability = forms.ChoiceField(
+        choices=DISABILITY_CHOICES_YES_NO,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        disability = cleaned_data.get('disability')
+        disabilities = cleaned_data.get('disabilities')
+
+        if disability == 'Y':  # If disability is 'Yes'
+            if not disabilities:
+                self.add_error('disabilities', 'This field is required if you have a disability.')
+        else:
+            # If disability is not 'Yes', clear the disabilities field
+            cleaned_data['disabilities'] = None
+
+        return cleaned_data      
 
 class ClassroomFormSet(BaseModelFormSet):
     def __init__(self, *args, **kwargs):
