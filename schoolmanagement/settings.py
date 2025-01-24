@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY', default='7-qb)ikktb8c!9lhw#t0i52$mhc%_!wj3=i0$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [*]
+ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
     'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
