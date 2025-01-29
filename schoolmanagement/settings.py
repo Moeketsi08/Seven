@@ -33,7 +33,7 @@ SECRET_KEY =  os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = os.getenv('shark-app-4gdck.ondigitalocean.app', '127.0.0.1, localhost').split(',')
+ALLOWED_HOSTS = ['shark-app-4gdck.ondigitalocean.app', '127.0.0.1', 'localhost']
 
 CSRF_TRUSTED_ORIGINS = ['https://shark-app-4gdck.ondigitalocean.app', 'https://www.shark-app-4gdck.ondigitalocean.app']
 
