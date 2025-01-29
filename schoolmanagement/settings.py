@@ -35,9 +35,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('shark-app-4gdck.ondigitalocean.app', '127.0.0.1, localhost').split(',')
 
-CSRF_TRUSTED_ORIGINS = [
-    '*',
-]
+CSRF_TRUSTED_ORIGINS = ['https://shark-app-4gdck.ondigitalocean.app', 'https://www.shark-app-4gdck.ondigitalocean.app'}
 
 import os
 
