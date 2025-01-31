@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('', views.root_redirect_view, name='root_redirect'),
     path('login/', views.admin_login, name='admin_login'),
     path('center-manager/center-login/', views.CenterLoginView.as_view(), name='center-login'),
     path('center-manager/center-dashboard/', views.center_dashboard, name='center-dashboard'),
