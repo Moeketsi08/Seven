@@ -1,0 +1,34 @@
+{% extends 'base/center-manager-base.html' %}
+{% load static %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <img style="height:200px; width:200px; border-radius:50%; margin:auto" src="{{ teacher.photo.url }}" alt="Photo">
+      </div>
+    </div>
+    <div class="card-body">
+
+      <div class="personal_information">
+        <div class="row">
+          <h2 class="mx-auto">Personal Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Name                    : {{ teacher.name|default:"Not specified" }}</pre>
+            <pre>Date of Birth           : {{ teacher.date_of_birth|default:"Not specified" }}</pre>
+            <pre>Gender                  : {{ teacher.gender|default:"Not specified"}}</pre>
+            <pre>User                    : {{ teacher.user|default:"Not specified" }}</pre> 
+            <pre>Phone No                : {{ teacher.phone_no|default:"Not specified" }}</pre>
+            <pre>Email                   : {{ teacher.email|default:"Not specified" }}</pre>
+            <pre>Department              : {{ teacher.department|default:"Not specified" }}</pre>
+            <pre>Centers                 : {{ teacher.centers|default:"Not specified" }}</pre>
+            <pre>Subjects Taught         : {{ teacher.subjects_taught|default:"Not specified" }}</pre>
+            <pre>Address                 : {{ teacher.address|default:"Not specified" }}</pre>
+            <pre>Date Joined             : {{ teacher.date_joined|default:"Not specified" }}</pre>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}

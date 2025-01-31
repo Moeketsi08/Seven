@@ -1,0 +1,129 @@
+{% load static %}
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}"><i class="icon-speedometer"></i> Dashboard</a>
+            </li>
+
+            <!-- Administration Section Start -->
+            <li class="nav-item nav-dropdown">
+             <a class="nav-link nav-dropdown-toggle" href="#">
+                 <i class="nav-icon icon-puzzle"></i>Administration</a>
+             <ul class="nav-dropdown-items">
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'designation' %}">
+                         <i class="fa fa-plus-circle"></i>Add Designation</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'district' %}">
+                         <i class="fa fa-plus-circle"></i>Add Subject</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'upazilla' %}">
+                         <i class="fa fa-plus-circle"></i>Add Class</a>
+                 </li>
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'union' %}">
+                         <i class="fa fa-plus-circle"></i>Add Learner</a>
+                 </li>
+             </ul>
+           </li>
+           <!-- Administration Section END -->
+
+           <!-- Academic Section START -->
+           <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="nav-icon icon-puzzle"></i>Academic</a>
+            <ul class="nav-dropdown-items">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'create-class' %}">
+                      <i class="fa fa-plus-circle"></i>Create Class</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'create-section' %}">
+                      <i class="fa fa-plus-circle"></i>Create Section</a>
+              </li>
+
+            </ul>
+          </li>
+
+          <!-- Academic Section END -->
+           <!-- Student Section END -->
+
+
+          <!-- Employee Section END -->
+
+          <!-- Result Section START -->
+          <!--<li class="nav-item nav-dropdown">
+           <a class="nav-link nav-dropdown-toggle" href="#">
+               <i class="nav-icon icon-puzzle"></i>Result</a>
+           <ul class="nav-dropdown-items">
+               <li class="nav-item">
+                   <a class="nav-link" href="#">
+                       <i class="fa fa-plus-circle"></i>Add Subject</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" href="#">
+                       <i class="fa fa-list"></i>Subject List</a>
+               </li>
+               <li class="nav-item">
+                   <a class="nav-link" href="#">
+                       <i class="fa fa-plus-circle"></i>Mark Entry</a>
+               </li>
+           </ul>
+         </li> -->
+         <!-- Result Section END -->
+
+         <!-- Attendence Report Section START -->
+         <li class="nav-item nav-dropdown">
+          <a class="nav-link nav-dropdown-toggle" href="#">
+              <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
+          <ul class="nav-dropdown-items">
+              <li class="nav-item">
+                  <a class="nav-link" href="#">
+                      <i class="fa fa-plus-circle"></i>Student Attendence</a>
+              </li>
+          </ul>
+        </li>
+        <!-- Attendence Report Section END -->
+
+       <!-- Holiday Section START -->
+      <!-- <li class="nav-item nav-dropdown">
+        <a class="nav-link nav-dropdown-toggle" href="#">
+            <i class="nav-icon icon-puzzle"></i>Holiday</a>
+        <ul class="nav-dropdown-items">
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <i class="nav-icon icon-puzzle"></i>Student List</a>
+            </li>
+        </ul>
+      </li> -->
+      <!-- Holiday Section END -->
+
+        <!-- Event Section START -->
+        <!--<li class="nav-item nav-dropdown">
+         <a class="nav-link nav-dropdown-toggle" href="#">
+             <i class="nav-icon icon-puzzle"></i>Event</a>
+         <ul class="nav-dropdown-items">
+             <li class="nav-item">
+                 <a class="nav-link" href="#">
+                     <i class="nav-icon icon-puzzle"></i>Student List</a>
+             </li>
+         </ul>
+       </li> -->
+       <!-- Event Section END -->
+
+        <!-- User-Manual Section START -->
+        <li class="nav-item nav-dropdown">
+         <a class="nav-link" href="#">
+             <i class="nav-icon icon-puzzle"></i>User-Manual</a>
+       </li>
+       <!-- User-Manual Section END -->
+        </ul>
+    </nav>
+    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+
+    {% block sidebar %}
+    {% endblock %}
+</div>

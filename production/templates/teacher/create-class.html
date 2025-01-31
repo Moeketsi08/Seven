@@ -1,0 +1,94 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">Class Register Form</div>
+    
+    <div class="card-body">
+      <form action="" method="post" id="ClassRegistrationForm" data-upazilla-url="{% url 'load-upazilla' %}" data-union-url="{% url 'load-union' %}">
+        {% csrf_token %}
+
+        <!-- Class Name -->
+        <div class="form-group">
+          <label for="class_name">Class Name</label>
+          <input type="text" name="class_name" class="form-control" id="class_name" placeholder="Enter Class Name">
+        </div>
+
+        <!-- Dropdown for District -->
+        <div class="form-group">
+          <label for="district">Province</label>
+          <select id="district" name="district" class="form-control">
+            <option value="">Select Province</option>
+            {% for district in districts %}
+              <option value="{{ district.id }}">{{ district.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Dropdown for Upazilla (populated dynamically) -->
+        <div class="form-group">
+          <label for="upazilla">Region</label>
+          <select id="upazilla" name="upazilla" class="form-control">
+            <option value="">Select Region</option>
+          </select>
+        </div>
+
+        <!-- Dropdown for Union (populated dynamically) -->
+        <div class="form-group">
+          <label for="id_union">Center</label>
+          <select id="id_union" name="union" class="form-control">
+            <option value="">Select Center</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Class List Section -->
+  <div class="card mt-4">
+    <div class="card-header">
+      <i class="fa fa-align-justify"></i> Class List
+    </div>
+    <div class="card-body">
+      <table class="table table-responsive-sm table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Class Name</th>
+            <th>Display Name</th>
+            <th>Province</th>
+            <th>Region</th>
+            <th>Center</th>
+            <th>Register Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for class_obj in class_obj %}
+            <tr>
+              <td>{{ class_obj.id }}</td>
+              <td>{{ class_obj.class_name.name }}</td>
+              <td>{{ class_obj.class_name.display_name }}</td>
+              <td>{{ class_obj.district.name }}</td>
+              <td>{{ class_obj.upazilla.name }}</td>
+              <td>{{ class_obj.union.name }}</td>
+              <td>{{ class_obj.date }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- jQuery and JavaScript for dynamic loading -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="{% static 'src/js/address.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+

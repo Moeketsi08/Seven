@@ -1,0 +1,18 @@
+{% extends "base/teacher-base.html" %}
+
+{% block content %}
+<h2>Submit Attendance and Timesheet</h2>
+<form action="{% url 'submit_attendance_and_timesheet' session_id=session.id %}" method="post">
+    {% csrf_token %}
+    {{ timesheet_form.as_p }}
+    {{ attendance_formset.management_form }}
+    {% for form in attendance_formset %}
+        <div>
+            {{ form.learner_name.value }}
+            {{ form.learner_id }}
+            {{ form.status }}
+        </div>
+    {% endfor %}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

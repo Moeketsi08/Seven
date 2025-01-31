@@ -1,0 +1,84 @@
+{% load static %}
+<aside class="aside-menu">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#timeline" role="tab"><i class="fi fi-bs-user"></i></a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#settings" role="tab"><i class="fi fi-bs-user"></i></a>
+        </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane active" id="timeline" role="tabpanel">
+            <div class="callout m-0 py-2 text-muted text-center bg-light text-uppercase">
+                <small><b>Today</b></small>
+            </div>
+            <hr class="transparent mx-3 my-0">
+            <div class="callout callout-warning m-0 py-3">
+                <div class="avatar float-right">
+                    <i class="fi fi-bs-user"></i>
+                </div>
+                <div>Gr 11 Maths
+                    <strong>@ Dobsonville Center</strong>
+                </div>
+                <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 10am - 12pm</small>
+                <small class="text-muted"><i class="icon-location-pin"></i>&nbsp; Makhoarane, Soweto</small>
+            </div>
+            <hr class="mx-3 my-0">
+            <div class="callout callout-info m-0 py-3">
+                <div class="avatar float-right">
+                    <i class="fi fi-bs-user"></i>
+                </div>
+                <div>Call At 
+                    <strong> Hammanskraal Center </strong>
+                </div>
+                <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 12 - 2pm</small>
+                <small class="text-muted"><i class="icon-social-skype"></i>&nbsp; Hammanskraal High</small>
+            </div>
+        </div>
+        <div class="tab-pane p-3" id="settings" role="tabpanel">
+            <h6>Settings</h6>
+            <hr>
+            <h6>System Utilization</h6>
+
+            <div class="text-uppercase mb-1 mt-4">
+                <small><b>CPU Usage</b></small>
+            </div>
+            <div class="progress progress-xs">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="text-muted">348 Processes. 1/4 Cores.</small>
+
+            <div class="text-uppercase mb-1 mt-2">
+                <small><b>Storage Usage</b></small>
+            </div>
+            <div class="progress progress-xs">
+                <div class="progress-bar bg-warning" role="progressbar" style="width: 70%" aria-valuenow="70"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="text-muted">11444GB/1TB</small>
+
+            <div class="text-uppercase mb-1 mt-2">
+                <small><b>Users Usage</b></small>
+            </div>
+            <div class="progress progress-xs">
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 95%" aria-valuenow="95"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="text-muted">243GB/256GB</small>
+
+            <div class="text-uppercase mb-1 mt-2">
+                <small><b>API Calls Usage</b></small>
+            </div>
+            <div class="progress progress-xs">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10"
+                     aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <small class="text-muted">250 00/1 000 000 GB</small>
+        </div>
+    </div>
+</aside>
+

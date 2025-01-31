@@ -1,0 +1,126 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <img style="height:200px; width:200px; border-radius:50%; margin:auto" src="{{ learner.personal_info.photo.url }}" alt="Photo">
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="address_information">
+        <div class="row">
+          <h2 class="mx-auto">Academic Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Class  : {{ learner.class_info }}</pre>
+            <pre>Registration No: {{ learner.registration_no }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="personal_information">
+        <div class="row">
+          <h2 class="mx-auto">Personal Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Name                 : {{ learner.personal_info.name }}</pre>
+            <pre>Date of Birth        : {{ learner.personal_info.date_of_birth }}</pre>
+            <pre>Gender               : {{ learner.personal_info.gender }}</pre>
+            <pre>Phone No             : {{ learner.personal_info.phone_no }}</pre>
+            <!--<pre>Email                : {{ learner.personal_info.email }}</pre> -->
+            <pre>Birth Certificate No : {{ learner.personal_info.birth_certificate_no }}</pre>
+            <!--<pre>Religion             : {{ learner.personal_info.religion }}</pre> -->
+            <pre>Nationality          : {{ learner.personal_info.nationality }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="address_information">
+        <div class="row">
+          <h2 class="mx-auto">Address Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Province: {{ learner.address_info.district }}</pre>
+            <pre>Region: {{ learner.address_info.upazilla }}</pre>
+            <pre>Center  : {{ learner.address_info.union }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="address_information">
+        <div class="row">
+          <h2 class="mx-auto">Guardian Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Father`s Name            : {{ learner.guardian_info.father_name }}</pre>
+            <pre>Father`s Phone No        : {{ learner.guardian_info.father_phone_no }}</pre>
+            <pre>Mother`s Name            : {{ learner.guardian_info.mother_name }}</pre>
+            <pre>Mother`s Phone No        : {{ learner.guardian_info.mother_phone_no }}</pre>
+            <pre>Mother`s Occupation      : {{ learner.guardian_info.mother_occupation }}</pre>
+            <pre>Guardian Name            : {{ learner.guardian_info.guardian_name }}</pre>
+            <pre>Guardian Phone No        : {{ learner.guardian_info.guardian_phone_no }}</pre>
+            <pre>Guardian Email           : {{ learner.guardian_info.guardian_email }}</pre>
+            <pre>Relationship with Learner: {{ learner.guardian_info.relationship_with_learner }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="emergency_contact_information">
+        <div class="row">
+          <h2 class="mx-auto">Emergency Contact Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Name                     : {{ learner.emergency_contact_info.name }}</pre>
+            <pre>Address                  : {{ learner.emergency_contact_info.address }}</pre>
+            <pre>Relationship with Learner: {{ learner.emergency_contact_info.relationship_with_learner }}</pre>
+            <pre>Phone No                 : {{ learner.emergency_contact_info.phone_no }}</pre>
+            <pre>Email                    : {{ learner.emergency_contact_info.email }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="emergency_contact_information">
+        <div class="row">
+          <h2 class="mx-auto">Previous Academic Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>High School Name: {{ learner.previous_academic_info.institute_name }}</pre>
+            <pre>Grade         : {{ learner.previous_academic_info.gpa }}</pre>
+            <pre>Passing Year  : {{ learner.previous_academic_info.passing_year }}</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="previous_academic_information">
+        <div class="row">
+          <h2 class="mx-auto">Necessary Documents</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Birth Certificate : {{ learner.previous_academic_certificate.birth_certificate }}</pre>
+            <pre>Previous Year Report  : {{ learner.previous_academic_certificate.release_letter }}</pre>
+            <pre>Proof of Residence      : {{ learner.previous_academic_certificate.testimonial }}</pre>
+            <!--<pre>Marksheet         : {{ learner.previous_academic_certificate.marksheet }}</pre>-->
+            <!--<pre>Stipen Certificate: {{ learner.previous_academic_certificate.stipen_certificate }}</pre>-->
+            <pre>Other Certificate : {{ learner.previous_academic_certificate.other_certificate }}</pre>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}

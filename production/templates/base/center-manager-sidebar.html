@@ -1,0 +1,60 @@
+{% load static %}
+<div class="sidebar">
+    <nav class="sidebar-nav">
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'center-dashboard' %}"><i class="icon-speedometer"></i> Dashboard</a>
+            </li>
+
+            <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="nav-icon icon-puzzle"></i>Teacher</a>
+            <ul class="nav-dropdown-items">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'allocate_teacher' %}">
+                      <i class="fa fa-plus-circle"></i>Assign Teacher Class</a>
+                <a class="nav-link" href="{% url 'edit_teacher_allocation' %}">
+                      <i class="fa fa-plus-circle"></i>Edit Teacher Class</a>
+                <a class="nav-link" href="{% url 'teacher_list' %}">
+                      <i class="fa fa-plus-circle"></i>Teacher List</a>
+                <a class="nav-link" href="{% url 'teacher-timesheets' %}">
+                <i class="fa fa-plus-circle"></i>Teacher Timesheet</a>      
+              </li>
+            </ul>
+          </li>
+
+           <!-- Learner Section START -->
+            <li class="nav-item nav-dropdown">
+             <a class="nav-link nav-dropdown-toggle" href="#">
+                 <i class="nav-icon icon-puzzle"></i>Learner</a>
+             <ul class="nav-dropdown-items">
+                 <li class="nav-item">
+                     <a class="nav-link" href="{% url 'center-learner-list' %}">
+                         <i class="fa fa-list"></i>Learner List</a>
+                 </li>
+<!--                  <li class="nav-item">
+                     <a class="nav-link" href="{% url 'center-learner-search' %}">
+                         <i class="fa fa-search-plus"></i>Learner Search</a>
+                 </li> -->
+             </ul>
+           </li>
+
+        <!-- Attendence Report Section START -->
+         <li class="nav-item nav-dropdown">
+            <a class="nav-link nav-dropdown-toggle" href="#">
+                <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
+            <ul class="nav-dropdown-items">
+                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'center-learner-report' %}">
+                        <i class="fa fa-plus-circle"></i>Attendence list</a>
+                </li>
+            </ul>
+          </li>
+          <!-- Attendence Report Section END -->
+        </ul>
+    </nav>
+    <button class="sidebar-minimizer brand-minimizer" type="button"></button>
+
+    {% block sidebar %}
+    {% endblock %}
+</div>

@@ -1,0 +1,30 @@
+{% extends 'base/center-manager-base.html' %}
+{% load static %}
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      {% comment %} <div class="row">
+        <img style="height:200px; width:200px; border-radius:50%; margin:auto" src="{{ center_manager.photo.url }}" alt="Photo">
+      </div> {% endcomment %}
+    </div>
+    <div class="card-body">
+
+      <div class="personal_information">
+        <div class="row">
+          <h2 class="mx-auto">Personal Information</h2>
+        </div>
+        <hr>
+        <div class="row">
+          <div style="font-size:24px; margin-left: 30px">
+            <pre>Name                    : {{ center_manager.name|default:"Not specified" }}</pre>
+            <pre>Surname                 : {{ center_manager.surname|default:"Not specified" }}</pre>
+            <pre>User                    : {{ center_manager.user|default:"Not specified" }}</pre> 
+            <pre>Phone No                : {{ center_manager.phone_number|default:"Not specified" }}</pre>
+            <pre>Email                   : {{ center_manager.email|default:"Not specified" }}</pre>
+            <pre>Center                  : {{ center.name|default:"Not specified" }}</pre>
+            <pre>Address                 : {{ center_manager.address|default:"Not specified" }}</pre>
+          </div>
+        </div>
+      </div>
+
+{% endblock %}
