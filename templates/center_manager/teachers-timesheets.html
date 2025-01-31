@@ -11,6 +11,14 @@
         <div class="card mb-4">
             <div class="card-header">
                 <h3>Timesheet's Summary</h3>
+                <div class="export-buttons">
+                    <form method="GET" action="{% url 'export_timesheet_pdf' %}" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary btn-sm">Export to PDF</button>
+                    </form>
+                    <form method="GET" action="{% url 'export_timesheet_csv' %}" style="display: inline;">
+                        <button type="submit" class="btn btn-secondary btn-sm">Export to CSV</button>
+                    </form>
+                </div>
             </div>
             <div class="card-body">
                 <!-- Display Timesheet Entries -->

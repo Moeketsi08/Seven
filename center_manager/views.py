@@ -23,6 +23,14 @@ from academic.models import Nationality, Registration
 from learner.models import Learner
 from django.db.models.functions import TruncDate  # Import TruncDate
 from django.db.models import Count
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from itertools import groupby
+from operator import attrgetter
+from xhtml2pdf import pisa  # For PDF generation
+import csv
 
 
 def is_admin(user):
@@ -103,17 +111,25 @@ def admin_login(request):
             username = forms.cleaned_data['username']
             password = forms.cleaned_data['password']
             user = authenticate(username=username, password=password)
-            if user.is_superuser:
-                admin = user.is_superuser
-                login(request, user)
+            
+            if user is not None:
+                if user.is_superuser:
+                    admin = user.is_superuser
+                    login(request, user)
 
-                # Fetch the admin's name 
-                first_name = user.username
+                    # Fetch the admin's name 
+                    first_name = user.username
 
-                # Display a welcome message with the admin's full name
-                messages.success(request, f'Welcome, Administrator {first_name}')
+                    # Display a welcome message with the admin's full name
+                    messages.success(request, f'Welcome, Administrator {first_name}')
 
-                return redirect('home')
+                    return redirect('home')
+                else:
+                    messages.error(request, "You do not have admin privileges.")
+            else:
+                messages.error(request, "Invalid username or password.")
+                
+            
     context = {'forms': forms}
     return render(request, 'center_manager/login.html', context)
 
@@ -127,7 +143,6 @@ class CenterLoginView(SuccessMessageMixin, FormView):
     
     def form_valid(self, form): 
         user = form.get_user()
-
         
         # Check if the user is valid
         if not user:
@@ -414,6 +429,62 @@ def teacher_timesheets(request):
 
 @login_required
 @user_passes_test(is_admin)
+def export_timesheet_csv(request):
+    timesheets = Timesheet.objects.select_related('teacher', 'session__grade', 'session__subject')\
+                                   .order_by('teacher__id', '-date')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="timesheets.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Teacher', 'Start Time', 'End Time', 'Class', 'Subject', 'Hours', 'Date', 'Approved'])
+
+    for teacher, teacher_timesheets in groupby(timesheets, key=attrgetter('teacher')):
+        for timesheet in teacher_timesheets:
+            writer.writerow([
+                f"{timesheet.teacher.name} {timesheet.teacher.surname}",
+                timesheet.session.start_time.strftime("%H:%M"),
+                timesheet.session.end_time.strftime("%H:%M"),
+                timesheet.session.grade.grade,
+                timesheet.session.subject.subject,
+                timesheet.atp_hours,
+                timesheet.date.strftime("%Y-%m-%d"),
+                'Approved' if timesheet.approved else 'Pending',
+            ])
+
+    return response
+
+
+@login_required
+@user_passes_test(is_admin)
+def export_timesheet_pdf(request):
+    timesheets = Timesheet.objects.select_related('teacher', 'session__grade', 'session__subject')\
+                                   .order_by('teacher__id', '-date')
+
+    grouped_timesheets = {}
+    for teacher, teacher_timesheets in groupby(timesheets, key=attrgetter('teacher')):
+        teacher_timesheets_list = list(teacher_timesheets)
+        total_hours_by_teacher = sum(t.atp_hours for t in teacher_timesheets_list)
+        grouped_timesheets[teacher] = {
+            'timesheets': teacher_timesheets_list,
+            'total_hours': total_hours_by_teacher,
+        }
+
+    html_string = render_to_string('center_manager/timesheet_pdf.html', {
+        'timesheets': grouped_timesheets,
+    })
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="timesheets.pdf"'
+
+    pisa_status = pisa.CreatePDF(html_string, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error generating PDF', status=500)
+    
+    return response
+
+@login_required
+@user_passes_test(is_admin)
 def admin_allocate_teacher(request):
     # Get the center manager's center from the logged-in user
     try:
@@ -512,7 +583,6 @@ def admin_learner_search(request):
     }
     return render(request, 'center_manager/admin-learner-search.html', context)
 
-
 @login_required
 @user_passes_test(is_admin)
 def admin_teacher_list(request):
@@ -569,7 +639,6 @@ def admin_teacher_timesheets(request):
         'timesheets': grouped_timesheets,
     })
 
-
 @login_required
 @user_passes_test(is_admin)
 def teacher_delete(request, teacher_id):
@@ -577,7 +646,6 @@ def teacher_delete(request, teacher_id):
     teacher.is_active = False
     teacher.save()
     return redirect('teacher_list')
-
 
 @login_required
 @user_passes_test(is_admin)
@@ -681,7 +749,6 @@ def learner_registration(request):
         }
     )
 
-
 @login_required
 def learner_attendance(request):
     # Fetch all classrooms and related teachers
@@ -707,9 +774,7 @@ def learner_attendance(request):
     return render(request, 'center_manager/learner-attendance.html', {
         'teacher_learner_forms': teacher_learner_forms,
     })
-
-
-    
+   
 @login_required
 def learner_report(request):
     # Fetch all attendance records grouped by date
@@ -773,9 +838,7 @@ def admin_learner_attendance(request):
     return render(request, 'center_manager/admin-learner-attendance.html', {
         'teacher_learner_forms': teacher_learner_forms,
     })
-
-
-    
+   
 @login_required
 def admin_learner_report(request):
     # Fetch all attendance records grouped by date
@@ -796,6 +859,8 @@ def admin_learner_report(request):
     return render(request, 'center_manager/admin-learner-report.html', {
         'grouped_attendance': grouped_attendance,
     })
+
+
 
 
 

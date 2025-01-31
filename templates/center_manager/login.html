@@ -107,6 +107,38 @@
       <div class="card">
         <img src="{% static 'assets/Kutlwanong-logo.png' %}" alt="Kutlwanong Logo" class="logo">
         <h1>Login to Kutlwanong Data Management System</h1>
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+           <!-- Modal for Messages -->
+           <div id="messageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="messageModalLabel">Notifications</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }} mb-2" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No messages to display.</p>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <form action="" method="post">
           {% csrf_token %}
           <div class="form-group">
@@ -117,6 +149,13 @@
             <label for="password">Password</label>
             <input type="password" id="password" placeholder="Your password" name="password" />
           </div>
+
+          {% if form.errors %}
+          <div class="alert alert-danger">
+          Your username and password didn't match. Please try again.
+          </div>
+          {% endif %}
+
           <div class="checkbox-group">
             <div>
               <input type="checkbox" id="remember-me">

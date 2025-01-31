@@ -30,6 +30,8 @@ urlpatterns = [
      path('center-manager/admin_edit_teacher_allocate/', views.admin_edit_teacher_allocation, name='admin_edit_teacher_allocation'),
     path('center-manager/admin_teacher-list/', views.admin_teacher_list, name='admin_teacher_list'),
     path('center-manager/admin_teacher-profile/<int:teacher_id>/', views.admin_teacher_profile, name='admin_teacher-profile'),
+    path('center-manager/export-timesheet-csv/', views.export_timesheet_csv, name='export_timesheet_csv'),
+    path('center-manager/export-timesheet-pdf/', views.export_timesheet_pdf, name='export_timesheet_pdf'),
 ]
     
     

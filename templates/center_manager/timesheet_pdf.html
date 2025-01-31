@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 5px;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Timesheet Summary</h1>
+    {% for teacher, data in timesheets.items %}
+        <h3>{{ teacher.name }} {{ teacher.surname }}</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Class</th>
+                    <th>Subject</th>
+                    <th>Hours</th>
+                    <th>Date</th>
+                    <th>Approved</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for timesheet in data.timesheets %}
+                    <tr>
+                        <td>{{ timesheet.session.start_time|date:"H:i" }}</td>
+                        <td>{{ timesheet.session.end_time|date:"H:i" }}</td>
+                        <td>{{ timesheet.session.grade.grade }}</td>
+                        <td>{{ timesheet.session.subject.subject }}</td>
+                        <td>{{ timesheet.atp_hours }}</td>
+                        <td>{{ timesheet.date|date:"Y-m-d" }}</td>
+                        <td>{% if timesheet.approved %}Yes{% else %}No{% endif %}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="4"><strong>Total Hours</strong></td>
+                    <td colspan="3">{{ data.total_hours }}</td>
+                </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+</body>
+</html>
