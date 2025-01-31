@@ -23,18 +23,14 @@ from academic.models import Nationality, Registration
 from learner.models import Learner
 from django.db.models.functions import TruncDate  # Import TruncDate
 from django.db.models import Count
-from django.shortcuts import render
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpResponse
-from django.template.loader import render_to_string
-from itertools import groupby
-from operator import attrgetter
-from xhtml2pdf import pisa  # For PDF generation
-import csv
-
+from django.shortcuts import redirect
 
 def is_admin(user):
     return user.is_staff or user.is_superuser or user.groups.filter(name='Center Manager').exists()
+
+
+def root_redirect_view(request):
+    return redirect('/login')
 
 @login_required
 @user_passes_test(is_admin)
