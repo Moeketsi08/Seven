@@ -25,3 +25,4 @@ whitenoise==6.8.2
 gunicorn
 dj-database-url
 psycopg2
+python-3.10.10
