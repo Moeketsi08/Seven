@@ -30,7 +30,7 @@ def is_admin(user):
 
 
 def root_redirect_view(request):
-    return redirect('admin_login')
+    return redirect('/login')
 
 @login_required
 @user_passes_test(is_admin)
