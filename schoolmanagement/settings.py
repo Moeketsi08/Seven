@@ -29,13 +29,31 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 from decouple import config
 
-SECRET_KEY =  os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
+#For live hosting
+# SECRET_KEY =  os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
+
+# ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+
+# CSRF_TRUSTED_ORIGINS = ['https://shark-app-4gdck.ondigitalocean.app']
+
+
+#For local testing/hosting
+SECRET_KEY = config('SECRET_KEY', default='7-qb)ikktb8c!9lhw#t0i52$mhc%_!wj3=i0$kx&9k+@ma1xvk')
+
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = [
+    '169.254.131.2',
+    'kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+    '127.0.0.1',
+]
 
-CSRF_TRUSTED_ORIGINS = ['https://shark-app-4gdck.ondigitalocean.app']
+CSRF_TRUSTED_ORIGINS = [
+    'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+]
 
 import os
 
