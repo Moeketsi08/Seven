@@ -1,6 +1,8 @@
 from collections import defaultdict
+import csv
 from itertools import groupby
 from operator import attrgetter
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -24,6 +26,8 @@ from learner.models import Learner
 from django.db.models.functions import TruncDate  # Import TruncDate
 from django.db.models import Count
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
+from xhtml2pdf import pisa
 
 def is_admin(user):
     return user.is_staff or user.is_superuser or user.groups.filter(name='Center Manager').exists()
