@@ -30,30 +30,30 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from decouple import config
 
 #For live hosting
-# SECRET_KEY =  os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
-# # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = os.getenv('DEBUG', 'False') == 'True'
+SECRET_KEY =  os.getenv('DJANGO_SECRET_KEY', get_random_secret_key())
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-# ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 
-# CSRF_TRUSTED_ORIGINS = ['https://shark-app-4gdck.ondigitalocean.app']
+CSRF_TRUSTED_ORIGINS = ['https://shark-app-4gdck.ondigitalocean.app']
 
 
 #For local testing/hosting
-SECRET_KEY = config('SECRET_KEY', default='7-qb)ikktb8c!9lhw#t0i52$mhc%_!wj3=i0$kx&9k+@ma1xvk')
+# SECRET_KEY = config('SECRET_KEY', default='7-qb)ikktb8c!9lhw#t0i52$mhc%_!wj3=i0$kx&9k+@ma1xvk')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
 
-ALLOWED_HOSTS = [
-    '169.254.131.2',
-    'kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
-    '127.0.0.1',
-]
+# ALLOWED_HOSTS = [
+#     '169.254.131.2',
+#     'kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+#     '127.0.0.1',
+# ]
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
-]
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+# ]
 
 import os
 
@@ -129,50 +129,50 @@ WSGI_APPLICATION = 'schoolmanagement.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    'select2': {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    }
-}
-
-# Set the cache backend to select2
-SELECT2_CACHE_BACKEND = 'select2'
-
-
-#Deployment
-# DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
-
-# if DEVELOPMENT_MODE is True:
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+#     'select2': {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/2",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
 #         }
 #     }
-# elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
-#     if os.getenv("DATABASE_URL", None) is None:
-#         raise Exception("DATABASE_URL environment variable not defined")
-#     DATABASES = {
-#         "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
-#     }
+# }
+
+# # Set the cache backend to select2
+# SELECT2_CACHE_BACKEND = 'select2'
+
+
+#For Live Deployment
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
+
+if DEVELOPMENT_MODE is True:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
+elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
+    if os.getenv("DATABASE_URL", None) is None:
+        raise Exception("DATABASE_URL environment variable not defined")
+    DATABASES = {
+        "default": dj_database_url.parse(os.environ.get("DATABASE_URL")),
+    }
 
 
 # Password validation
