@@ -3,7 +3,7 @@ from .settings import *
 from .settings import BASE_DIR
 import dj_database_url
 
-SECRET_KEY = os.getenv['DJANGO_SECRET_KEY']
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 ALLOWED_HOSTS = os.getenv('WEBSITE_HOSTNAME', 'shark-app-4gdck.ondigitalocean.app').split(',')
 CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in os.getenv('WEBSITE_HOSTNAME', 'shark-app-4gdck.ondigitalocean.app').split(',')]
 DEBUG = False
