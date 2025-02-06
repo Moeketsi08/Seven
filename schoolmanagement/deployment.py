@@ -4,8 +4,8 @@ from .settings import BASE_DIR
 import dj_database_url
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-ALLOWED_HOSTS = os.getenv('WEBSITE_HOSTNAME', 'shark-app-4gdck.ondigitalocean.app').split(',')
-CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in os.getenv('WEBSITE_HOSTNAME', 'shark-app-4gdck.ondigitalocean.app').split(',')]
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,165.232.184.247').split(',')
+CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in ALLOWED_HOSTS]
 DEBUG = False
 
 MIDDLEWARE = [
