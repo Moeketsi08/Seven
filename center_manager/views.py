@@ -33,8 +33,8 @@ def is_admin(user):
     return user.is_staff or user.is_superuser or user.groups.filter(name='Center Manager').exists()
 
 
-def root_redirect_view(request):
-    return redirect('/login')
+# def root_redirect_view(request):
+#     return redirect('/login')
 
 @login_required
 @user_passes_test(is_admin)
