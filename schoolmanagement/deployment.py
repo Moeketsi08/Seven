@@ -28,20 +28,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #parameters = {pair.split('='):pair.split('=')[1] for pair in connection_string.split(' ')}
 
 
-DATABASE_URL = os.getenv("DATABASE_URL")
+# DATABASE_URL = os.getenv("DATABASE_URL")
 
-if DATABASE_URL:
-    DATABASES = {
-        'default': dj_database_url.config(default=DATABASE_URL)
-    }
-else:
-    print("Warning: DATABASE_URL is not set. Using SQLite as fallback.")
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.sqlite3",
-            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-        }
-    }
+# if DATABASE_URL:
+#     DATABASES = {
+#         'default': dj_database_url.config(default=DATABASE_URL)
+#     }
+# else:
+#     print("Warning: DATABASE_URL is not set. Using SQLite as fallback.")
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.sqlite3",
+#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+#         }
+#     }
 
 # DATABASES = {
 #     'default': {
