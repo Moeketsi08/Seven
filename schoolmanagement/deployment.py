@@ -4,7 +4,7 @@ from .settings import BASE_DIR
 import dj_database_url
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,165.232.184.247').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,kutlwanong-3xhqp.ondigitalocean.app').split(',')
 CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in ALLOWED_HOSTS]
 DEBUG = False
 
