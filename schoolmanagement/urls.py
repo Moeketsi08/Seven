@@ -23,7 +23,7 @@ from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', home_page, name='home'),
+    path('', home_page, name='home'),
     path('', include('center_manager.urls')),
     # path('center_manager/', include('center_manager.urls')),
     path('teacher/', include('teacher.urls')),
@@ -39,5 +39,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path("select2/", include("django_select2.urls")),
 ]
-urlpatterns += staticfiles_urlpatterns()
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += staticfiles_urlpatterns()
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
