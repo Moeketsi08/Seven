@@ -4,7 +4,7 @@ from .settings import BASE_DIR
 import dj_database_url
 
 SECRET_KEY = os.getenv('SECRET_KEY')
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,kutlwanong-3xhqp.ondigitalocean.app').split(',')
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost,139.59.11.205').split(',')
 CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in ALLOWED_HOSTS]
 DEBUG = False
 
@@ -28,20 +28,20 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 #parameters = {pair.split('='):pair.split('=')[1] for pair in connection_string.split(' ')}
 
 
-# DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-# if DATABASE_URL:
-#     DATABASES = {
-#         'default': dj_database_url.config(default=DATABASE_URL)
-#     }
-# else:
-#     print("Warning: DATABASE_URL is not set. Using SQLite as fallback.")
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
-#         }
-#     }
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
+    }
+else:
+    print("Warning: DATABASE_URL is not set. Using SQLite as fallback.")
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        }
+    }
 
 # DATABASES = {
 #     'default': {
