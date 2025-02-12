@@ -901,6 +901,32 @@
         </div>
     </div>
 
+       <!-- Modal for Messages -->
+       <div id="messageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="messageModalLabel">Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} mb-2" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>No messages to display.</p>
+                    {% endif %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
    <!-- Timesheet Section -->
    <div class="card mb-4">
     <div class="card-header">
@@ -1001,6 +1027,15 @@
         </div>
     </div>
 
+    {% if messages %}
+    <!-- Pop-up message container -->
+    <div id="popupMessage">
+        {% for message in messages %}
+            {{ message }}  <!-- This will hold the Django message -->
+        {% endfor %}
+        <button id="closeButton">Close</button>
+    </div>
+    {% endif %}
 </div>
 <style>
     /* Additional styles for circular progress bars */
@@ -1040,7 +1075,20 @@
 <!-- Additional Chart.js Code -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+    // Show the popup if there's a message
+    const popupMessage = document.getElementById('popupMessage');
+    const closeButton = document.getElementById('closeButton');
 
+    if (popupMessage.textContent.trim() !== '') {
+        popupMessage.style.display = 'block';
+    }
+
+    // Close popup on button click
+    closeButton.addEventListener('click', function () {
+        popupMessage.style.display = 'none';
+    });
+</script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Common Chart Options

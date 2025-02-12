@@ -97,14 +97,14 @@ class LearnerRegistrationForm(forms.ModelForm):
             'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','placeholder':'date_of_birth'}),
             'gender': forms.TextInput(attrs={'class': 'form-control','placeholder':'gender'}),
             'phone_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'phone_no'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control','placeholder':'name'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control','placeholder':'email'}),
             'id_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'ID No'}),
             'nationality': CountryField().formfield(widget=CountrySelectWidget(attrs={'class': 'form-control'})),
-            'race': forms.TextInput(attrs={'class': 'form-control','placeholder':'race'}),
-            'home_language': forms.TextInput(attrs={'class': 'form-control','placeholder':'home_language'}),
-            'disability': forms.CheckboxInput(attrs={'class': 'form-control','placeholder':'disability'}),
-            'disabilities': forms.Select(attrs={'class': 'form-control','placeholder':'name'}),
-            'center': forms.TextInput(attrs={'class': 'form-control','placeholder':'center'}),
+            'race': forms.TextInput(attrs={'class': 'form-control'}),
+            'home_language': forms.TextInput(attrs={'class': 'form-control'}),
+            'disability': forms.CheckboxInput(attrs={'class': 'form-control'}),
+            'disabilities': forms.Select(attrs={'class': 'form-control'}),
+            'center': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
      # ForeignKey fields: use ModelChoiceField for nationality and center

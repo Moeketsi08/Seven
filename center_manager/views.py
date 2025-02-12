@@ -696,7 +696,10 @@ class LearnerLoginView(SuccessMessageMixin,FormView):
         last_name = learner.surname
 
         messages.success(self.request, f'Welcome Learner {first_name} {last_name}')
-        return super().form_valid(form)
+        #return super().form_valid(form)
+        return render(self.request,'center_manager/learner-dashboard.html',{
+            'learner': learner,
+        })
     def form_invalid(self, form):
         messages.error(self.request, 'Invalid credentials. Please try again.')
         # Re-render the form with the error messages
@@ -721,7 +724,7 @@ def learner_registration(request):
             # Create a User object with the learner's details
             user = User.objects.create_user(
                 username=learner.name,  # Use learner's name as the username
-                password=learner.birth_certificate_no,  # Use learner's birth certificate number as the password
+                password=learner.id_no,  # Use learner's birth certificate number as the password
             )
             
             # Link the User object to the Learner (optional, assuming a 'user' field in Learner)
