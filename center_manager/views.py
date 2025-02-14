@@ -152,10 +152,15 @@ class CenterLoginView(SuccessMessageMixin, FormView):
         # Check if the user is a center manager
         if not hasattr(user, 'center_managers'):
             messages.error(self.request, "You are not registered as a Center Manager.")
-            return self.form_invalid(form)  # Redirect back to the form with an error
-
+            return self.form_invalid(form)  # Redirect back to the form with an error 
 
         center_managers = user.center_managers
+
+        # Check if the center manager has a center assigned
+        if not hasattr(center_managers, 'center') or center_managers.center is None:
+            messages.error(self.request, "No center associated with this center manager.")
+            return self.form_invalid(form)
+
         login(self.request, user)
 
         #Fetch center-managers center
@@ -539,16 +544,46 @@ def admin_edit_teacher_allocation(request):
     })
 
 
+# @login_required
+# @user_passes_test(is_admin)
+# def admin_learner_list(request):
+#     search_query = request.GET.get('search', '')
+    
+#     # Prefetch learners related to classrooms and their registration data
+#     classrooms = Classroom.objects.prefetch_related('learners').filter(center__center_manager=request.user.center_managers)
+
+#     if search_query:
+#         # Filter by registration number through the related Registration model
+#         classrooms = classrooms.filter(learners__registration__registration_number__icontains=search_query)
+
+#     paginator = Paginator(classrooms, 10)  # Show 10 classrooms per page.
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     # Fetch all registrations
+#     registrations = Registration.objects.select_related('learner').all()
+
+#     context = {
+#         'classrooms': page_obj,  # Paginated classrooms
+#         'page_obj': page_obj,    # For pagination control
+#         'registrations': registrations,  # List of all registrations
+#     }
+    
+#     return render(request, 'center_manager/admin-learner-list.html', context)
+
 @login_required
 @user_passes_test(is_admin)
 def admin_learner_list(request):
     search_query = request.GET.get('search', '')
-    
-    # Prefetch learners related to classrooms and their registration data
-    classrooms = Classroom.objects.prefetch_related('learners').filter(center__center_manager=request.user.center_managers)
+
+    # Get the center manager if it exists
+    center_manager = getattr(request.user, "center_managers", None)
+    center = Center.objects.filter(center_manager=center_manager).first() if center_manager else None
+
+    # Fetch classrooms only if a center exists; otherwise, return an empty queryset
+    classrooms = Classroom.objects.prefetch_related('learners').filter(center=center) if center else Classroom.objects.none()
 
     if search_query:
-        # Filter by registration number through the related Registration model
         classrooms = classrooms.filter(learners__registration__registration_number__icontains=search_query)
 
     paginator = Paginator(classrooms, 10)  # Show 10 classrooms per page.
@@ -556,7 +591,7 @@ def admin_learner_list(request):
     page_obj = paginator.get_page(page_number)
 
     # Fetch all registrations
-    registrations = Registration.objects.select_related('learner').all()
+    registrations = Registration.objects.select_related('learner').all() if center else Registration.objects.none()
 
     context = {
         'classrooms': page_obj,  # Paginated classrooms
@@ -565,6 +600,7 @@ def admin_learner_list(request):
     }
     
     return render(request, 'center_manager/admin-learner-list.html', context)
+
 
 @login_required
 @user_passes_test(is_admin)
@@ -583,24 +619,59 @@ def admin_learner_search(request):
     }
     return render(request, 'center_manager/admin-learner-search.html', context)
 
-@login_required
-@user_passes_test(is_admin)
 def admin_teacher_list(request):
-    center = Center.objects.get(center_manager=request.user.center_managers)
+    center_manager = getattr(request.user, "center_managers", None)
 
-    query = request.GET.get('search', '')
+    # if center_manager is None:
+    #     messages.error(request, "You are not assigned to any center.")
+        #return redirect("center_manager/admin_teacher_list.html")  # Redirect to a relevant admin page
 
+    center = Center.objects.filter(center_manager=center_manager).first()
+
+    # if center is None:
+    #     messages.error(request, "No center found for this user.")
+        #return redirect("center_manager/admin_teacher_list.html")  # Redirect to a relevant admin page
+
+    query = request.GET.get("search", "")
+
+    # teachers = Teacher.objects.filter(
+    #     Q(centers=center.id) & 
+    #     (Q(name__icontains=query) | Q(email__icontains=query))
+    # )
+       # Only fetch teachers if a valid center exists
     teachers = Teacher.objects.filter(
         Q(centers=center.id) & 
         (Q(name__icontains=query) | Q(email__icontains=query))
-    )
+    ) if center else Teacher.objects.none()  # Return an empty queryset if no center
 
     # Paginate the filtered teachers
     paginator = Paginator(teachers, 10)  # Show 10 teachers per page
-    page_number = request.GET.get('page')
+    page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'center_manager/admin_teacher_list.html', {'page_obj': page_obj, 'query': query})
+    return render(request, "center_manager/admin_teacher_list.html", {
+        "page_obj": page_obj,
+        "query": query
+    })
+
+# @login_required
+# @user_passes_test(is_admin)
+# def admin_teacher_list(request):
+#     center = Center.objects.get(center_manager=request.user.center_managers)
+
+#     query = request.GET.get('search', '')
+
+#     teachers = Teacher.objects.filter(
+#         Q(centers=center.id) & 
+#         (Q(name__icontains=query) | Q(email__icontains=query))
+#     )
+
+#     # Paginate the filtered teachers
+#     paginator = Paginator(teachers, 10)  # Show 10 teachers per page
+#     page_number = request.GET.get('page')
+#     page_obj = paginator.get_page(page_number)
+
+#     return render(request, 'center_manager/admin_teacher_list.html', {'page_obj': page_obj, 'query': query})
 
 @login_required
 @user_passes_test(is_admin)
