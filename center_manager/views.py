@@ -41,10 +41,7 @@ def is_admin(user):
 def center_dashboard(request):
     center = get_object_or_404(Center, center_manager=request.user.center_managers)
     teachers = Teacher.objects.filter(centers=center).count()
-
-
-
-    
+ 
     # Get distinct grade and subject combinations for the teacher's classrooms
     classrooms = Classroom.objects.filter(teacher=teachers)
     grade_subject_combinations = classrooms.values('grade__grade', 'subject__subject').distinct()
@@ -118,12 +115,76 @@ def admin_login(request):
                     login(request, user)
 
                     # Fetch the admin's name 
-                    first_name = user.username
+                    # first_name = user.username
+
+                    # Fetch the centers associated with the admin's center managers
+                    centers = Center.objects.all()
+
+                    # Store centers in the session
+                    request.session['centers'] = list(centers.values('name'))  
+                    center = centers.first() 
+                    teachers = Teacher.objects.filter(centers__id=center.id).count()
+            
+                    # Get distinct grade and subject combinations for the teacher's classrooms
+                    classrooms = Classroom.objects.filter(teacher=teachers)
+                    grade_subject_combinations = classrooms.values('grade__grade', 'subject__subject').distinct()
+
+                        # Get the total number of classrooms taught by the teacher
+                    total_classes = Classroom.objects.filter(teacher=teachers).count()
+
+                    # Get the total number of learners in each classroom
+                    classroom_learners = {}
+                    for classroom in classrooms:
+                        learner_count = classroom.learners.count()
+                        classroom_learners[f"{classroom.grade.grade} - {classroom.subject.subject}"] = learner_count
+
+
+                    
+                    # Get the total number of learners in each classroom and their attendance percentage by date
+                    classroom_attendance = {}
+                    for classroom in classrooms:
+                        # Get the total number of learners in the classroom
+                        total_learners = classroom.learners.count()
+
+                        # Get distinct dates for classes taught in this classroom
+                        class_dates = LearnerAttendance.objects.filter(classroom=classroom).values('date').distinct()
+
+                        # Prepare a dictionary to store attendance for each date
+                        date_attendance = {}
+
+                        for class_date in class_dates:
+                            date = class_date['date']
+
+                            # Get the number of present learners for each class on this date
+                            present_count = LearnerAttendance.objects.filter(
+                                classroom=classroom,
+                                status='P',
+                                date=date
+                            ).count()
+
+                            # Calculate the attendance percentage for this class on this date
+                            attendance_percentage = (present_count / total_learners) * 100 if total_learners > 0 else 0
+                            date_attendance[date] = round(attendance_percentage, 2)  # Round to 2 decimal places for clarity
+
+                        # Add total attendance percentage for the classroom
+                        total_classes = len(class_dates)
+                        total_attendance = sum(date_attendance.values())
+                        overall_percentage = (total_attendance / total_classes) if total_classes > 0 else 0
+
+                        # Store the attendance per class (date) and overall percentage
+                        classroom_attendance[f"{classroom.grade.grade} - {classroom.subject.subject}"] = {
+                            'date_attendance': date_attendance,
+                            'overall_percentage': round(overall_percentage, 2),  # Round to 2 decimal places
+                        }
 
                     # Display a welcome message with the admin's full name
-                    messages.success(request, f'Welcome, Administrator {first_name}')
+                    messages.success(request, f'Welcome, Administrator {user.username}')
 
-                    return redirect('home')
+                    return render(request, 'home.html', {
+                        'centers': centers,
+                        'classroom_learners': classroom_learners
+                    })
+
                 else:
                     messages.error(request, "You do not have admin privileges.")
             else:

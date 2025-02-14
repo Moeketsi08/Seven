@@ -5,16 +5,16 @@
 <div class="animated fadeIn">
     <div class="card">
         <div class="card-header">
-            <i class="fa fa-edit"></i> Teacher Timesheets
+            <i class="fa fa-edit"></i> Completed  Timesheets
         </div>
         <!-- Timesheet Section -->
         <div class="card mb-4">
             <div class="card-header">
-                <h3>Timesheet's Summary</h3>
+                <h3>Status</h3>
                 <div class="export-buttons">
-                    <form method="GET" action="{% url 'export_timesheet_pdf' %}" style="display: inline;">
+                    <!-- <form method="GET" action="{% url 'export_timesheet_pdf' %}" style="display: inline;">
                         <button type="submit" class="btn btn-secondary btn-sm">Export to PDF</button>
-                    </form>
+                    </form> -->
                     <form method="GET" action="{% url 'export_timesheet_csv' %}" style="display: inline;">
                         <button type="submit" class="btn btn-secondary btn-sm">Export to CSV</button>
                     </form>

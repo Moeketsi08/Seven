@@ -766,141 +766,6 @@
 </style>
 <div class="container">
 
-    <!-- Cards Section -->
-    <div class="animated fadeIn">
-        <div class="row">
-            <!-- Card: Total Learners -->
-            <div class="col-sm-6 col-lg-3">
-                <div class="card bg-white text-primary">
-                    <div class="card-body pb-0">
-                        <div class="d-flex justify-content-between">
-                            <div class="card-title">Total Timesheet Hours</div>
-                            <div class="btn-group">
-                                <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-settings"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">January</a>
-                                    <a class="dropdown-item" href="#">All</a>
-                                    <a class="dropdown-item" href="#">February</a>
-                                    <a class="dropdown-item" href="#">March</a>
-                                    <a class="dropdown-item" href="#">April</a>
-                                    <a class="dropdown-item" href="#">May</a>
-                                    <a class="dropdown-item" href="#">June</a>
-                                    <a class="dropdown-item" href="#">July</a>
-                                    <a class="dropdown-item" href="#">August</a>
-                                    <a class="dropdown-item" href="#">September</a>
-                                    <a class="dropdown-item" href="#">October</a>
-                                    <a class="dropdown-item" href="#">November</a>
-                                    <a class="dropdown-item" href="#">December</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                            <canvas id="donutChartTotalLearners" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                Total Timesheet Hours {{ teachers }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Learner Active Status -->
-            <div class="col-sm-6 col-lg-3">
-                <div class="card bg-white text-primary">
-                    <div class="card-body pb-0">
-                        <div class="d-flex justify-content-between">
-                            <div class="card-title">Total Classes</div>
-                            <div class="btn-group">
-                                <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-settings"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">All Centers</a>
-                                    <a class="dropdown-item" href="#">Center 1</a>
-                                    <a class="dropdown-item" href="#">Center 2</a>
-                                    <a class="dropdown-item" href="#">Center 3</a>
-                                    <a class="dropdown-item" href="#">Center 4</a>
-                                    <a class="dropdown-item" href="#">Center 5</a>
-                                    <a class="dropdown-item" href="#">Center 6</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                            <canvas id="donutChartActiveStatus" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                Active 81%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Total Centers -->
-            <div class="col-sm-6 col-lg-3">
-                <div class="card bg-white text-primary">
-                    <div class="card-body pb-0">
-                        <div class="d-flex justify-content-between">
-                            <div class="card-title">Total Learners</div>
-                            <div class="btn-group">
-                                <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-settings"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Gauteng</a>
-                                    <a class="dropdown-item" href="#">Mpumalanga</a>
-                                    <a class="dropdown-item" href="#">KwaZulu Natal</a>
-                                    <a class="dropdown-item" href="#">Western Cape</a>
-                                    <a class="dropdown-item" href="#">Eastern Cape</a>
-                                    <a class="dropdown-item" href="#">Limpopo</a>
-                                    <a class="dropdown-item" href="#">North West</a>
-                                    <a class="dropdown-item" href="#">Northern Cape</a>
-                                    <a class="dropdown-item" href="#">Free State</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                            <canvas id="donutChartTotalCenters" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                Centers 25
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card: Learner Attendance -->
-            <div class="col-sm-6 col-lg-3">
-                <div class="card bg-white text-primary">
-                    <div class="card-body pb-0">
-                        <div class="d-flex justify-content-between">
-                            <div class="card-title">Attendance Percentage</div>
-                            <div class="btn-group">
-                                <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="icon-settings"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right">
-                                    <a class="dropdown-item" href="#">Center 1</a>
-                                    <a class="dropdown-item" href="#">Center 2</a>
-                                    <a class="dropdown-item" href="#">Center 3</a>
-                                    <a class="dropdown-item" href="#">Center 4</a>
-                                    <a class="dropdown-item" href="#">Center 5</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
-                            <canvas id="donutChartLearnerAttendance" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                Present 85%
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
        <!-- Modal for Messages -->
        <div id="messageModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -927,55 +792,6 @@
         </div>
     </div>
 
-   <!-- Timesheet Section -->
-   <div class="card mb-4">
-    <div class="card-header">
-        <h3>Timesheet</h3>
-    </div>
-    <div class="card-body">
-        <form action="{% url 'teacher-dashboard' %}" method="post" >
-            {% csrf_token %}
-            {{ timesheet_form.as_p }}
-            <input type="hidden" name="form_type" value="timesheet_form">
-            <button type="submit" class="btn btn-primary">Save Timesheet</button>
-        </form>
-        <hr>
-        <!-- Display Timesheet Entries -->
-        <h4>Your Timesheets</h4>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class='center-text'>Start Time</th>
-                    <th class='center-text'>End Time</th>
-                    <th class='center-text'>Class Name(Grade)</th>
-                    <th class='center-text'>Subject</th>
-                    <th class='center-text'>Total Hours</th>
-                    <th class='center-text'>Date</th>
-                    <th class='center-text'>Created At</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for timesheet in timesheets %}
-                <tr>
-                    <td class='center-text'>{{ timesheet.session.start_time |date:"H:i" }}</td>
-                    <td class='center-text'>{{ timesheet.session.end_time |date:"H:i" }}</td>
-                    <td class='center-text'> {{ timesheet.session.grade.grade }} </td>
-                    <td class='center-text'> {{ timesheet.session.subject.subject }}</td>
-                    <td class='center-text'>{{ timesheet.atp_hours }}</td>
-                    <td class='center-text'>{{ timesheet.date }}</td>
-                    <td class='center-text'>{{ timesheet.date_submitted }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="5">No timesheets recorded yet.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        
-    </div>
-   </div>
-
     <!-- Notifications Section -->
     <div class="card mb-4">
         <div class="card-header">
@@ -984,9 +800,9 @@
         <div class="card-body">
             <!-- Populate with notifications -->
             <ul class="list-group">
-                <li class="list-group-item">All teachers to undergo System Training</li>
-                <li class="list-group-item">Keep your password and credential safe</li>
-                <li class="list-group-item">Log your timesheets every day</li>
+                <li class="list-group-item">Classes commence</li>
+                <li class="list-group-item">Timetable is released</li>
+                <li class="list-group-item">Keep your password and login details safe</li>
             </ul>
         </div>
     </div>

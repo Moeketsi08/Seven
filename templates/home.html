@@ -510,20 +510,19 @@
                                                 <i class="icon-settings"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                {% comment %} <a class="dropdown-item" href="{% url 'learner-list' %}">Center 1</a> {% endcomment %}
-                                                <a class="dropdown-item" href="#">All</a>
-                                                <a class="dropdown-item" href="#">Center 2</a>
-                                                <a class="dropdown-item" href="#">Center 3</a>
-                                                <a class="dropdown-item" href="#">Center 4</a>
-                                                <a class="dropdown-item" href="#">Center 5</a>
-                                                <a class="dropdown-item" href="#">Center 6</a>
+                                                <!-- Dynamically populate the dropdown with centers and their teacher count -->
+                                                {% for center in centers %}
+                                                <a class="dropdown-item filter-center" href="#">
+                                                    {{ center.name }} 
+                                                </a>
+                                                {% endfor %}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                                         <canvas id="donutChartTotalLearners" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                            Total Learners 100
+                                            Learners: {{ classroom_learners }}
                                         </div>
                                     </div>
                                 </div>
@@ -535,7 +534,7 @@
                             <div class="card bg-white text-primary">
                                 <div class="card-body pb-0">
                                     <div class="d-flex justify-content-between">
-                                        <div class="card-title">Teacher Timesheet</div>
+                                        <div class="card-title">Completed  Timesheet</div>
                                         <div class="btn-group">
                                             <button class="btn btn-blue dropdown-toggle p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="icon-settings"></i>
@@ -657,9 +656,9 @@
                         <div class="card-body">
                             <!-- Populate with notifications -->
                             <ul class="list-group">
-                                <li class="list-group-item">Launching 24 Jan 2024</li>
-                                <li class="list-group-item">Alumni dashboard under construction</li>
-                                <li class="list-group-item">More features coming on V2</li>
+                                <li class="list-group-item">System Launch “Dobsonville” – 15 February 2025</li>
+                                <li class="list-group-item">Teacher Onboarding Training 22 February 2025</li>
+                                <li class="list-group-item">Centre Manager Onboarding Training 24 February 2025</li>
                             </ul>
                         </div>
                     </div>

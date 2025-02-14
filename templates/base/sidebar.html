@@ -136,7 +136,7 @@
           <!-- Enroll Learner Section END -->
 
            <!-- Employee Section START -->
-           <li class="nav-item nav-dropdown">
+           <!-- <li class="nav-item nav-dropdown">
             <a class="nav-link nav-dropdown-toggle" href="#">
                 <i class="nav-icon icon-puzzle"></i>Centers</a>
             <ul class="nav-dropdown-items">
@@ -149,7 +149,7 @@
                         <i class="fa fa-list"></i>Edit Center</a> {% endcomment %}
                 </li>
             </ul>
-          </li>
+          </li> -->
           <!-- Employee Section END -->
 
           <!-- Result Section START -->
@@ -173,18 +173,18 @@
          </li>  -->
          <!-- Result Section END -->
 
-         <!-- Attendence Report Section START -->
-         <li class="nav-item nav-dropdown">
-          <a class="nav-link nav-dropdown-toggle" href="#">
-              <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
-          <ul class="nav-dropdown-items">
-              <li class="nav-item">
-                  {% comment %} <a class="nav-link" href="{% url 'admin-learner-attendance' %}">
-                      <i class="fa fa-plus-circle"></i>Learner Attendence</a> {% endcomment %}
-              </li>
-          </ul>
-        </li>
-        <!-- Attendence Report Section END -->
+     <!-- Attendence Report Section START -->
+     <li class="nav-item nav-dropdown">
+        <a class="nav-link nav-dropdown-toggle" href="#">
+            <i class="nav-icon icon-puzzle"></i>Attendence Report</a>
+        <ul class="nav-dropdown-items">
+             <li class="nav-item">
+                <a class="nav-link" href="{% url 'center-learner-report' %}">
+                    <i class="fa fa-plus-circle"></i>Attendence list</a>
+            </li>
+        </ul>
+      </li>
+      <!-- Attendence Report Section END -->
 
        <!-- Holiday Section START -->
 <!--       <li class="nav-item nav-dropdown">
