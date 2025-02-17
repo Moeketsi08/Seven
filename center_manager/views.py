@@ -22,6 +22,7 @@ from learner.forms import LearnerForm, LearnerSearchForm
 from teacher.forms import LearnerAttendanceForm, TimesheetForm
 from teacher.models import Teacher, Classroom, Timesheet, TeacherCenterAssignment
 from academic.models import Nationality, Registration
+from teacher import models as teacher_models
 from learner.models import Learner
 from django.db.models.functions import TruncDate  # Import TruncDate
 from django.db.models import Count
@@ -100,103 +101,163 @@ def center_dashboard(request):
         'total_classes': total_classes,  # Total number of classes taught by the teacher
         })
 
+from django.db.models import Count, Q
+
 def admin_login(request):
     forms = CenterManagerLoginForm()
+
     if request.method == 'POST':
         forms = CenterManagerLoginForm(request.POST)
         if forms.is_valid():
             username = forms.cleaned_data['username']
             password = forms.cleaned_data['password']
             user = authenticate(username=username, password=password)
-            
+
             if user is not None:
                 if user.is_superuser:
-                    admin = user.is_superuser
                     login(request, user)
 
-                    # Fetch the admin's name 
-                    # first_name = user.username
+                    centers = Center.objects.prefetch_related("classrooms").all()
+                    all_centers = centers.count()
+                    all_learners = Learner.objects.count()
+                    total_timesheets = Timesheet.objects.count()
+                    total_attendance = LearnerAttendance.objects.count()
 
-                    # Fetch the centers associated with the admin's center managers
-                    centers = Center.objects.all()
+                    # **Total learners per center**
+                    learners_per_center = (
+                        Center.objects.annotate(total_learners=Count("classrooms__learners"))
+                        .values("id", "name", "total_learners")
+                    )
 
-                    # Store centers in the session
-                    request.session['centers'] = list(centers.values('name'))  
-                    center = centers.first() 
-                    teachers = Teacher.objects.filter(centers__id=center.id).count()
-            
-                    # Get distinct grade and subject combinations for the teacher's classrooms
-                    classrooms = Classroom.objects.filter(teacher=teachers)
-                    grade_subject_combinations = classrooms.values('grade__grade', 'subject__subject').distinct()
+                    # **Total attendance per center**
+                    attendance_per_center = (
+                        Center.objects.annotate(
+                            total_attendance=Count("classrooms__learnerattendance")
+                        ).values("id", "name", "total_attendance")
+                    )
 
-                        # Get the total number of classrooms taught by the teacher
-                    total_classes = Classroom.objects.filter(teacher=teachers).count()
+                    # **Calculate overall attendance percentage**
+                    overall_percentage = 0
+                    if all_learners > 0:
+                        overall_percentage = (total_attendance / all_learners) * 100
 
-                    # Get the total number of learners in each classroom
-                    classroom_learners = {}
-                    for classroom in classrooms:
-                        learner_count = classroom.learners.count()
-                        classroom_learners[f"{classroom.grade.grade} - {classroom.subject.subject}"] = learner_count
-
-
-                    
-                    # Get the total number of learners in each classroom and their attendance percentage by date
-                    classroom_attendance = {}
-                    for classroom in classrooms:
-                        # Get the total number of learners in the classroom
-                        total_learners = classroom.learners.count()
-
-                        # Get distinct dates for classes taught in this classroom
-                        class_dates = LearnerAttendance.objects.filter(classroom=classroom).values('date').distinct()
-
-                        # Prepare a dictionary to store attendance for each date
-                        date_attendance = {}
-
-                        for class_date in class_dates:
-                            date = class_date['date']
-
-                            # Get the number of present learners for each class on this date
-                            present_count = LearnerAttendance.objects.filter(
-                                classroom=classroom,
-                                status='P',
-                                date=date
-                            ).count()
-
-                            # Calculate the attendance percentage for this class on this date
-                            attendance_percentage = (present_count / total_learners) * 100 if total_learners > 0 else 0
-                            date_attendance[date] = round(attendance_percentage, 2)  # Round to 2 decimal places for clarity
-
-                        # Add total attendance percentage for the classroom
-                        total_classes = len(class_dates)
-                        total_attendance = sum(date_attendance.values())
-                        overall_percentage = (total_attendance / total_classes) if total_classes > 0 else 0
-
-                        # Store the attendance per class (date) and overall percentage
-                        classroom_attendance[f"{classroom.grade.grade} - {classroom.subject.subject}"] = {
-                            'date_attendance': date_attendance,
-                            'overall_percentage': round(overall_percentage, 2),  # Round to 2 decimal places
-                        }
-
-                    # Display a welcome message with the admin's full name
                     messages.success(request, f'Welcome, Administrator {user.username}')
 
                     return render(request, 'home.html', {
                         'centers': centers,
-                        'classroom_learners': classroom_learners
+                        'total_learners': all_learners,
+                        'learners_per_center': learners_per_center,
+                        'total_timesheets': total_timesheets,
+                        'total_attendance': total_attendance,
+                        'attendance_per_center': attendance_per_center,
+                        'all_centers': all_centers,
+                        'overall_attendance_percentage': round(overall_percentage, 2),  # Send rounded percentage
                     })
 
                 else:
                     messages.error(request, "You do not have admin privileges.")
             else:
                 messages.error(request, "Invalid username or password.")
-                
-            
-    context = {'forms': forms}
-    return render(request, 'center_manager/login.html', context)
+
+    return render(request, 'center_manager/login.html', {'forms': forms})
+
 
 def admin_logout(request):
     logout(request)
     return redirect('login')
+
+@login_required(login_url='login')
+def home_page(request):
+    #total_learner = Learner.objects.all() # Needs to be accessed differently from the learner in academic appp
+    total_teacher = teacher_models.Teacher.objects.all()
+    #total_employee = employee_models.PersonalInfo.objects.count()
+    total_class = Registration.objects.all()
+
+    
+    # Fetch all centers with related classrooms
+    centers = Center.objects.prefetch_related("classrooms").all()
+
+    #Count centers
+    all_centers = centers.count()
+
+    # Total learners overall
+    all_learners = Learner.objects.count()
+
+    # Total learners per center
+    learners_per_center = (
+        Center.objects.annotate(total_learners=Count("classrooms__learners"))
+        .values("id", "name", "total_learners")
+    )
+
+    # Total timesheets overall
+    total_timesheets = Timesheet.objects.count()
+
+    # Total timesheets per center
+    timesheets_per_center = (
+        Center.objects.annotate(total_timesheets=Count("classrooms__teacher__timesheet"))
+        .values("id", "name", "total_timesheets")
+    )
+
+    # Total attendance overall
+    total_attendance = LearnerAttendance.objects.count()
+
+    # Total attendance per center
+    attendance_per_center = (
+        Center.objects.annotate(
+            total_attendance=Count("classrooms__learnerattendance")
+        ).values("id", "name", "total_attendance")
+    )
+
+    classrooms = Classroom.objects.prefetch_related("center").all()
+
+
+    # Get the total number of learners in each classroom and their attendance percentage by date
+    classroom_attendance = {}
+    for classroom in classrooms:
+        # Get the total number of learners in the classroom
+        total_learners = classroom.learners.count()
+
+        # Get distinct dates for classes taught in this classroom
+        class_dates = LearnerAttendance.objects.filter(classroom=classroom).values('date').distinct()
+
+        # Prepare a dictionary to store attendance for each date
+        date_attendance = {}
+
+        for class_date in class_dates:
+            date = class_date['date']
+
+            # Get the number of present learners for each class on this date
+            present_count = LearnerAttendance.objects.filter(
+                classroom=classroom,
+                status='P',
+                date=date
+            ).count()
+
+            # Calculate the attendance percentage for this class on this date
+            attendance_percentage = (present_count / total_learners) * 100 if total_learners > 0 else 0
+            date_attendance[date] = round(attendance_percentage, 2)  # Round to 2 decimal places for clarity
+
+        # Add total attendance percentage for the classroom
+        total_classes = len(class_dates)
+        total_attendance = sum(date_attendance.values())
+        overall_percentage = (total_attendance / total_classes) if total_classes > 0 else 0
+
+        # Store the attendance per class (date) and overall percentage
+        classroom_attendance[f"{classroom.grade.grade} - {classroom.subject.subject}"] = {
+            'date_attendance': date_attendance,
+            'overall_percentage': round(overall_percentage, 2),  # Round to 2 decimal places
+        }
+
+
+
+
+    context = {
+        'total_learners': all_learners,
+        'total_teacher': total_teacher,
+        'all_centers': all_centers,
+        'total_class': total_class,
+    }
+    return render(request, 'home.html', context)
 
 class CenterLoginView(SuccessMessageMixin, FormView):
     template_name = 'center_manager/center-login.html'
@@ -994,10 +1055,6 @@ def admin_learner_report(request):
     return render(request, 'center_manager/admin-learner-report.html', {
         'grouped_attendance': grouped_attendance,
     })
-
-
-
-
 
 
 

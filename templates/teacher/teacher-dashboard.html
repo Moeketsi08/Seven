@@ -881,7 +881,7 @@
                                             <div class="ml-3">
                                                 {% for date, attendance in attendance_data.date_attendance.items %}
                                                     <div class="dropdown-item">
-                                                        {{ date }} - {{ attendance|floatformat:2 }}%
+                                                        {{ date }} - {{ attendance_data.overall_percentage|floatformat:2 }}%
                                                     </div>
                                                 {% endfor %}
                                                 <div class="text-muted mt-1">

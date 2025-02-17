@@ -5,49 +5,94 @@
   <div class="animated fadeIn">
       <div class="card">
           <div class="card-header">
-              <i class="fa fa-search"></i> Search Learner
+              <i class="fa fa-edit"></i> Learner Attendance Report
           </div>
-          <div class="card-body">
-              <form method="GET">
-                  {% csrf_token %}
-                  {{ forms.as_p }}
-                  <button type="submit" class="btn btn-primary">Search</button>
-              </form>
 
-              {% if learner %}
-                  <h4>Learner Details:</h4>
-                  <table class="table table-bordered">
-                      <tr>
-                          <th>ID No</th>
-                          <td>{{ learner.birth_certificate_no }}</td>
-                      </tr>
-                      <tr>
-                          <th>Name</th>
-                          <td>{{ learner.learner.name }}</td> <!-- Assuming you have access to learner related field -->
-                      </tr>
-                      <tr>
-                          <th>Surname</th>
-                          <td>{{ learner.learner.surname }}</td>
-                      </tr>
-                      <tr>
-                          <th>Status</th>
-                          <td>{{ learner.get_status_display }}</td>
-                      </tr>
-                      <tr>
-                          <th>Date of Registration</th>
-                          <td>{{ learner.registration_date }}</td>
-                      </tr>
-                      <tr>
-                          <th>Fees Paid</th>
-                          <td>{{ learner.fees_paid }}</td>
-                      </tr>
-                      <tr>
-                          <th>Notes</th>
-                          <td>{{ learner.notes }}</td>
-                      </tr>
-                  </table>
-              {% elif reg_no %}
-                  <h4>No learner found with this ID number.</h4>
+          <div class="card-body">
+              {% if grouped_attendance %}
+              <!-- Search and Filter Form (optional) -->
+              <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
+                  <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                          <div class="dataTables_length" id="DataTables_Table_0_length">
+                              <label>Show
+                                  <select name="DataTables_Table_0_length" aria-controls="DataTables_Table_0" class="custom-select custom-select-sm form-control form-control-sm">
+                                      <option value="10">10</option>
+                                      <option value="25">25</option>
+                                      <option value="50">50</option>
+                                      <option value="100">100</option>
+                                  </select> entries
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+
+                  <!-- Group attendance by date -->
+                  {% for date, records in grouped_attendance.items %}
+                      <!-- Display the teacher name, class name, and date as a heading above each table -->
+                      <h5 style="text-align: center; background-color: #f8f9fa;">
+                          {{ records.0.teacher.name }}  {{ records.0.teacher.surname }} : Grade {{ records.0.classroom.grade }} {{ records.0.classroom.subject }}  - {{ date }}
+                      </h5>
+
+                      <!-- Table for displaying attendance -->
+                      <div class="row">
+                          <div class="col-sm-12">
+                              <table class="table table-striped table-bordered datatable dataTable no-footer" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info" style="border-collapse: collapse !important">
+                                  <thead>
+                                      <tr role="row">
+                                          <th>Learner</th>
+                                          <th>Status</th>
+                                          <th>Remarks</th>
+                                          <th>Created</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      {% for att in records %}
+                                          <tr role="row" class="odd">
+                                              <td>{{ att.learner }}</td>
+                                              <td>{{ att.status }}</td>
+                                              <td>{{ att.remarks }}</td>
+                                              <td>{{ att.date }}</td>
+                                          </tr>
+                                      {% endfor %}
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  {% endfor %}
+
+                  <!-- Pagination Section -->
+                  <div class="row">
+                      <div class="col-sm-12 col-md-5">
+                          <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
+                              Showing {{ grouped_attendance.start_index }} to {{ grouped_attendance.end_index }} of {{ grouped_attendance.paginator.count }} entries
+                          </div>
+                      </div>
+                      <div class="col-sm-12 col-md-7">
+                          <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                              <ul class="pagination">
+                                  {% if grouped_attendance.has_previous %}
+                                  <li class="paginate_button page-item previous">
+                                      <a href="?page={{ grouped_attendance.previous_page_number }}" aria-controls="DataTables_Table_0" tabindex="0" class="page-link">Previous</a>
+                                  </li>
+                                  {% endif %}
+                                  {% for num in grouped_attendance.paginator.page_range %}
+                                  <li class="paginate_button page-item {% if grouped_attendance.number == num %}active{% endif %}">
+                                      <a href="?page={{ num }}" aria-controls="DataTables_Table_0" tabindex="0" class="page-link">{{ num }}</a>
+                                  </li>
+                                  {% endfor %}
+                                  {% if grouped_attendance.has_next %}
+                                  <li class="paginate_button page-item next">
+                                      <a href="?page={{ grouped_attendance.next_page_number }}" aria-controls="DataTables_Table_0" tabindex="0" class="page-link">Next</a>
+                                  </li>
+                                  {% endif %}
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% else %}
+                  <h3>No Attendance Records Found</h3>
               {% endif %}
           </div>
       </div>
