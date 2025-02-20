@@ -1,0 +1,20 @@
+{% extends 'base/learner-base.html' %}
+
+{% block content %}
+  <h2>Upload Document</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
+
+  {% if user.learner.documents %}
+    <p>Existing Document (External): <a href="{{ user.learner.documents }}" target="_blank">View Document</a></p>
+  {% endif %}
+
+  {% if user.learner.document_file %}
+    <p>Uploaded Document: <a href="{{ user.learner.document_file.url }}" target="_blank">View Document</a></p>
+  {% endif %}
+
+  <a href="{% url 'learner-dashboard' %}">Back to Dashboard</a>
+{% endblock %}

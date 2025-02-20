@@ -66,6 +66,7 @@ class Learner(models.Model):
     )
     center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='learners')  # Center relationship
     documents = models.URLField(max_length=500, blank=True, null=True) 
+    document_file = models.FileField(upload_to='learner-documents/', blank=True, null=True)
     joined_programme = models.DateField(auto_now_add=True, null=True)
     exited_programme = models.DateField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)

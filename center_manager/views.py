@@ -17,7 +17,7 @@ from django.db.models import Q
 from django.contrib.auth.models import User
 from attendance.models import LearnerAttendance
 from center_manager.models import Center, CenterManager
-from center_manager.forms import CenterManagerLoginForm, AllocateTeacherForm, ClassroomFormSet, LearnerRegistrationForm
+from center_manager.forms import CenterManagerLoginForm, AllocateTeacherForm, ClassroomFormSet, DocumentUploadForm, LearnerRegistrationForm
 from learner.forms import LearnerForm, LearnerSearchForm
 from teacher.forms import LearnerAttendanceForm, TimesheetForm
 from teacher.models import Teacher, Classroom, Timesheet, TeacherCenterAssignment
@@ -161,6 +161,20 @@ def admin_login(request):
 
     return render(request, 'center_manager/login.html', {'forms': forms})
 
+@login_required
+def upload_document(request):
+    learner = request.user.learner  # Get the learner associated with the logged-in user
+    
+    if request.method == 'POST':
+        form = DocumentUploadForm(request.POST, request.FILES, instance=learner)
+        if form.is_valid():
+            form.save()
+            return redirect('center_manager/learner_dashboard')  # Redirect back to the dashboard
+        
+    else:
+        form = DocumentUploadForm(instance=learner)
+
+    return render(request, 'center_manager/upload_document.html', {'form': form})
 
 def admin_logout(request):
     logout(request)

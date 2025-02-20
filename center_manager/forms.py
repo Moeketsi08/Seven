@@ -60,6 +60,10 @@ class AllocateTeacherForm(forms.ModelForm):
             self.fields['teacher'].queryset = Teacher.objects.none()  # No center, no options
             self.fields['learner'].queryset = Learner.objects.none()  # No center, no options
 
+class DocumentUploadForm(forms.ModelForm):
+    class Meta:
+        model = Learner
+        fields = ['document_file']
         
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
