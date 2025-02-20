@@ -300,7 +300,7 @@ class CenterLoginView(SuccessMessageMixin, FormView):
         login(self.request, user)
 
         #Fetch center-managers center
-        center = center_managers.center
+        center = center_managers.center.first() 
 
         #Fetch teachers at the center
         teachers = TeacherCenterAssignment.objects.filter(center=center).values('teacher')
