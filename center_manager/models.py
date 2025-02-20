@@ -36,7 +36,7 @@ class CenterManager(models.Model):
 class Center(models.Model):
     name = models.CharField(max_length=255)
     contact_info = models.CharField(max_length=255, blank=True, null=True)  # Optional
-    center_manager = models.ManyToManyField(CenterManager, on_delete=models.CASCADE, related_name='center')  # Changed to OneToOneField
+    center_manager = models.ManyToManyField(CenterManager, related_name='center')  # Changed to OneToOneField
     email = models.EmailField(blank=True, null=True)
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='centers')
 
