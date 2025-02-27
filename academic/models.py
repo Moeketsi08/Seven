@@ -52,13 +52,16 @@ class Session(models.Model):
         ('09:00', '09:00'),
         ('10:00', '10:00'),
         ('12:00', '12:00'),
+        ('13:00', '13:00'),
         ('14:00', '14:00'),
     ]
     END_TIME = [
         ('12:00', '12:00'),
+        ('13:00', '13:00'),
         ('14:00', '14:00'),
         ('15:00', '15:00'),
         ('16:00', '16:00'),
+        ('17:00', '17:00'),
     ]
     day = models.CharField(max_length=9, choices=DAY_CHOICES, default='SAT')
     start_time = models.TimeField(choices=START_TIME, default='10:00')
