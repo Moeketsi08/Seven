@@ -1,10 +1,11 @@
 from django.urls import path
 from . import views
-from .views import home_page, upload_document
+from .views import  upload_document
 
 urlpatterns = [
     #path('', views.root_redirect_view, name='root_redirect'),
     path('login/', views.admin_login, name='admin_login'),
+    path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('center-manager/center-login/', views.CenterLoginView.as_view(), name='center-login'),
     path('center-manager/center-dashboard/', views.center_dashboard, name='center-dashboard'),
     path('center-manager/allocate_teacher/', views.allocate_teacher, name='allocate_teacher'),
