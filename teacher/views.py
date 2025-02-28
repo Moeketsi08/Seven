@@ -138,7 +138,7 @@ def teacher_dashboard(request):
         classroom_learners[f"{classroom.grade.grade} - {classroom.subject.subject}"] = learner_count
 
 
-    
+    overall_percentage = 0
     # Get the total number of learners in each classroom and their attendance percentage by date
     classroom_attendance = {}
     for classroom in classrooms:
@@ -175,6 +175,13 @@ def teacher_dashboard(request):
             'date_attendance': date_attendance,
             'overall_percentage': round(overall_percentage, 2),  # Round to 2 decimal places
         }
+    if classrooms.exists():
+        classroom = classrooms.first()  # Assign the first classroom before using it
+        totalL = classroom.learners.count()
+        # overall_percentage = round(overall_percentage, 2)
+    else:
+        classroom = None  # Prevent unbound variable error
+        totalL = 0  # Default value
 
     return render(request, 'teacher/teacher-dashboard.html', {
         'timesheet_form': timesheet_form,
@@ -185,6 +192,8 @@ def teacher_dashboard(request):
         'grade_subject_combinations': grade_subject_combinations,  # Pass distinct grade-subject combinations
         'classroom_learners': classroom_learners,  # Pass the classroom learners count
         'classroom_attendance': classroom_attendance,  # Pass the attendance percentage for each classroom
+        'totalL': totalL,
+        'overall_percentage': overall_percentage,
     })
 
 
@@ -242,6 +251,11 @@ def learner_search(request):
 def learner_attendance(request):
     teacher = get_object_or_404(Teacher, user=request.user)
     classroom = Classroom.objects.filter(teacher=teacher).first()  # Assuming one classroom per teacher for now
+    
+    if not classroom:
+        messages.error(request, "No classroom found for this teacher.")
+        return redirect('teacher-dashboard')  # Redirect to a safer page
+        
     learners = classroom.learners.all()
 
     # Get today's date

@@ -15,29 +15,36 @@
                 {% endfor %}
             </div>
         {% endif %}
-        <form method="post" action="{% url 'learner-attendance' %}">
-         {% csrf_token %}
-          <table class="table table-bordered">
-              <thead>
-                  <tr>
-                      <th>Learner</th>
-                      <th>Status</th>
-                      <th>Remarks</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for learner, form in learner_forms.items %}
-            <tr>
-                <td>{{ learner.name }} {{ learner.surname }}</td>
-                <td>{{ form.status }}</td>
-                <td>{{ form.remarks }}</td>
-            </tr>
-            {% endfor %}
-              </tbody>
-          </table>
-          <input type="hidden" name="form_type" value="attendance_form">
-          <button type="submit" class="btn btn-primary">Submit Attendance</button>
-      </form>
+
+        {% if learner_forms %}
+            <form method="post" action="{% url 'learner-attendance' %}">
+                {% csrf_token %}
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Learner</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for learner, form in learner_forms.items %}
+                            <tr>
+                                <td>{{ learner.name }} {{ learner.surname }}</td>
+                                <td>{{ form.status }}</td>
+                                <td>{{ form.remarks }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <input type="hidden" name="form_type" value="attendance_form">
+                <button type="submit" class="btn btn-primary">Submit Attendance</button>
+            </form>
+        {% else %}
+            <div class="alert alert-warning text-center">
+                No learners assigned to you.
+            </div>
+        {% endif %}
       </div>
     </div>
 {% endblock %}
