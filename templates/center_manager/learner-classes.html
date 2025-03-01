@@ -1,0 +1,16 @@
+<h2>Welcome, {{ learner.name }}</h2>
+
+<h3>Your Registered Classrooms:</h3>
+{% if classrooms %}
+    <ul class="list-group">
+        {% for classroom in classrooms %}
+            <li class="list-group-item">
+                <strong>Classroom:</strong> {{ classroom.name }} <br>
+                <strong>Teacher:</strong> {{ classroom.teacher.name }} <br>
+                <strong>Grade:</strong> {{ classroom.grade }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You are not registered in any classrooms.</p>
+{% endif %}

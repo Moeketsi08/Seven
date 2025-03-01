@@ -807,6 +807,35 @@
         </div>
     </div>
 
+     <!-- Notifications Section -->
+     <div class="card mb-4">
+        <div class="card-header">
+            <h3>Classes</h3>
+        </div>
+        <div class="card-body">
+            <!-- Populate with notifications -->
+            {% if classrooms %}
+                {% for classroom in classrooms %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Classroom: {{ classroom.subject.subject }} - Grade {{ classroom.grade.grade }}</h4>
+                            <p><strong>Teacher:</strong> {{ classroom.teacher.name }}  {{ classroom.teacher.surname }}</p>
+
+                            {% if classroom.learners.exists %}
+                                <p><strong>Enrolled Learners:</strong> {{ classroom.learners.count }}</p>
+                            {% else %}
+                                <p>No learners enrolled in this classroom.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You are not registered in any classrooms.</p>
+            {% endif %}
+
+        </div>
+    </div>
+
     <!--Calendar-->
     <div class="card mb-4">
         <h3 class="card-header">Upcoming Events</h3>

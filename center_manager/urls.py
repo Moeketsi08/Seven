@@ -24,6 +24,7 @@ urlpatterns = [
     path('center-manager/teacher-timesheets/', views.teacher_timesheets, name='teacher-timesheets'),
     path('center-manager/learner-attendance/',  views.learner_attendance, name='center-learner-attendance'),
     path('center-manager/learner-report/', views.learner_report, name='center-learner-report'),
+    path('center-manager/learner-classes/', views.learner_classes, name='center-learner-classes'),
     path('center-manager/admin-learner-registration/', views.admin_learner_registration, name='admin-learner-registration'),
     path('center-manager/admin_teacher_timesheets/', views.admin_teacher_timesheets, name='admin_teacher_timesheets'),
     path('center-manager/admin-learner-attendance/',  views.admin_learner_attendance, name='admin-learner-attendance'),

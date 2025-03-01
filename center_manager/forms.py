@@ -39,7 +39,10 @@ class AllocateTeacherForm(forms.ModelForm):
         widget=Select2MultipleWidget(attrs={'class': 'form-control'})  # Correct widget configuration
     )
     subject = forms.ChoiceField(choices=Subject.SUBJECT_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
-    grade = forms.ChoiceField(choices=Grade.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    subject = forms.ModelChoiceField(queryset=Subject.objects.all(), empty_label="Select Subject", widget=forms.Select(attrs={'class': 'form-control'}))
+    #grade = forms.ChoiceField(choices=Grade.GRADE_CHOICES, widget=forms.Select(attrs={'class': 'form-control'}))
+    grade = forms.ModelChoiceField(queryset=Grade.objects.all(), empty_label="Select Grade", widget=forms.Select(attrs={'class': 'form-control'})
+    )
     teacher = forms.ModelChoiceField(queryset=Teacher.objects.none(), widget=forms.Select(attrs={'class': 'form-control'}))
     
     class Meta:

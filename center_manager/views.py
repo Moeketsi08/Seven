@@ -151,7 +151,8 @@ def upload_document(request):
         form = DocumentUploadForm(request.POST, request.FILES, instance=learner)
         if form.is_valid():
             form.save()
-            return redirect('center_manager/learner_dashboard')  # Redirect back to the dashboard
+            messages.success(request, f'Document Uploaded!!!')
+            return redirect('learner-dashboard')  # Redirect back to the dashboard
         
     else:
         form = DocumentUploadForm(instance=learner)
@@ -767,7 +768,13 @@ def learner_dashboard(request):
     learner = get_object_or_404(Learner, user=request.user)
     request.learner = learner
 
-    return render(request, 'center_manager/learner-dashboard.html',{'learner':learner})  # Redirect to avoid resubmission
+    # Get all classrooms where this learner is registered
+    classrooms = Classroom.objects.filter(learners=learner).select_related('teacher', 'subject', 'grade').prefetch_related('learners')
+
+    return render(request, 'center_manager/learner-dashboard.html', {
+        'learner': learner,
+        'classrooms': classrooms
+    })
 
 def learner_registration(request):
     if request.method == 'POST':
@@ -851,6 +858,19 @@ def learner_report(request):
 
     return render(request, 'center_manager/learner-report.html', {
         'grouped_attendance': grouped_attendance,
+    })
+
+@login_required
+def learner_classes(request):
+    # Get the Learner instance related to the user
+    learner = get_object_or_404(Learner, user=request.user)
+
+    # Get all classrooms where this learner is registered
+    classrooms = Classroom.objects.filter(learners=learner).select_related('teacher')
+
+    return render(request, 'center_manager/learner-classes.html', {
+        'classrooms': classrooms,
+        'learner': learner,
     })
 
 def admin_learner_registration(request):
