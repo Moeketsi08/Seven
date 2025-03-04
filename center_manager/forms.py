@@ -96,6 +96,7 @@ class LearnerRegistrationForm(forms.ModelForm):
             'name', 'surname', 'photo', 'date_of_birth', 'gender',
             'phone_no', 'email', 'id_no', 'nationality',
             'race', 'home_language', 'disability', 'disabilities', 'center',
+            'grade', 'school'       
         ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'name'}),
@@ -112,6 +113,8 @@ class LearnerRegistrationForm(forms.ModelForm):
             'disability': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'disabilities': forms.Select(attrs={'class': 'form-control'}),
             'center': forms.TextInput(attrs={'class': 'form-control'}),
+            'grade': forms.Select(attrs={'class': 'form-control'}),  # Added grade field widget
+            'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'School Name'})  # Added school field widget
         }
 
      # ForeignKey fields: use ModelChoiceField for nationality and center
@@ -186,6 +189,22 @@ class LearnerRegistrationForm(forms.ModelForm):
     disability = forms.ChoiceField(
         choices=DISABILITY_CHOICES_YES_NO,
         widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    GRADE_CHOICES = [
+        ('10', 'Grade 10'),
+        ('11', 'Grade 11'),
+        ('12', 'Grade 12'),
+    ]
+
+    grade = forms.ChoiceField(
+        choices=GRADE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+
+    school = forms.CharField(
+        max_length=255,
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'School Name'})
     )
     
     def clean(self):

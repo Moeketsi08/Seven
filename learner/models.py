@@ -64,6 +64,10 @@ class Learner(models.Model):
         blank=True,
         null=True
     )
+    grade = models.CharField(max_length=2, choices=[
+        ('10', 'Grade 10'),('11', 'Grade 11'), ('12', 'Grade 12')
+    ])
+    school = models.CharField(max_length=255)
     center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='learners')  # Center relationship
     documents = models.URLField(max_length=500, blank=True, null=True) 
     document_file = models.FileField(upload_to='learner-documents/', blank=True, null=True)

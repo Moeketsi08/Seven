@@ -98,6 +98,24 @@
       .btn-primary:hover {
         background-color: #0056b3;
       }
+
+      #loader {
+          border: 3px solid rgba(255, 255, 255, 0.3);
+          border-left-color: white;
+          border-radius: 50%;
+          width: 16px;
+          height: 16px;
+          animation: spin 1s linear infinite;
+          display: inline-block;
+          margin-left: 8px;
+      }
+
+      @keyframes spin {
+          to {
+              transform: rotate(360deg);
+          }
+      }
+
     </style>
   </head>
   <body>
@@ -128,7 +146,11 @@
           </div>
         {% endif %}
 
-        <button type="submit" class="btn btn-primary">Register</button>
+        
+        <button type="submit" id="register-button" class="btn btn-primary">
+            <span id="button-text">Register</span>
+            <span id="loader" class="spinner-border spinner-border-sm" style="display: none;"></span>
+        </button>
       </form>
     </div>
 <script>
@@ -153,5 +175,20 @@
 });
 
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const form = document.getElementById("register-form");
+      const registerButton = document.getElementById("register-button");
+      const buttonText = document.getElementById("button-text");
+      const loader = document.getElementById("loader");
+  
+      form.addEventListener("submit", function() {
+          registerButton.disabled = true; // Disable button
+          buttonText.textContent = "Registering..."; // Change text
+          loader.style.display = "inline-block"; // Show loader
+      });
+  });
+  </script>
   </body>
 </html>
