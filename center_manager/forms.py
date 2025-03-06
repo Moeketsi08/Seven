@@ -131,8 +131,7 @@ class LearnerRegistrationForm(forms.ModelForm):
     # Choice fields: use ChoiceField for predefined choices like gender, race, home language, disability
     GENDER_CHOICES = (
         ('M', 'Male'),
-        ('F', 'Female'),
-        ('O', 'Other')
+        ('F', 'Female')
     )
     gender = forms.ChoiceField(
         choices=GENDER_CHOICES,
