@@ -178,10 +178,13 @@ def teacher_dashboard(request):
     if classrooms.exists():
         classroom = classrooms.first()  # Assign the first classroom before using it
         totalL = classroom.learners.count()
-        # overall_percentage = round(overall_percentage, 2)
+        
     else:
         classroom = None  # Prevent unbound variable error
         totalL = 0  # Default value
+
+    ttotal_classes = 0
+    ttotal_classes = classrooms.count()  
 
     return render(request, 'teacher/teacher-dashboard.html', {
         'timesheet_form': timesheet_form,
@@ -194,6 +197,7 @@ def teacher_dashboard(request):
         'classroom_attendance': classroom_attendance,  # Pass the attendance percentage for each classroom
         'totalL': totalL,
         'overall_percentage': overall_percentage,
+        'ttotal_classes ': ttotal_classes 
     })
 
 

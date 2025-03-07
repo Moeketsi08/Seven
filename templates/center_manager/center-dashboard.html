@@ -552,14 +552,14 @@
                                     <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                                         <canvas id="donutChartActiveStatus" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                            Total Classes: 4
+                                            Total Classes: {{ total_classes }}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Card: Total Centers -->
+                        <!-- Card: Total Learners -->
                         <div class="col-sm-6 col-lg-3">
                             <div class="card bg-white text-primary">
                                 <div class="card-body pb-0">
@@ -570,15 +570,20 @@
                                                 <i class="icon-settings"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#">Male</a>
-                                                <a class="dropdown-item" href="#">Female</a>
+                                                <a class="dropdown-item" href="#">All Learners</a>
+                                                <!-- Dynamically populate the dropdown with centers and their teacher count -->
+                                                {% for center in centers %}
+                                                <a class="dropdown-item filter-center" href="#">
+                                                    Center:  {{ center.name }} - Learners: {{ total_learners }}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                                         <canvas id="donutChartTotalCenters" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                            Dobsonville
+                                                    Learners: {{ total_learners }}
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -596,18 +601,30 @@
                                                 <i class="icon-settings"></i>
                                             </button>
                                             <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" href="#">Dobsonville</a>
-                                                <!-- <a class="dropdown-item" href="#">Center 2</a>
-                                                <a class="dropdown-item" href="#">Center 3</a>
-                                                <a class="dropdown-item" href="#">Center 4</a>
-                                                <a class="dropdown-item" href="#">Center 5</a> -->
+                                                <div class="dropdown-item">
+                                                    <strong>Attendance By Date</strong>
+                                                    <div class="ml-3">
+                                                        {% for date, attendance in center_attendance.items %}
+                                                            <div class="dropdown-item">
+                                                                {{ date }} - {{ attendance|floatformat:2 }}%
+                                                            </div>
+                                                        {% empty %}
+                                                            <a class="dropdown-item disabled" href="#">No attendance available</a>    
+                                                        {% endfor %}
+                                                    </div>
+                                                    <div class="text-muted mt-1">
+                                                        <strong>Overall Attendance:</strong> {{ overall_center_attendance|floatformat:2 }}%
+                                                    </div>
+                                                </div>
                                             </div>
+                                            
                                         </div>
                                     </div>
                                     <div class="chart-wrapper text-center my-3" style="position: relative; height: 300px;">
                                         <canvas id="donutChartLearnerAttendance" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
                                         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -60%); font-size: 24px; font-weight: bold;">
-                                            Present 90%
+                                            Attendance <br>
+                                            <span id="attendancePercentage">{{ overall_center_attendance }}%</span>
                                         </div>
                                     </div>
                                 </div>

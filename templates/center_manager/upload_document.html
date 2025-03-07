@@ -7,14 +7,14 @@
     {{ form.as_p }}
     <button type="submit">Upload</button>
   </form>
-
+<!-- 
   {% if user.learner.documents %}
     <p>Existing Document (External): <a href="{{ user.learner.documents }}" target="_blank">View Document</a></p>
-  {% endif %}
+  {% endif %} -->
 
-  {% if user.learner.document_file %}
+  <!-- {% if user.learner.document_file %}
     <p>Uploaded Document: <a href="{{ user.learner.document_file.url }}" target="_blank">View Document</a></p>
-  {% endif %}
+  {% endif %} -->
 
   <a href="{% url 'learner-dashboard' %}">Back to Dashboard</a>
 {% endblock %}

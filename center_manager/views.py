@@ -71,7 +71,11 @@ def center_dashboard(request):
     grade_subject_combinations = classrooms.values('grade__grade', 'subject__subject').distinct()
 
     # Get the total number of classrooms at the center
-    total_classes = classrooms.count()
+    ttotal_classes = classrooms.count()
+
+    # Get all learners at the center
+    learners = Learner.objects.filter(center=center)
+    total_learners = learners.count()
 
     # Get the total number of learners in each classroom
     classroom_learners = {
@@ -81,41 +85,74 @@ def center_dashboard(request):
 
     # Get the total number of learners in each classroom and their attendance percentage by date
     classroom_attendance = {}
+    total_attendance_entries = 0
+    total_attendance_percentage = 0
+
     for classroom in classrooms:
-        total_learners = classroom.learners.count()
+        total_learners_in_class = classroom.learners.count()
         class_dates = LearnerAttendance.objects.filter(classroom=classroom).values_list('date', flat=True).distinct()
         
         date_attendance = {
             date: round(
-                (LearnerAttendance.objects.filter(classroom=classroom, status='P', date=date).count() / total_learners) * 100, 2
-            ) if total_learners > 0 else 0
+                (LearnerAttendance.objects.filter(classroom=classroom, status='P', date=date).count() / total_learners_in_class) * 100, 2
+            ) if total_learners_in_class > 0 else 0
             for date in class_dates
         }
 
         total_classes = len(class_dates)
-        total_attendance = sum(date_attendance.values())
-        overall_percentage = round((total_attendance / total_classes), 2) if total_classes > 0 else 0
+        total_class_attendance = sum(date_attendance.values())
+        overall_percentage = round((total_class_attendance / total_classes), 2) if total_classes > 0 else 0
 
         classroom_attendance[f"{classroom.grade.grade} - {classroom.subject.subject}"] = {
             'date_attendance': date_attendance,
             'overall_percentage': overall_percentage,
         }
 
+        # Accumulate attendance data for center-wide calculation
+        total_attendance_entries += total_classes
+        total_attendance_percentage += total_class_attendance
+    
+    # Calculate overall learner attendance percentage for the center
+    overall_center_attendance = round((total_attendance_percentage / total_attendance_entries), 2) if total_attendance_entries > 0 else 0
+
     # Fetch all centers with teacher counts for comparison
     all_centers = Center.objects.annotate(
         teacher_count=Count('teachercenterassignment')
     ).values('id', 'name', 'teacher_count')
 
+    # Get attendance records for learners in this center
+    learner_attendance_records = LearnerAttendance.objects.filter(learner__in=learners)
+
+    # Get distinct dates
+    attendance_dates = learner_attendance_records.values_list('date', flat=True).distinct()
+
+    # Calculate attendance percentage per date
+    center_attendance = {
+        date: round(
+            (learner_attendance_records.filter(date=date, status='P').count() / total_learners) * 100, 2
+        ) if total_learners > 0 else 0
+        for date in attendance_dates
+    }
+
+    # Calculate overall attendance percentage for the center
+    total_days = len(attendance_dates)
+
+
+
     return render(request, 'center_manager/center-dashboard.html', {
         'timesheets': timesheets,
         'total_hours_by_teacher': total_hours_by_teacher,  
         'total_hours': total_hours,
-        'total_classes': total_classes,
+        'total_classes': ttotal_classes,
         'grade_subject_combinations': grade_subject_combinations,
         'classroom_learners': classroom_learners,
         'classroom_attendance': classroom_attendance,
         'total_teachers': total_teachers,
+        'total_learners': total_learners,
+        'overall_center_attendance': overall_center_attendance,
         'centers': all_centers,  
+        'center_attendance': center_attendance,
+        'total_attendance_entries' : total_attendance_entries,
     })
 
 from django.db.models import Count, Q

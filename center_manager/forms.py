@@ -66,7 +66,7 @@ class AllocateTeacherForm(forms.ModelForm):
 class DocumentUploadForm(forms.ModelForm):
     class Meta:
         model = Learner
-        fields = ['document_file']
+        fields = ['id_document', 'proof_of_residence', 'previous_report']
         
 class TimesheetForm(forms.Form):
     date = forms.DateField(widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))

@@ -70,7 +70,9 @@ class Learner(models.Model):
     school = models.CharField(max_length=255)
     center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='learners')  # Center relationship
     documents = models.URLField(max_length=500, blank=True, null=True) 
-    document_file = models.FileField(upload_to='learner-documents/', blank=True, null=True)
+    id_document = models.FileField(upload_to='learner-documents/id-document/', blank=True, null=True)
+    proof_of_residence = models.FileField(upload_to='learner-documents/proof_of_residence/', blank=True, null=True)
+    previous_report = models.FileField(upload_to='learner-documents/previous_report/', blank=True, null=True)
     joined_programme = models.DateField(auto_now_add=True, null=True)
     exited_programme = models.DateField(blank=True, null=True)
     is_delete = models.BooleanField(default=False)
