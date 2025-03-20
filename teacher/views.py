@@ -14,7 +14,7 @@ from django.utils import timezone
 from django.db import transaction
 
 
-from teacher.models import Teacher, Timesheet, Classroom
+from teacher.models import ATPSchedule, Teacher, Timesheet, Classroom
 from academic.models import Session, Grade, Subject, Registration
 from learner.models import Learner
 from attendance.models import LearnerAttendance
@@ -22,7 +22,7 @@ from teacher.forms import LearnerAttendanceForm, TimesheetForm
 from learner.forms import LearnerSearchForm
 
 
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 
 
 class TeacherLoginView(SuccessMessageMixin,FormView):
@@ -200,6 +200,9 @@ def teacher_dashboard(request):
         'ttotal_classes ': ttotal_classes 
     })
 
+def calendar_view(request):
+    upcoming_events = ATPSchedule.objects.filter(date__gte=date.today()).order_by('date')[:5]  # Fetch next 5 events
+    return render(request, "teacher-dashboard.html", {"upcoming_events": upcoming_events})
 
 @login_required
 def teacher_profile(request):

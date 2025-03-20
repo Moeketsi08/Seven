@@ -266,7 +266,7 @@ class CenterLoginView(SuccessMessageMixin, FormView):
         name = center_managers.name
         surname = center_managers.surname
 
-        messages.success(self.request, f'Welcome, Center Manager {name} {surname}')
+        messages.success(self.request, f'Welcome, Program Director {name} {surname}')
 
         return redirect(self.get_success_url())
 

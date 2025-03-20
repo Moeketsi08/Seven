@@ -51,21 +51,15 @@ class Learner(models.Model):
         ('N', 'No')
     )
     disability = models.CharField(choices=disability_choices, max_length=10)
-    DISABILITY_CHOICES = [
-        ('hearing_impairment', 'Hearing Impairment - Difficulties hearing properly (Needs to sit near/far)'),
-        ('visual_impairment', 'Visual Impairment - Near/far sighted'),
-        ('physical_disability', 'Physical Disability - Physically impaired'),
-        ('cognitive_impairment', 'Cognitive Impairment'),
-    ]
-
-    disabilities = models.CharField(
-        choices=DISABILITY_CHOICES,
-        max_length=50,  # Adjust the length based on the actual values
-        blank=True,
-        null=True
-    )
+    parent_name = models.CharField(max_length=45, null=True)
+    parent_phone_no = models.CharField(max_length=11, null=True)
+    parent_email = models.EmailField(blank=True, null=True)
+    emergency_contanct_name = models.CharField(max_length=45, null=True)
+    emergency_contanct_phone_no = models.CharField(max_length=11, null=True)
+    allergy_medical_info = models.CharField(max_length=45, null=True)
+    address = models.ForeignKey(Address, on_delete=models.SET_NULL, null=True)
     grade = models.CharField(max_length=2, choices=[
-        ('10', 'Grade 10'),('11', 'Grade 11'), ('12', 'Grade 12')
+        ('1', 'Grade 1'),('2', 'Grade 2'), ('3', 'Grade 3')
     ])
     school = models.CharField(max_length=255)
     center = models.ForeignKey(Center, on_delete=models.CASCADE, related_name='learners')  # Center relationship

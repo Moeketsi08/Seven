@@ -1016,7 +1016,7 @@
         <div class="table-calendar-container grid grid-cols-1 lg:grid-cols-2 gap-4">
             
             <!-- Notice Board Section -->
-            <div class="notice-board bg-white p-6 rounded-lg shadow-lg">
+            <!-- <div class="notice-board bg-white p-6 rounded-lg shadow-lg">
                 <h3 class="text-lg font-semibold text-slate-600 mb-4">Notice Board</h3>
                 <ul class="space-y-4">
                     <li class="flex justify-between items-center">
@@ -1036,7 +1036,22 @@
                         <span class="text-sm text-gray-500">30 May, 2025</span>
                     </li>
                 </ul>
+            </div> -->
+            <!-- Notice Board Section -->
+            <div class="notice-board bg-white p-6 rounded-lg shadow-lg">
+                <h3 class="text-lg font-semibold text-slate-600 mb-4">Notice Board</h3>
+                <ul class="space-y-4">
+                    {% for event in upcoming_events %}
+                    <li class="flex justify-between items-center">
+                        <span>{{ event.topic }} - {{ event.mode }}</span>
+                        <span class="text-sm text-gray-500">{{ event.date|date:"d M, Y" }}</span>
+                    </li>
+                    {% empty %}
+                    <li>No upcoming events</li>
+                    {% endfor %}
+                </ul>
             </div>
+
 
             <!-- Calendar Section -->
             <div class="calendar-section bg-white p-6 rounded-lg shadow-lg">
@@ -1214,6 +1229,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
 <script>
     // JavaScript to generate the real-time calendar
     function generateCalendar() {
@@ -1278,5 +1294,24 @@ document.addEventListener('DOMContentLoaded', function() {
     window.onload = generateCalendar;
 </script>
 
+<script>
+// document.addEventListener('DOMContentLoaded', function() {
+//     var calendarEl = document.getElementById('calendar');
+//     var calendar = new FullCalendar.Calendar(calendarEl, {
+//         initialView: 'dayGridMonth',
+//         events: [
+//             {% for event in upcoming_events %}
+//             {
+//                 title: "{{ event.topic|escapejs }} - {{ event.mode|escapejs }}",
+//                 start: "{{ event.date|date:'Y-m-d' }}"
+//             }{% if not forloop.last %},{% endif %}
+//             {% endfor %}
+//         ]
+//     });
+//     calendar.render();
+// });
+</script>
+
+    
 {% endblock %}
 

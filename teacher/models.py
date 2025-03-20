@@ -56,6 +56,17 @@ class TeacherCenterAssignment(models.Model):
     def __str__(self):
         return f"{self.teacher.name} at {self.center.name}"
 
+class ATPSchedule(models.Model):
+    date = models.DateField()
+    day = models.CharField(max_length=10)
+    mode = models.CharField(max_length=20, choices=[('Face-to-Face', 'Face-to-Face'), ('Online', 'Online')])
+    paper = models.CharField(max_length=50, blank=True, null=True)
+    topic = models.TextField()
+    subject = models.CharField(max_length=50, default="Mathematics")
+    term = models.CharField(max_length=10, default="Term 1")
+
+    def __str__(self):
+        return f"{self.date} - {self.topic}"
 
 class Timesheet(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)

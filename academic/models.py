@@ -15,10 +15,9 @@ class Department(models.Model):
 
 class Subject(models.Model):
     SUBJECT_CHOICES = [
-        ('Mathematics', 'Mathematics'),
-        ('Mathematics Exam', 'Mathematics Examination'),
-        ('Physical Science', 'Physical Science'),
-        ('Physical Science Exam', 'Physical Science Examination')
+      ('Pathfinder ', 'Pathfinder Club'),
+        ('Adventurer', 'Adventurer Club'),
+        ('Master', 'Master Club'),
     ]
     subject = models.CharField(max_length=21, choices=SUBJECT_CHOICES, default='Mathematics', unique=True)  # Added default valu
     created = models.DateField(default=now)
@@ -28,9 +27,9 @@ class Subject(models.Model):
     
 class Grade(models.Model):
     GRADE_CHOICES = [
-        ('10', 'Grade 10'),
-        ('11', 'Grade 11'),
-        ('12', 'Grade 12'),
+        ('1', 'Grade 1'),
+        ('2', 'Grade 2'),
+        ('3', 'Grade 3'),
     ]
     grade = models.CharField(max_length=2, choices=GRADE_CHOICES, default='10', unique=True)  # Already had default value
     created = models.DateField(auto_now_add=True)

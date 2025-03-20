@@ -93,25 +93,25 @@ class LearnerRegistrationForm(forms.ModelForm):
     class Meta:
         model = Learner
         fields = [
-            'name', 'surname', 'photo', 'date_of_birth', 'gender',
-            'phone_no', 'email', 'id_no', 'nationality',
-            'race', 'home_language', 'disability', 'disabilities', 'center',
+            'name', 'surname', 'address', 'date_of_birth', 'gender',
+            'phone_no', 'parent_email', 'parent_name', 'nationality',
+            'race', 'home_language', 'emergency_contanct_name', 'emergency_contanct_phone_no', 'center',
             'grade', 'school'       
         ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control','placeholder':'name'}),
             'surname': forms.TextInput(attrs={'class': 'form-control','placeholder':'surname'}),
-            'photo': forms.ClearableFileInput(attrs={'class': 'form-control','placeholder':'photo'}),
+            'address': forms.TextInput(attrs={'class': 'form-control','placeholder':'address'}),
             'date_of_birth': forms.DateInput(attrs={'type': 'date', 'class': 'form-control','placeholder':'date_of_birth'}),
             'gender': forms.TextInput(attrs={'class': 'form-control','placeholder':'gender'}),
             'phone_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'phone_no'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control','placeholder':'email'}),
-            'id_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'ID No'}),
+            'parent_email': forms.EmailInput(attrs={'class': 'form-control','placeholder':'email'}),
+            'parent_name': forms.TextInput(attrs={'class': 'form-control','placeholder':'parent_name'}),
             'nationality': CountryField().formfield(widget=CountrySelectWidget(attrs={'class': 'form-control'})),
             'race': forms.TextInput(attrs={'class': 'form-control'}),
             'home_language': forms.TextInput(attrs={'class': 'form-control'}),
-            'disability': forms.CheckboxInput(attrs={'class': 'form-control'}),
-            'disabilities': forms.Select(attrs={'class': 'form-control'}),
+            'emergency_contanct_name': forms.TextInput(attrs={'class': 'form-control','placeholder':'emergency_contanct_name'}),
+            'emergency_contanct_phone_no': forms.TextInput(attrs={'class': 'form-control','placeholder':'emergency_contanct_phone_no'}),
             'center': forms.TextInput(attrs={'class': 'form-control'}),
             'grade': forms.Select(attrs={'class': 'form-control'}),  # Added grade field widget
             'school': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'School Name'})  # Added school field widget
@@ -169,31 +169,31 @@ class LearnerRegistrationForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control'})
     )
 
-    DISABILITY_CHOICES = [
-        ('hearing_impairment', 'Hearing Impairment - Difficulties hearing properly (Needs to sit near/far)'),
-        ('visual_impairment', 'Visual Impairment - Near/far sighted'),
-        ('physical_disability', 'Physical Disability - Physically impaired'),
-        ('cognitive_impairment', 'Cognitive Impairment'),
-    ]
-    disabilities = forms.ChoiceField(
-        choices=DISABILITY_CHOICES,
-        widget=forms.Select(attrs={'class': 'form-control'}),
-        required=False
-    )
+    # DISABILITY_CHOICES = [
+    #     ('hearing_impairment', 'Hearing Impairment - Difficulties hearing properly (Needs to sit near/far)'),
+    #     ('visual_impairment', 'Visual Impairment - Near/far sighted'),
+    #     ('physical_disability', 'Physical Disability - Physically impaired'),
+    #     ('cognitive_impairment', 'Cognitive Impairment'),
+    # ]
+    # disabilities = forms.ChoiceField(
+    #     choices=DISABILITY_CHOICES,
+    #     widget=forms.Select(attrs={'class': 'form-control'}),
+    #     required=False
+    # )
 
-    DISABILITY_CHOICES_YES_NO = (
-        ('Y', 'Yes'),
-        ('N', 'No')
-    )
-    disability = forms.ChoiceField(
-        choices=DISABILITY_CHOICES_YES_NO,
-        widget=forms.Select(attrs={'class': 'form-control'})
-    )
+    # DISABILITY_CHOICES_YES_NO = (
+    #     ('Y', 'Yes'),
+    #     ('N', 'No')
+    # )
+    # disability = forms.ChoiceField(
+    #     choices=DISABILITY_CHOICES_YES_NO,
+    #     widget=forms.Select(attrs={'class': 'form-control'})
+    # )
 
     GRADE_CHOICES = [
-        ('10', 'Grade 10'),
-        ('11', 'Grade 11'),
-        ('12', 'Grade 12'),
+        ('1', 'Grade 1'),
+        ('2', 'Grade 2'),
+        ('3', 'Grade 3'),
     ]
 
     grade = forms.ChoiceField(
@@ -218,7 +218,7 @@ class LearnerRegistrationForm(forms.ModelForm):
             # If disability is not 'Yes', clear the disabilities field
             cleaned_data['disabilities'] = None
 
-        return cleaned_data      
+        return cleaned_data     
 
 class ClassroomFormSet(BaseModelFormSet):
     def __init__(self, *args, **kwargs):

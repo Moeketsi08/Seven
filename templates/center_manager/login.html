@@ -105,8 +105,9 @@
     <div class="container">
       
       <div class="card">
-        <img src="{% static 'assets/Kutlwanong-logo.png' %}" alt="Kutlwanong Logo" class="logo">
-        <h1>Login to Kutlwanong Data Management System</h1>
+        <img src="{% static 'assets/sau-logo.png' %}" alt="Kutlwanong Logo" class="logo">
+        <h1>Login Church Admin</h1>
+        <h1>Seventh-Day Adventist Data Management System</h1>
         {% if messages %}
         <ul>
             {% for message in messages %}
@@ -167,7 +168,7 @@
         </form>
         <div class="link-section">
           <a href="{% url 'teacher-login' %}">Teacher</a>
-          <a href="{% url 'center-login' %}">Center Manager </a>
+          <a href="{% url 'center-login' %}">Church Director  </a>
           <a href="{% url 'learner-login' %}">Learners </a>
           <a href="">Alumni </a>
         </div>
