@@ -40,20 +40,20 @@ CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in ALLOWED_HOSTS]
 
 
 #For local testing/hosting
-#SECRET_KEY = config('SECRET_KEY', default='7-qb)ikktb8c!9lhw#t0i52$mhc%_!wj3=i0$kx&9k+@ma1xvk')
+# SECRET_KEY = config('SECRET_KEY', default='7-qb)ikktb8c!9lhw#t0i52$mhc%_!wj3=i0$kx&9k+@ma1xvk')
 
-#DECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+# #DECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
 
-#ALLOWED_HOSTS = [
-    #'169.254.131.2',
-    #'kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
-    #'127.0.0.1',
-#]
+# ALLOWED_HOSTS = [
+#     '169.254.131.2',
+#     'kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+#     '127.0.0.1',
+# ]
 
-#CSRF_TRUSTED_ORIGINS = [
-  #  'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
-#]
+# CSRF_TRUSTED_ORIGINS = [
+#    'https://kutlwanong-a2fbezdqguc4b6hm.southafricanorth-01.azurewebsites.net',
+# ]
 
 import os
 
