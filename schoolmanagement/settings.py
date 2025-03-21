@@ -30,13 +30,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 from decouple import config
 
 #For live hosting
- SECRET_KEY =  os.getenv('SECRET_KEY')
- # SECURITY WARNING: don't run with debug turned on in production!
- DEBUG = os.getenv('DEBUG', 'False') == 'True'
+SECRET_KEY =  os.getenv('SECRET_KEY')
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
- #ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost,139.59.11.205').split(',')
- ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(",")
- CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in ALLOWED_HOSTS]
+#ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '127.0.0.1,localhost,139.59.11.205').split(',')
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1").split(",")
+CSRF_TRUSTED_ORIGINS = ['https://' + domain for domain in ALLOWED_HOSTS]
 
 
 #For local testing/hosting
